@@ -1,0 +1,3159 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>XWATUM · Автономная энергия для геологоразведки</title>
+<meta name="description" content="Энергия там, где заканчивается инфраструктура. Презентация и GEO LAB — предварительный расчёт гибридной энергосистемы для экспедиции и полевого лагеря.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="XWATUM">
+<meta property="og:url" content="https://xwatum-1.vercel.app/geo/">
+<meta property="og:title" content="XWATUM · Автономная энергия для геологоразведки">
+<meta property="og:description" content="Энергия там, где заканчивается инфраструктура. Презентация и GEO LAB — предварительный расчёт гибридной энергосистемы для экспедиции.">
+<meta property="og:image" content="https://xwatum-1.vercel.app/geo/xwatum-geo-preview.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Геологоразведочный лагерь с буровой установкой, генератором, солнечными панелями и накопителем в сибирской тайге">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#F5F5F7">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+/* ============================== TOKENS ============================== */
+:root{
+  --bg:#F5F5F7; --card:#FFFFFF; --ink:#1D1D1F; --mute:#86868B;
+  --line:#E5E5EA; --line2:#D2D2D7; --blue:#0A84FF; --amber:#E09A1A;
+  --dark:#0E1116;
+  --font:"Inter","SF Pro Display",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#000;font-family:var(--font);color:var(--ink);-webkit-font-smoothing:antialiased;overflow:hidden}
+button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0}
+:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:6px}
+
+/* ============================== CHROME ============================== */
+.chrome{position:fixed;z-index:50;transition:opacity .3s}
+body.clean .chrome{opacity:0;pointer-events:none}
+body.clean.hide-cursor{cursor:none}
+.modebar{top:max(14px,env(safe-area-inset-top));right:16px;display:flex;gap:2px;background:rgba(255,255,255,.86);border:1px solid var(--line2);border-radius:999px;padding:3px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.modebar button{padding:7px 14px;border-radius:999px;font-size:13px;color:var(--mute)}
+.modebar button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.modebar .ico{padding:7px 10px}
+.dots{bottom:max(14px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);display:flex;gap:6px;align-items:center;background:rgba(255,255,255,.8);border:1px solid var(--line2);border-radius:999px;padding:7px 12px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.dots button{width:7px;height:7px;border-radius:50%;background:var(--line2);padding:0}
+.dots button[aria-current="true"]{background:var(--blue);width:20px;border-radius:4px}
+.counter{position:fixed;right:18px;bottom:max(12px,env(safe-area-inset-bottom));z-index:49;font-size:12px;color:rgba(134,134,139,.9);font-variant-numeric:tabular-nums;display:none}
+body.clean .counter{display:block}
+body.mode-lab .dots,body.mode-lab .counter{display:none}
+
+/* ============================== DECK ============================== */
+#deckWrap{position:fixed;inset:0;background:#000;display:flex;align-items:center;justify-content:center}
+body.mode-lab #deckWrap{display:none}
+#stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;background:var(--bg)}
+.slide{position:absolute;inset:0;opacity:0;visibility:hidden;transform:translateX(12px);transition:opacity .5s ease,transform .5s ease,visibility 0s linear .5s;background:var(--bg);overflow:hidden}
+.slide.active{opacity:1;visibility:visible;transform:none;transition:opacity .5s ease,transform .5s ease,visibility 0s}
+.slide.dark{background:var(--dark);color:#fff}
+.bgimg{position:absolute;inset:0;background-size:cover;background-position:center}
+.logo-slot{position:absolute;left:64px;top:34px;width:220px;height:76px;z-index:5;display:flex;align-items:center}
+.logo-slot img{max-width:100%;max-height:100%;object-fit:contain}
+.pad{position:absolute;inset:0;padding:160px 140px 0 140px}
+.h{font-size:60px;line-height:1.08;font-weight:600;letter-spacing:-.022em}
+.h .l2{color:var(--mute);display:block}
+.dark .h .l2{color:#C7C7CC}
+.lead{font-size:30px;line-height:1.35;color:var(--ink)}
+.note{font-size:18px;color:var(--mute)}
+.card{background:var(--card);border-radius:24px}
+.btn{display:inline-flex;align-items:center;gap:10px;height:52px;padding:0 26px;border-radius:999px;background:var(--ink);color:#fff;font-size:20px;font-weight:500}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line2)}
+.btn.blue{background:var(--blue)}
+.btn.small{height:40px;font-size:16px;padding:0 18px}
+.seg{display:inline-flex;background:#E9E9ED;border-radius:14px;padding:4px;gap:2px}
+.seg button{padding:10px 20px;border-radius:10px;font-size:19px;color:var(--mute)}
+.seg button[aria-pressed="true"]{background:#fff;color:var(--ink)}
+svg text{font-family:var(--font)}
+
+/* S1 / S2 */
+.fade-left{position:absolute;inset:0;background:linear-gradient(90deg,rgba(14,17,22,.72) 0%,rgba(14,17,22,.35) 42%,rgba(14,17,22,0) 65%)}
+.fade-top{position:absolute;left:0;right:0;top:0;height:62%;background:linear-gradient(180deg,rgba(14,17,22,.55),rgba(14,17,22,0))}
+.s1 .title{position:absolute;left:140px;top:120px;width:1500px}
+.s1 .title h1{max-width:1300px;font-size:76px;line-height:1.04;font-weight:600;letter-spacing:-.025em}
+.s1 .title p{margin-top:26px;font-size:30px;line-height:1.35;color:#D1D1D6;max-width:1300px}
+.s1 .title .val{margin-top:22px;font-size:24px;font-weight:500;color:#fff}
+.s1 .title .val::before{content:'';display:inline-block;width:28px;height:3px;background:var(--blue);border-radius:2px;margin-right:14px;vertical-align:6px}
+.s1 .speaker{position:absolute;left:140px;bottom:64px;font-size:20px;line-height:1.5;color:rgba(255,255,255,.85)}
+.s2 .title{position:absolute;left:140px;top:150px;width:1200px}
+.s2 h2{font-size:72px;line-height:1.05;font-weight:600;letter-spacing:-.025em}
+.formula{margin-top:34px;display:flex;flex-wrap:wrap;align-items:baseline;gap:10px 14px;max-width:1000px;font-size:32px;font-weight:500}
+.formula .t{color:var(--amber);opacity:0;transform:translateY(6px);transition:opacity .35s,transform .35s}
+.formula .op{color:rgba(255,255,255,.55);opacity:0;transition:opacity .35s}
+.formula .res{color:#fff;font-size:46px;font-weight:600;opacity:0;transition:opacity .45s}
+.formula .on{opacity:1;transform:none}
+.s2 .sub{margin-top:30px;font-size:28px;color:#D1D1D6}
+
+/* S3 */
+.chartbox{position:absolute;left:140px;top:390px;width:1640px;height:470px}
+.s3 .stats{position:absolute;left:140px;top:880px;display:flex;gap:56px;font-size:20px;color:var(--mute)}
+.s3 .stats b{color:var(--ink);font-weight:600;font-size:22px;margin-right:6px}
+.s3 .concl{position:absolute;left:140px;bottom:78px;font-size:32px}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:#fff;font-size:18px;padding:8px 12px;border-radius:10px;white-space:nowrap;opacity:0;transition:opacity .15s}
+
+/* S4 */
+.bars{position:absolute;left:140px;top:420px;width:1640px}
+.barrow{display:flex;align-items:center;margin-bottom:58px;position:relative}
+.barrow .lbl{width:240px;font-size:30px;font-weight:600}
+.barrow .track{position:relative;width:1400px;height:60px;display:flex;border-radius:12px;overflow:hidden}
+.barrow .seg-b{height:100%;transform-origin:left;transition:transform .9s ease;box-shadow:inset -3px 0 0 var(--bg)}
+.barrow .seg-b:last-child{box-shadow:none}
+.barrow .cap{position:absolute;left:240px;top:72px;font-size:20px;color:var(--mute)}
+.axis{position:relative;margin-left:240px;width:1400px;height:40px;border-top:1px solid var(--line2);font-size:19px;color:var(--mute)}
+.axis span{position:absolute;top:10px;transform:translateX(-50%)}
+.cursor{position:absolute;top:-8px;width:2px;background:var(--ink);height:250px;left:0;pointer-events:none}
+.legend{display:flex;gap:28px;font-size:19px;color:var(--mute);align-items:center}
+.legend i{display:inline-block;width:14px;height:14px;border-radius:4px;margin-right:8px;vertical-align:-1px}
+.s4 .legend{position:absolute;right:140px;top:360px}
+.s4 .slider{position:absolute;left:380px;top:715px;width:1400px}
+.s4 .readout{position:absolute;left:140px;top:775px;font-size:22px;color:var(--ink);display:flex;gap:40px}
+.s4 .readout .k{color:var(--mute);margin-right:8px}
+.s4 .concl{position:absolute;left:140px;bottom:78px;font-size:32px}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:4px;background:var(--line2);border-radius:4px}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;background:#fff;border:2px solid var(--ink)}
+input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#fff;border:2px solid var(--ink)}
+
+/* S5 / S9 diagrams */
+.node rect{fill:#fff;stroke:var(--line2);stroke-width:1.5}
+.node text:not([fill]){fill:var(--ink)}
+.node.off{opacity:.35}
+.node.dg-on rect{stroke:var(--amber);stroke-width:2.5}
+.eline{fill:none;stroke:#C9DDF5;stroke-width:3}
+.eline.act{stroke:var(--blue)}
+.eline.amb.act{stroke:var(--amber)}
+.pulse{fill:none;stroke:var(--blue);stroke-width:5;stroke-linecap:round;stroke-dasharray:14 520;opacity:0}
+.pulse.amb{stroke:var(--amber)}
+.pulse.act{opacity:1;animation:flow 2.4s linear infinite}
+@keyframes flow{from{stroke-dashoffset:534}to{stroke-dashoffset:0}}
+.cline{fill:none;stroke:var(--blue);stroke-width:1.5;stroke-dasharray:5 6;opacity:.75}
+.s5 .modes{position:absolute;left:140px;top:340px}
+.s5 .diag{position:absolute;left:140px;top:420px;width:1640px;height:520px}
+.s5 .caption{position:absolute;left:140px;bottom:70px;font-size:30px}
+.s5 .caption .m{color:var(--blue);margin-right:12px}
+
+/* S6 */
+.cards4{position:absolute;left:140px;right:140px;top:370px;display:grid;grid-template-columns:repeat(4,1fr);gap:32px}
+.c4{background:#fff;border-radius:24px;overflow:hidden;text-align:left;display:flex;flex-direction:column;height:560px;transition:transform .2s}
+.c4:hover{transform:translateY(-4px)}
+.c4 .ph{height:230px;background-size:cover;background-position:center}
+.c4 .bd{padding:24px 26px}
+.c4 .no{font-size:20px;color:var(--blue);font-weight:600}
+.c4 .nm{font-size:30px;font-weight:600;margin:4px 0 14px}
+.c4 .k{font-size:16px;color:var(--mute)}
+.c4 .v{font-size:19px;line-height:1.35;margin:2px 0 12px}
+.c4 .more{font-size:16px;color:var(--blue)}
+.s6 .foot{position:absolute;left:140px;bottom:70px;font-size:24px;color:var(--mute)}
+.detail{position:absolute;inset:0;background:rgba(245,245,247,.97);z-index:10;display:none;padding:150px 140px}
+.detail.open{display:block}
+.detail h3{font-size:48px;font-weight:600;letter-spacing:-.02em}
+.detail .grid{margin-top:40px;display:grid;grid-template-columns:repeat(4,1fr);gap:28px}
+.detail .col{background:#fff;border-radius:24px;padding:28px}
+.detail .col h4{font-size:18px;color:var(--mute);font-weight:500;margin-bottom:14px}
+.detail .col li{font-size:21px;line-height:1.4;margin:0 0 10px 20px}
+.detail .acts{position:absolute;left:140px;bottom:80px;display:flex;gap:16px}
+
+/* S8 */
+.s8 .scen{margin-top:14px;font-size:26px;color:var(--mute)}
+.cmp{position:absolute;left:140px;right:140px;top:330px;display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.cmp .card{padding:26px 34px 10px}
+.cmp h3{font-size:32px;font-weight:600}
+.cmp .sub{font-size:18px;color:var(--mute);margin-top:4px}
+.cmp .rule{height:4px;border-radius:2px;margin:14px 0 4px}
+.row8{display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:14px;padding:13px 0;border-top:1px solid var(--line)}
+.row8:first-of-type{border-top:0}
+.row8 svg{width:30px;height:30px}
+.row8 .a{font-size:22px}.row8 .b{font-size:16px;color:var(--mute)}
+.row8 .val{font-size:30px;font-weight:600;font-variant-numeric:tabular-nums;text-align:right}
+.row8 .val.empty{font-size:17px;font-weight:400;color:var(--mute)}
+.tot{position:absolute;left:140px;right:140px;top:780px;display:grid;grid-template-columns:repeat(4,1fr);background:#fff;border-radius:24px;padding:18px 0}
+.tot div{text-align:center;border-left:1px solid var(--line);padding:4px 10px}
+.tot div:first-child{border-left:0}
+.tot b{display:block;font-size:48px;font-weight:600;color:var(--blue);font-variant-numeric:tabular-nums;line-height:1.1;min-height:53px}
+.tot b.empty{min-height:53px}
+.tot span{font-size:19px;color:var(--mute)}
+.s8 .fn{position:absolute;left:140px;bottom:60px;font-size:17px;color:var(--mute);display:flex;gap:24px;align-items:center}
+.s8 .open{position:absolute;right:140px;bottom:48px}
+
+/* S9 */
+.s9 .comp{position:absolute;left:140px;top:360px;width:640px}
+.s9 .comp h4,.s9 .sys h4{font-size:20px;color:var(--mute);font-weight:500;margin-bottom:16px}
+.s9 .comp .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.s9 .comp .it{border:1.5px solid var(--line2);border-radius:18px;height:88px;display:flex;align-items:center;gap:16px;padding:0 20px;color:var(--mute);font-size:22px}
+.s9 .comp .it svg{width:40px;height:40px;color:var(--mute)}
+.s9 .arrow{position:absolute;left:810px;top:540px}
+.s9 .sys{position:absolute;left:900px;right:140px;top:340px;height:430px;background:#fff;border-radius:24px;padding:26px 30px}
+.s9 .sys .t1{font-size:20px;color:var(--blue);font-weight:600}
+.s9 .sys .t2{font-size:32px;font-weight:600;line-height:1.15;margin-top:4px}
+.proc{position:absolute;left:140px;right:140px;top:820px;display:grid;grid-template-columns:repeat(6,1fr);gap:18px}
+.proc div{position:relative}
+.proc b{display:block;font-size:20px;color:var(--blue)}
+.proc span{display:block;font-size:24px;font-weight:600;margin-top:4px}
+.proc em{display:block;font-style:normal;font-size:17px;color:var(--mute);margin-top:4px}
+
+/* S10 */
+.two{position:absolute;left:140px;right:140px;top:330px;display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.two .card{padding:28px 32px;height:390px;position:relative}
+.two h3{font-size:32px;font-weight:600}
+.two .foot{position:absolute;left:32px;bottom:24px;font-size:18px;color:var(--mute)}
+.modrow{position:absolute;left:140px;right:140px;top:750px;height:190px;background:#fff;border-radius:24px;display:flex;align-items:center;padding:0 36px;gap:40px}
+.modrow .ttl{font-size:28px;font-weight:600;width:230px;line-height:1.15}
+.stack{display:flex;align-items:flex-end;gap:14px;height:130px;min-width:300px}
+.stack .mods{display:flex;flex-direction:column-reverse;gap:5px}
+.stack .mod{width:86px;height:18px;border:2px solid var(--blue);border-radius:5px;transition:all .25s}
+.stack .inv{width:46px;height:56px;border:2px solid var(--blue);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--blue)}
+.ctl{display:flex;flex-direction:column;gap:10px;font-size:18px;color:var(--mute)}
+.ctl .r{display:flex;align-items:center;gap:10px}
+.ctl button{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--line2);font-size:20px;color:var(--ink)}
+.ctl output{min-width:26px;text-align:center;color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+.modinfo{font-size:26px;font-weight:600}
+.modinfo small{display:block;font-size:17px;color:var(--mute);font-weight:400;margin-top:6px}
+.s10 .bottom{position:absolute;left:140px;bottom:60px;font-size:26px;font-weight:600}
+
+/* S7 / S11 image slides */
+.qrslot{position:absolute;left:78.3%;top:42.4%;width:14.6%;height:26.8%;display:flex;align-items:center;justify-content:center}
+.qrslot img{width:86%;height:86%;object-fit:contain}
+.s11 .acts{position:absolute;left:140px;top:545px}
+.s11 .acts .btn{height:60px;padding:0 32px;font-size:22px;background:#fff;color:var(--ink)}
+.qrcap{position:absolute;left:75.12%;top:71.2%;width:20.81%;height:9.14%;background:#fff;text-align:center;display:flex;flex-direction:column;justify-content:center;gap:4px}
+.qrcap b{font-size:23px;font-weight:600;color:var(--ink)}
+.qrcap span{font-size:16px;line-height:1.3;color:var(--mute);padding:0 18px}
+.qrslot svg{width:88%;height:88%}
+.qrslot .qrmiss{font-size:17px;line-height:1.4;color:var(--mute);text-align:center;padding:0 26px}
+.sheet{position:fixed;inset:0;z-index:95;background:rgba(0,0,0,.32);display:none;align-items:center;justify-content:center;padding:20px}
+.sheet.open{display:flex}
+.sheet .box{background:#fff;border-radius:24px;width:min(440px,100%);padding:24px 22px 18px;box-shadow:0 20px 60px rgba(0,0,0,.18)}
+.sheet h3{font-size:22px;font-weight:600;letter-spacing:-.01em}
+.sheet .sub{font-size:14px;color:var(--mute);margin-top:4px;line-height:1.45}
+.sheet .list{margin-top:14px}
+.sheet a.ch{display:grid;grid-template-columns:40px 1fr auto;align-items:center;gap:12px;padding:12px 8px;border-top:1px solid var(--line);color:var(--ink);text-decoration:none;border-radius:12px}
+.sheet a.ch:first-child{border-top:0}
+.sheet a.ch:hover{background:var(--bg)}
+.sheet a.ch svg{width:26px;height:26px;color:var(--blue)}
+.sheet a.ch b{display:block;font-size:16px;font-weight:600}
+.sheet a.ch span{display:block;font-size:13px;color:var(--mute);margin-top:1px}
+.sheet a.ch i{font-style:normal;color:var(--line2);font-size:20px}
+.sheet .close{margin-top:10px;width:100%;height:44px;border-radius:12px;background:var(--bg);font-size:15px}
+@media (max-width:600px){.sheet{align-items:flex-end;padding:0}.sheet .box{border-radius:24px 24px 0 0;width:100%;padding-bottom:max(18px,env(safe-area-inset-bottom))}}
+
+/* notes */
+#notes{position:fixed;left:0;right:0;bottom:0;z-index:60;background:rgba(29,29,31,.94);color:#fff;padding:18px 28px 22px;display:none;font-size:17px;line-height:1.5}
+#notes.open{display:block}
+#notes .hd{display:flex;justify-content:space-between;color:#C7C7CC;font-size:14px;margin-bottom:6px}
+#notes .timer{font-variant-numeric:tabular-nums}
+#notes .timer.warn{color:var(--amber)}
+.hint{position:fixed;left:50%;bottom:70px;transform:translateX(-50%);z-index:70;background:var(--ink);color:#fff;font-size:14px;padding:10px 16px;border-radius:12px;display:none;max-width:88vw;text-align:center}
+
+/* ============================== LAB ============================== */
+#lab{position:fixed;inset:0;overflow:auto;background:var(--bg);display:none;-webkit-overflow-scrolling:touch}
+body.mode-lab #lab{display:block}
+.lab-in{max-width:1240px;margin:0 auto;padding:84px 24px 120px}
+.lab-hd h1{font-size:44px;line-height:1.1;font-weight:600;letter-spacing:-.02em;max-width:900px}
+.lab-hd p{margin-top:12px;font-size:17px;color:var(--mute);max-width:760px;line-height:1.5}
+.tabs{position:sticky;top:0;z-index:20;background:rgba(245,245,247,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);margin:26px -24px 0;padding:12px 24px;display:flex;gap:6px;overflow-x:auto;border-bottom:1px solid var(--line)}
+.tabs a{white-space:nowrap;font-size:14px;color:var(--mute);text-decoration:none;padding:7px 12px;border-radius:999px}
+.tabs a:hover{background:#fff;color:var(--ink)}
+section.blk{margin-top:44px;scroll-margin-top:70px}
+section.blk>h2{font-size:30px;font-weight:600;letter-spacing:-.015em}
+section.blk>.d{font-size:16px;color:var(--mute);margin-top:6px;line-height:1.5;max-width:780px}
+.panel{background:#fff;border-radius:22px;padding:24px;margin-top:18px}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px 18px}
+.f label{display:block;font-size:13px;color:var(--mute);margin-bottom:5px}
+.f .inp{display:flex;align-items:center;border:1px solid var(--line2);border-radius:12px;background:#fff;height:44px;padding:0 12px}
+.f .inp:focus-within{border-color:var(--blue)}
+.f input,.f select{border:0;outline:0;width:100%;min-width:0;height:100%;background:transparent;font-size:16px}
+.fgrid>*,.calcgrid>*,.schemebox>*,.cols2>*{min-width:0}
+.f input[type=checkbox]{width:20px;height:20px;flex:none;min-width:20px}
+.panel{overflow-x:auto}
+.f .u{font-size:13px;color:var(--mute);margin-left:6px;white-space:nowrap}
+.f.wide{grid-column:1/-1}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line2);border-radius:999px;padding:9px 16px;font-size:15px;background:#fff;color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.sub-h{font-size:15px;font-weight:600;margin:22px 0 10px}
+.cols2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.diag h3{font-size:18px;font-weight:600;margin-bottom:10px}
+.diag ul{list-style:none}
+.diag li{font-size:15px;line-height:1.5;padding:10px 0;border-top:1px solid var(--line);display:flex;gap:10px}
+.diag li:first-child{border-top:0}
+.diag li i{flex:none;width:8px;height:8px;border-radius:50%;margin-top:7px;background:var(--blue)}
+.diag li i.am{background:var(--amber)}
+.empty-msg{font-size:15px;color:var(--mute);line-height:1.5}
+.pain{display:grid;grid-template-columns:1fr 1fr 1.3fr 1fr;gap:0;font-size:14px;line-height:1.45}
+.pain div{padding:11px 12px;border-top:1px solid var(--line)}
+.pain .hh{font-size:12px;color:var(--mute);border-top:0}
+.schemebox{display:grid;grid-template-columns:1fr 300px;gap:18px;align-items:start}
+.toggles{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.state{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.state div{background:var(--bg);border-radius:14px;padding:12px}
+.state span{display:block;font-size:12px;color:var(--mute)}
+.state b{display:block;font-size:20px;font-weight:600;margin-top:2px;font-variant-numeric:tabular-nums}
+.illus{font-size:12px;color:var(--mute);margin-top:10px}
+.calcgrid{display:grid;grid-template-columns:380px 1fr;gap:18px;align-items:start}
+.calc-in .grp{margin-bottom:16px}
+.calc-in .grp h4{font-size:13px;font-weight:600;margin-bottom:8px}
+.calc-in .fgrid{grid-template-columns:1fr 1fr;gap:10px}
+.acts-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.pbtn{height:38px;padding:0 16px;border-radius:999px;border:1px solid var(--line2);background:#fff;font-size:14px}
+.pbtn.pri{background:var(--ink);color:#fff;border-color:var(--ink)}
+.pbtn.blue{background:var(--blue);color:#fff;border-color:var(--blue)}
+.flag{font-size:13px;border-radius:12px;padding:10px 12px;margin-top:10px;line-height:1.45;background:#F2F2F4;color:var(--ink);border-left:3px solid var(--mute)}
+.flag.info{background:#EEF5FF;color:#0B4A8F}
+table.res{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
+table.res th{font-size:12px;color:var(--mute);font-weight:500;text-align:right;padding:8px 6px;border-bottom:1px solid var(--line)}
+table.res th:first-child,table.res td:first-child{text-align:left}
+table.res td{padding:9px 6px;border-bottom:1px solid var(--line);text-align:right}
+table.res td.na{color:var(--mute)}
+.badge{display:inline-block;font-size:11px;font-weight:500;border-radius:6px;padding:1px 7px;margin-left:6px;vertical-align:1px;white-space:nowrap}
+.b-fact{color:#0B4A8F;background:#EEF5FF}.b-ill{color:var(--ink);background:#fff;box-shadow:inset 0 0 0 1px #A1A1A6;border-radius:6px}.b-calc{color:#1D1D1F;background:#EDEDF0}.b-set{color:#86868B;background:#F2F2F4}
+.f .inp.is-fact{box-shadow:inset 3px 0 0 #0A84FF}
+.f .inp.is-ill{box-shadow:inset 3px 0 0 #A1A1A6;background:#F7F7F8;border-style:dashed}
+.srcleg{display:flex;flex-wrap:wrap;gap:12px;font-size:12px;color:var(--mute);margin-bottom:14px}
+.srcleg i{display:inline-block;width:10px;height:16px;border-radius:2px;margin-right:6px;vertical-align:-3px}
+.stepn{display:inline-block;min-width:44px;color:var(--blue);font-weight:600}
+section.blk.collapsed>*:not(h2):not(.d):not(.opener){display:none!important}
+section.blk .opener{display:none;margin-top:14px}
+section.blk.collapsed .opener{display:inline-flex}
+section.blk.collapsed>h2{color:var(--mute)}
+section.blk.collapsed>h2 .stepn{color:var(--line2)}
+details.methd>summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px 14px}
+details.methd>summary::-webkit-details-marker{display:none}
+details.methd>summary .more{font-size:13px;color:var(--blue)}
+details.methd[open]>summary .more{display:none}
+.meth{display:grid;grid-template-columns:200px 1fr;gap:0}
+.meth div{padding:10px 0;border-top:1px solid var(--line);font-size:14px;line-height:1.5}
+.meth div:nth-child(-n+2){border-top:0}
+.meth b{font-weight:600}
+.why{font-size:12px;color:var(--blue);margin-left:6px;border-bottom:1px dotted var(--blue)}
+.whybox{font-size:13px;color:var(--ink);background:var(--bg);border-radius:10px;padding:8px 10px;margin-top:6px;display:none;line-height:1.45}
+.whybox.open{display:block}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.kpis div{background:var(--bg);border-radius:14px;padding:12px}
+.kpis b{display:block;font-size:24px;font-weight:600;color:var(--blue);font-variant-numeric:tabular-nums}
+.kpis span{font-size:12px;color:var(--mute)}
+.chart24{position:relative;margin-top:14px}
+.model-tag{display:inline-block;font-size:12px;color:var(--mute);border:1px solid var(--line2);border-radius:999px;padding:3px 10px}
+.arch3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.arch{background:#fff;border-radius:22px;padding:22px;text-align:left;border:2px solid transparent}
+.arch[aria-pressed="true"]{border-color:var(--blue)}
+.arch .l{font-size:13px;color:var(--mute)}
+.arch .n{font-size:22px;font-weight:600;margin-top:2px}
+.qa{margin-top:14px}
+.qa div{padding:12px 0;border-top:1px solid var(--line);font-size:15px;line-height:1.5;display:grid;grid-template-columns:220px 1fr;gap:14px}
+.qa div b{font-weight:600}
+.chain{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:14px;margin-bottom:16px}
+.chain span{background:var(--bg);border-radius:10px;padding:8px 12px}
+.chk li{list-style:none;display:grid;grid-template-columns:220px 1fr;gap:12px;padding:10px 0;border-top:1px solid var(--line);font-size:14px;line-height:1.45}
+.chk li b{font-weight:600}
+.st-ok{color:#0B4A8F}.st-warn{color:var(--ink);font-weight:600}.st-need{color:var(--mute)}
+.wi{display:flex;flex-wrap:wrap;gap:8px}
+.wi-out{margin-top:14px;font-size:15px;line-height:1.6}
+.wi-out ol{margin-left:20px}
+#report{white-space:pre-wrap;font-family:var(--font);font-size:14px;line-height:1.6;background:var(--bg);border-radius:14px;padding:16px;margin-top:14px;display:none}
+.modal{position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.35);display:none;align-items:center;justify-content:center;padding:20px}
+.modal.open{display:flex}
+.modal .box{background:#fff;border-radius:22px;width:min(640px,100%);max-height:90vh;overflow:auto;padding:26px}
+.modal h3{font-size:22px;font-weight:600;margin-bottom:14px}
+.filebtn{display:flex;align-items:center;gap:10px;font-size:14px;margin-top:8px}
+.filebtn input{font-size:13px}
+@media (min-width:901px){.tabs{padding-right:340px}}
+@media (max-width:900px){
+  body.mode-lab .modebar{top:auto;bottom:max(14px,env(safe-area-inset-bottom))}
+  .calcgrid,.schemebox,.cols2{grid-template-columns:1fr}
+  .arch3{grid-template-columns:1fr}
+  .pain{grid-template-columns:1fr}
+  .pain .hh{display:none}
+  .pain div:nth-child(4n+1){font-weight:600;border-top:1px solid var(--line2)}
+  .pain div:not(:nth-child(4n+1)){border-top:0;padding-top:0}
+  .kpis{grid-template-columns:1fr 1fr}
+  .qa div,.chk li{grid-template-columns:1fr;gap:4px}
+  .meth{grid-template-columns:1fr}.meth div:nth-child(odd){padding-bottom:0}.meth div:nth-child(even){border-top:0;padding-top:2px}
+  .lab-hd h1{font-size:32px}
+}
+@media (max-width:600px){
+  .lab-in{padding:72px 18px 130px}
+  .tabs{margin:22px -18px 0;padding:10px 18px}
+  .ticks{font-size:14px!important}
+  .f .u,.badge,details.methd>summary .more,.meth~div span,.srcleg span{font-size:14px!important}
+  .lab-hd p,section.blk>.d,.empty-msg,.diag li,.qa div,.wi-out,.meth div{font-size:16px}
+  .f label,.sub-h,.chk li,.pain,.flag,.illus,.srcleg,.legend,.model-tag,.whybox,.state span,.kpis span{font-size:14px!important}
+  .f .inp{height:48px}
+  .pbtn,.chip,.tabs a,.why{font-size:16px;min-height:44px}
+  .pbtn{height:auto;padding:10px 18px}
+  .chip{padding:10px 16px}
+  .tabs a{display:inline-flex;align-items:center;padding:0 14px}
+  .why{display:inline-flex;align-items:center;font-size:14px;border-bottom:0;text-decoration:underline dotted}
+  table.res{font-size:15px}
+  table.res td{padding:12px 6px}
+  .kpis b{font-size:22px}
+  .state b{font-size:19px}
+  .acts-row{gap:10px}
+  .sheet a.ch{min-height:56px}
+  .sheet a.ch b{font-size:17px}.sheet a.ch span{font-size:14px}
+  .modebar button{font-size:14px;min-height:40px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important}
+  .pulse.act{opacity:0}
+}
+
+/* ============================== PRINT ============================== */
+@page{size:A4 landscape;margin:0}
+@media print{
+  html,body{overflow:visible;height:auto;background:#fff}
+  .chrome,.counter,#notes,.hint,.modal,.sheet{display:none!important}
+  body.print-deck #lab{display:none!important}
+  body.print-deck #deckWrap{position:static;display:block;background:#fff}
+  body.print-deck #stage{position:static;transform:none!important;zoom:.548;height:auto;overflow:visible;background:#fff}
+  body.print-deck .slide{position:relative;opacity:1!important;visibility:visible!important;transform:none!important;width:1920px;height:1080px;page-break-after:always;break-after:page}
+  body.print-deck .detail{display:none!important}
+  body.print-lab #deckWrap{display:none!important}
+  body.print-lab #lab{position:static;display:block;overflow:visible}
+  body.print-lab .tabs{display:none}
+  body.print-report #deckWrap{display:none!important}
+  body.print-report #lab{position:static;display:block;overflow:visible}
+  body.print-report #lab .lab-in>*{display:none}
+  body.print-report #lab .lab-in>#q{display:block;margin:0}
+  body.print-report #q>h2,body.print-report #q>.d{display:none}
+  body.print-report #q .panel>*:not(#report){display:none}
+  body.print-report #report{display:block!important;background:#fff;font-size:12pt}
+}
+</style>
+</head>
+<body class="mode-deck">
+
+<!-- ============================== ICONS ============================== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+<symbol id="i-sun" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="16" cy="16" r="6"/><path d="M16 3v4M16 25v4M3 16h4M25 16h4M6.8 6.8l2.8 2.8M22.4 22.4l2.8 2.8M6.8 25.2l2.8-2.8M22.4 9.6l2.8-2.8"/></symbol>
+<symbol id="i-wind" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 14v16M16 14l-9-6M16 14l9-6M16 14V3"/><circle cx="16" cy="14" r="1.6"/></symbol>
+<symbol id="i-gen" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="4" y="9" width="22" height="16" rx="3"/><path d="M10 9V6h8v3M26 14h3v6h-3M8 25v3M22 25v3"/><path d="M11 14h5v5h-5z"/></symbol>
+<symbol id="i-grid" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M16 3l-7 26M16 3l7 26M10 10h12M8 17h16M11 10l10 7M21 10L11 17"/></symbol>
+<symbol id="i-inv" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="7" y="4" width="18" height="24" rx="3"/><path d="M11 16c1.5-3 3-3 5 0s3.5 3 5 0"/></symbol>
+<symbol id="i-bat" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="9" width="22" height="14" rx="3"/><path d="M28 13v6" stroke-linecap="round"/><path d="M8 13v6M12 13v6M16 13v6" stroke-linecap="round"/></symbol>
+<symbol id="i-house" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 14L16 5l12 9v14H4z"/><path d="M9 19h5v9M19 19h5v4h-5z"/></symbol>
+<symbol id="i-ems" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="5" width="24" height="17" rx="2.5"/><path d="M12 27h8M16 22v5M10 17v-3M15 17v-6M20 17v-8"/></symbol>
+<symbol id="i-cloud" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M9 24h15a5 5 0 0 0 0-10 7 7 0 0 0-13.5-1.5A5.5 5.5 0 0 0 9 24z"/></symbol>
+<symbol id="i-stat" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="4" y="10" width="24" height="16" rx="3"/><path d="M11 10V6h10v4M9 18h4M11 16v4M19 18h4" stroke-linecap="round"/></symbol>
+<symbol id="i-bulb" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 18a7 7 0 1 1 10 0c-1.5 1.5-2 3-2 5h-6c0-2-.5-3.5-2-5zM13 27h6"/></symbol>
+<symbol id="i-lap" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="7" y="7" width="18" height="13" rx="2"/><path d="M3 25h26l-2-5H5z"/></symbol>
+<symbol id="i-can" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M8 7h12l5 5v15a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V8z"/><path d="M12 4h6M14 16l3 3-3 3" stroke-linecap="round"/></symbol>
+<symbol id="i-clock" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="16" cy="16" r="12"/><path d="M16 9v7l5 3"/></symbol>
+<symbol id="i-rub" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="16" cy="16" r="12"/><path d="M13 23V9h5a3.5 3.5 0 0 1 0 7h-7M11 20h7"/></symbol>
+<symbol id="i-wrench" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M20 4a7 7 0 0 0-6.5 9.5L4 23l5 5 9.5-9.5A7 7 0 0 0 28 12l-4 4-5-1-1-5 4-4z"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 64 32" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16h54M46 5l12 11-12 11"/></symbol>
+<symbol id="i-phone" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M9 4h4l2 7-3 2a15 15 0 0 0 7 7l2-3 7 2v4a3 3 0 0 1-3 3C14 26 6 18 6 7a3 3 0 0 1 3-3z"/></symbol>
+<symbol id="i-chat" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M16 5c6.6 0 12 4.5 12 10s-5.4 10-12 10c-1.6 0-3.1-.3-4.5-.7L6 27l1.6-5A9.4 9.4 0 0 1 4 15C4 9.5 9.4 5 16 5z"/></symbol>
+<symbol id="i-plane" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M28 5L4 14l8 3 3 9 4-6 6 4z"/><path d="M12 17l16-12"/></symbol>
+<symbol id="i-msg" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="4" y="6" width="24" height="18" rx="5"/><path d="M11 24l-3 4 7-4"/><path d="M11 13h10M11 17h6" stroke-linecap="round"/></symbol>
+<symbol id="i-mail" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="4" y="7" width="24" height="18" rx="3"/><path d="M5 9l11 8 11-8"/></symbol>
+<symbol id="i-gear" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3.2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></symbol>
+<marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#0A84FF"/></marker>
+<marker id="ahg" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#C9DDF5"/></marker>
+<marker id="aha" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#E09A1A"/></marker>
+</defs>
+</svg>
+
+<!-- ============================== CHROME ============================== -->
+<div class="chrome modebar" role="group" aria-label="Режим">
+  <button id="mDeck" aria-pressed="true">Презентация</button>
+  <button id="mLab" aria-pressed="false">GEO LAB</button>
+  <button id="mCon">Контакты</button>
+  <button class="ico" id="mSet" aria-label="Настройки" title="Настройки"><svg width="18" height="18"><use href="#i-gear"/></svg></button>
+</div>
+<nav class="chrome dots" id="dots" aria-label="Экраны"></nav>
+<div class="counter" id="counter"></div>
+<div class="hint" id="hint"></div>
+
+<!-- ============================== DECK ============================== -->
+<div id="deckWrap">
+<div id="stage">
+
+<!-- 01 -->
+<section class="slide dark s1" data-n="1">
+  <div class="bgimg" style="background-image:url(s1.jpg)"></div>
+  <div class="fade-left"></div><div class="fade-top"></div>
+  <div class="logo-slot" data-logo="light"></div>
+  <div class="title">
+    <h1>Энергия там, где заканчивается инфраструктура</h1>
+    <p>Автономные гибридные энергосистемы для геологоразведки и полевых экспедиций</p>
+    <div class="val">Меньше моточасов. Меньше топлива. Больше автономности.</div>
+  </div>
+  <div class="speaker"><div data-cfg="speaker"></div><div><span data-cfg="forum"></span> · <span data-cfg="date"></span></div></div>
+</section>
+
+<!-- 02 -->
+<section class="slide dark s2" data-n="2">
+  <div class="bgimg" style="background-image:url(s2.jpg)"></div>
+  <div class="fade-left"></div><div class="fade-top"></div>
+  <div class="logo-slot" data-logo="light"></div>
+  <div class="title">
+    <h2>Энергия в поле — это логистика</h2>
+    <div class="formula" id="formula">
+      <span class="t">Топливо</span><span class="op">+</span>
+      <span class="t">Доставка</span><span class="op">+</span>
+      <span class="t">Хранение</span><span class="op">+</span>
+      <span class="t">Обслуживание ДГУ</span><span class="op">+</span>
+      <span class="t">Риск простоя</span><span class="op">=</span>
+      <span class="res">1 кВт·ч в поле</span>
+    </div>
+    <div class="sub">В удалённой точке цена топлива — это не цена литра на АЗС</div>
+  </div>
+</section>
+
+<!-- 03 -->
+<section class="slide s3" data-n="3">
+  <div class="logo-slot" data-logo="dark"></div>
+  <div class="pad"><h2 class="h">Генератор выбирают под пик.<span class="l2">А пик не длится 24 часа</span></h2></div>
+  <div class="chartbox" id="s3chart"><div class="tip" id="s3tip"></div></div>
+  <div class="stats" id="s3stats"></div>
+  <div class="concl">ДГУ рассчитан на максимум. Работает — даже когда максимум не нужен.</div>
+</section>
+
+<!-- 04 -->
+<section class="slide s4" data-n="4">
+  <div class="logo-slot" data-logo="dark"></div>
+  <div class="pad"><h2 class="h">Мы не предлагаем убрать генератор.<span class="l2">Мы сокращаем его моточасы.</span></h2></div>
+  <div class="legend"><span><i style="background:var(--amber)"></i>ДГУ работает</span><span><i style="background:var(--blue)"></i>Работает накопитель</span></div>
+  <div class="bars" id="bars">
+    <div class="barrow"><div class="lbl">Сейчас</div><div class="track" id="trNow"></div><div class="cap">ДГУ → нагрузка · 24 часа</div></div>
+    <div class="barrow"><div class="lbl">Гибрид</div><div class="track" id="trHyb"></div><div class="cap">ДГУ → накопитель → нагрузка</div></div>
+    <div class="axis" id="axis4"><div class="cursor" id="cur4"></div></div>
+  </div>
+  <div class="slider"><input type="range" id="t4" min="0" max="24" step="0.25" value="0" aria-label="Время суток"></div>
+  <div class="readout" id="ro4"></div>
+  <div class="concl">ДГУ работает тогда, когда он действительно нужен. <span class="note">Иллюстрация принципа</span></div>
+</section>
+
+<!-- 05 -->
+<section class="slide s5" data-n="5">
+  <div class="logo-slot" data-logo="dark"></div>
+  <div class="pad"><h2 class="h">Одна система. Несколько источников.<span class="l2">Система сама решает, откуда брать энергию.</span></h2></div>
+  <div class="modes seg" id="modes5" role="group" aria-label="Режим работы"></div>
+  <svg class="diag" id="diag5" viewBox="0 0 1640 520"></svg>
+  <div class="caption" id="cap5"></div>
+</section>
+
+<!-- 06 -->
+<section class="slide s6" data-n="6">
+  <div class="logo-slot" data-logo="dark"></div>
+  <div class="pad"><h2 class="h">От одного геолога до промышленного объекта.<span class="l2">Одна логика — разный масштаб.</span></h2></div>
+  <div class="cards4" id="cards6"></div>
+  <div class="foot">Каждая система рассчитывается под нагрузку, климат и логистику объекта.</div>
+  <div class="detail" id="det6"></div>
+</section>
+
+<!-- 07 -->
+<section class="slide dark s7" data-n="7">
+  <div class="bgimg" style="background-image:url(s7.jpg)"></div>
+  <div class="logo-slot" data-logo="light"></div>
+</section>
+
+<!-- 08 -->
+<section class="slide s8" data-n="8">
+  <div class="logo-slot" data-logo="dark"></div>
+  <div class="pad"><h2 class="h">А теперь — экономика.</h2><div class="scen" id="scen8"></div></div>
+  <div class="cmp">
+    <div class="card"><h3>Только ДГУ</h3><div class="sub">Генератор работает круглосуточно</div><div class="rule" style="background:var(--amber)"></div><div id="colA"></div></div>
+    <div class="card"><h3>Гибрид</h3><div class="sub" id="subB">ДГУ + накопитель + солнце + EMS</div><div class="rule" style="background:var(--blue)"></div><div id="colB"></div></div>
+  </div>
+  <div class="tot" id="tot8"></div>
+  <div class="fn"><span>Предварительная расчётная модель. Исходные данные и методика — в GEO LAB.</span><span id="flag8"></span></div>
+  <button class="btn small open" data-go="calc">Открыть калькулятор</button>
+</section>
+
+<!-- 09 -->
+<section class="slide s9" data-n="9">
+  <div class="logo-slot" data-logo="dark"></div>
+  <div class="pad"><h2 class="h">XWATUM — не аккумулятор.<span class="l2">XWATUM — система.</span></h2></div>
+  <div class="comp"><h4>Компоненты</h4><div class="grid">
+    <div class="it"><svg><use href="#i-bat"/></svg>Накопитель</div>
+    <div class="it"><svg><use href="#i-inv"/></svg>Гибридный инвертор</div>
+    <div class="it"><svg><use href="#i-gen"/></svg>ДГУ</div>
+    <div class="it"><svg><use href="#i-sun"/></svg>Солнечные панели</div>
+    <div class="it"><svg><use href="#i-ems"/></svg>EMS</div>
+  </div></div>
+  <svg class="arrow" width="72" height="36" style="color:var(--blue)"><use href="#i-arrow"/></svg>
+  <div class="sys"><div class="t1">Продукт XWATUM</div><div class="t2">Энергосистема, рассчитанная под ваш объект</div>
+    <svg id="diag9" viewBox="0 0 820 300" style="position:absolute;left:30px;top:116px;width:820px;height:300px"></svg>
+  </div>
+  <div class="proc">
+    <div><b>01</b><span>Нагрузка</span><em>Аудит потребителей</em></div>
+    <div><b>02</b><span>Профиль</span><em>Замер по часам</em></div>
+    <div><b>03</b><span>Экономика</span><em>Расчёт окупаемости</em></div>
+    <div><b>04</b><span>Проект</span><em>Подбор и схема</em></div>
+    <div><b>05</b><span>Запуск</span><em>Поставка и пусконаладка</em></div>
+    <div><b>06</b><span>Мониторинг</span><em>Удалённый контроль</em></div>
+  </div>
+</section>
+
+<!-- 10 -->
+<section class="slide s10" data-n="10">
+  <div class="logo-slot" data-logo="dark"></div>
+  <div class="pad"><h2 class="h" id="h10"></h2></div>
+  <div class="two">
+    <div class="card"><h3 style="color:var(--amber)">Пока работает ДГУ</h3><svg id="d10a" viewBox="0 0 760 250" style="width:100%;height:250px;margin-top:10px"></svg><div class="foot">ДГУ работает в экономичном режиме и запасает энергию</div></div>
+    <div class="card"><h3 style="color:var(--blue)">Ночью — тишина</h3><svg id="d10b" viewBox="0 0 760 250" style="width:100%;height:250px;margin-top:10px"></svg><div class="foot">Лагерь работает от накопленной энергии</div></div>
+  </div>
+  <div class="modrow">
+    <div class="ttl">Масштабируется модулями</div>
+    <div class="stack" id="stack10"></div>
+    <div class="ctl">
+      <div class="r"><button id="mMinus" aria-label="Убрать модуль">−</button><output id="mCnt">1</output><button id="mPlus" aria-label="Добавить модуль">+</button><span>модули накопителя</span></div>
+      <div class="r"><button id="iMinus" aria-label="Убрать инвертор">−</button><output id="iCnt">1</output><button id="iPlus" aria-label="Добавить инвертор">+</button><span>инверторы в параллель</span></div>
+    </div>
+    <div class="modinfo" id="modinfo"></div>
+  </div>
+  <div class="bottom" id="b10"></div>
+</section>
+
+<!-- 11 -->
+<section class="slide dark s11" data-n="11">
+  <div class="bgimg" style="background-image:url(s11.jpg)"></div>
+  <div class="logo-slot" data-logo="light"></div>
+  <div class="qrslot" id="qrslot"></div>
+  <div class="qrcap"><b>Рассчитать свой объект</b><span id="qrcap2">Наведите камеру — откроется предварительный расчёт</span></div>
+  <div class="acts"><button class="btn" data-contact="1">Связаться</button></div>
+</section>
+
+</div>
+</div>
+
+<!-- notes -->
+<div id="notes" aria-live="polite"><div class="hd"><span id="nNo"></span><span class="timer" id="timer">00:00 · T — старт/пауза</span></div><div id="nTx"></div></div>
+
+<!-- ============================== LAB ============================== -->
+<main id="lab">
+<div class="lab-in">
+  <header class="lab-hd">
+    <h1>Опишите объект. Система покажет, где теряется энергия.</h1>
+    <p>Презентация объясняет принцип. GEO LAB проверяет его на данных вашего объекта. Данные хранятся только в этом браузере и никуда не отправляются.</p>
+  </header>
+  <section class="blk" id="meth" style="margin-top:28px">
+    <div class="panel" style="margin-top:0">
+      <details class="methd"><summary><b style="font-size:17px">Методика и исходные данные</b><span style="font-size:14px;color:var(--mute);flex:1;min-width:260px">XWATUM не обещает экономию заранее. Сначала моделируем объект — затем показываем результат.</span><span class="more">Подробнее</span></summary>
+      <div class="meth" style="margin-top:12px">
+        <div><b>Профиль нагрузки</b></div><div>Замер на объекте или данные клиента: средняя, пиковая и ночная нагрузка.</div>
+        <div><b>ДГУ</b></div><div>Паспортная кривая расхода конкретной модели: точки 25–50–75–100 %. Без неё расчёт не выполняется.</div>
+        <div><b>Топливо</b></div><div>Фактическая цена литра на объекте, доставка отдельно.</div>
+        <div><b>Солнце</b></div><div>Регион, сезон и удельная выработка для этой широты.</div>
+        <div><b>Накопитель</b></div><div>Паспортные параметры производителя: ёмкость, глубина разряда, КПД, температурный диапазон.</div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:18px;margin-top:14px;font-size:13px;color:var(--mute)">
+        <span><span class="badge b-fact" style="margin-left:0">Факт</span> введено клиентом или взято из паспорта</span>
+        <span><span class="badge b-calc" style="margin-left:0">Расчёт</span> вычислено из этих данных</span>
+        <span><span class="badge b-ill" style="margin-left:0">Иллюстрация</span> демонстрационный сценарий, не данные объекта</span>
+      </div></details>
+    </div>
+  </section>
+  <nav class="tabs">
+    <a href="#obj">01 Объект</a><a href="#dx">02 Диагностика</a><a href="#sch">03 Система</a><a href="#calc">04 Экономика</a><a href="#cold">05 Холод и нештатные ситуации</a><a href="#q">06 Расчёт объекта</a><a href="#meth">Методика</a><a href="#" id="expandAll">Показать всё</a>
+  </nav>
+
+  <section class="blk" id="obj">
+    <h2><span class="stepn">01</span>Расскажите об объекте</h2><div class="d">Заполните то, что известно, остальное можно оставить пустым. Следующие шаги откроются по мере ввода.</div>
+    <div class="panel">
+      <div class="sub-h" style="margin-top:0">Масштаб</div>
+      <div class="chips" id="scaleChips"></div>
+      <div class="sub-h">Условия</div>
+      <div class="fgrid" id="objFields"></div>
+    </div>
+  </section>
+
+  <section class="blk" id="dx">
+    <h2><span class="stepn">02</span>Диагностика объекта</h2><div class="d">Диагностика строится только из введённых параметров. Нет параметра — нет вывода.</div>
+    <div class="cols2">
+      <div class="panel diag"><h3>Что происходит сейчас <span class="badge" id="dxBadge"></span></h3><div id="dxNow"></div></div>
+      <div class="panel diag"><h3>Что имеет смысл проверить</h3><div id="dxCheck"></div></div>
+    </div>
+    <details class="panel methd"><summary><b style="font-size:16px" id="painTitle">Типичные трудности и как они решаются сегодня</b><span class="more">Показать</span></summary><div class="pain" id="painTbl" style="margin-top:12px"></div></details>
+  </section>
+
+  <section class="blk" id="sch">
+    <h2><span class="stepn">03</span>Как может работать система</h2><div class="d">Включайте источники — схема перестраивается. Двигайте время — видно, откуда в этот час берётся энергия.</div>
+    <div class="panel schemebox">
+      <div>
+        <div class="toggles" id="srcToggles"></div>
+        <svg id="labDiag" viewBox="0 0 900 470" style="width:100%;height:auto"></svg>
+        <input type="range" id="tLab" min="0" max="23" step="1" value="12" aria-label="Час суток" style="margin-top:14px">
+        <div class="ticks" style="display:flex;justify-content:space-between;font-size:12px;color:var(--mute);margin-top:6px"><span>00:00</span><span>06:00</span><span>12:00</span><span>18:00</span><span>24:00</span></div>
+      </div>
+      <div>
+        <div class="state" id="simState"></div>
+        <div class="illus" id="simNote"></div><div style="margin-top:8px"><span class="badge" id="simBadge" style="margin-left:0"></span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk" id="arch">
+    <h2><span class="stepn"></span>Сравнить архитектуры</h2><div class="d">Как ведут себя три варианта в разных ситуациях.</div>
+    <div class="arch3" id="arch3" style="margin-top:18px"></div>
+    <div class="panel qa" id="archQA"></div>
+  </section>
+
+  <section class="blk" id="calc">
+    <h2><span class="stepn">04</span>Экономика</h2><div class="d">Сценарий A — только ДГУ. B — ДГУ + накопитель. C — ДГУ + накопитель + солнце. Расчёт почасовой, по алгоритму EMS. <span class="model-tag">Предварительная расчётная модель</span></div>
+    <div class="calcgrid">
+      <div class="panel calc-in" id="calcIn"></div>
+      <div>
+        <div class="panel" id="calcOut"></div>
+        <div class="panel">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px"><b style="font-size:16px">Типовые сутки <span class="badge" id="chBadge"></span></b><div class="seg" id="chSeg" style="transform:scale(.8);transform-origin:right"></div></div>
+          <div class="chart24" id="chart24"><div class="tip" id="tip24"></div></div>
+          <div class="legend" style="font-size:12px;margin-top:8px;flex-wrap:wrap;gap:14px"><span><i style="background:#1D1D1F;height:3px"></i>Нагрузка</span><span><i style="background:var(--amber)"></i>ДГУ</span><span><i style="background:rgba(10,132,255,.35)"></i>Солнце</span><span><i style="background:var(--blue);height:3px"></i>SOC накопителя</span></div>
+        </div>
+        <div class="panel"><details><summary style="cursor:pointer;font-weight:600;font-size:15px">Как считаем</summary><div style="font-size:14px;line-height:1.6;margin-top:10px;color:var(--ink)" id="method"></div></details></div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="blk" id="cold">
+    <h2><span class="stepn">05</span>Работа при низких температурах</h2><div class="d">Разделяем три разные температуры: окружающей среды, разряда и заряда батареи. Совместимость оборудования подтверждается только паспортом.</div>
+    <div class="panel">
+      <div class="chain"><span>Температура среды</span>→<span>Температура батареи</span>→<span>Разрешение или ограничение заряда</span>→<span>Подогрев</span>→<span>Работа системы</span></div>
+      <div class="fgrid" id="coldFields"></div>
+      <ul class="chk" id="coldChk" style="margin-top:16px"></ul>
+    </div>
+  </section>
+
+  <section class="blk" id="wi">
+    <h2><span class="stepn"></span>Что если?</h2><div class="d">Инженерная реакция гибридной системы на нештатные ситуации.</div>
+    <div class="panel"><div class="wi" id="wiBtns"></div><div class="wi-out" id="wiOut"></div></div>
+  </section>
+
+  <section class="blk" id="q">
+    <h2><span class="stepn">06</span>Рассчитать мой объект</h2><div class="d">Опросный лист для инженерного расчёта. Поля частично заполняются из данных выше. Кнопка формирует текст — его можно скопировать, распечатать или сохранить в PDF.</div>
+    <div class="panel">
+      <div class="fgrid" id="qFields"></div>
+      <div class="acts-row" style="margin-top:16px"><button class="pbtn blue" id="qSend">Отправить данные специалисту XWATUM</button><button class="pbtn pri" id="qGen">Сформировать исходные данные</button><button class="pbtn" id="qCopy">Копировать</button><button class="pbtn" id="qPrint">Печать / PDF</button></div>
+      <div id="report"></div>
+    </div>
+  </section>
+
+  <div style="margin-top:60px;font-size:13px;color:var(--mute);line-height:1.6">XWATUM — интегратор интеллектуальных энергосистем для работы вдали от инфраструктуры. Оборудование можно купить. Эффективность нужно спроектировать.</div>
+</div>
+</main>
+
+<!-- contacts -->
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="shH">
+  <div class="box"><h3 id="shH"></h3><div class="sub" id="shSub"></div><div class="list" id="shList"></div><button class="close" id="shClose">Закрыть</button></div>
+</div>
+
+<!-- settings -->
+<div class="modal" id="setModal" role="dialog" aria-modal="true" aria-labelledby="setH">
+  <div class="box">
+    <h3 id="setH">Настройки презентации</h3>
+    <div id="ready" style="margin-bottom:14px"></div>
+    <div class="fgrid" id="setFields" style="grid-template-columns:1fr 1fr"></div>
+    <div class="sub-h">Логотип и QR</div>
+    <div class="filebtn">Логотип для тёмных слайдов <input type="file" accept="image/*" data-img="logoLight"></div>
+    <div class="filebtn">Логотип для светлых слайдов <input type="file" accept="image/*" data-img="logoDark"></div>
+    <div class="filebtn">QR-код (готовая картинка, заменяет автоматический) <input type="file" accept="image/*" data-img="qr"></div>
+    <div class="acts-row" style="margin-top:18px"><button class="pbtn pri" id="setClose">Готово</button><button class="pbtn" id="setClearImg">Удалить логотипы и QR</button></div>
+    <p style="font-size:12px;color:var(--mute);margin-top:12px;line-height:1.5">Настройки сохраняются в этом браузере. Клавиши: ← → пробел — листать · F — полный экран · N — заметки · T — таймер · L — GEO LAB · Esc — выход.</p>
+  </div>
+</div>
+
+<script>
+/* =====================================================================
+   XWATUM · Презентация + GEO LAB
+   Разделы кода: CONFIG · DATA · STATE · UTIL · PRESENTATION · SLIDES ·
+                 UI (LAB) · CALCULATOR · SIMULATION · CHARTS · SETTINGS
+   ===================================================================== */
+'use strict';
+/* QR Code encoder — Copyright (c) 2009 Kazuhiko Arase, MIT license. «QR Code» is a registered trademark of DENSO WAVE INCORPORATED. */
+const QRLIB = (function () { const M = {}; const require = n => M[n];
+(function (module) {
+module.exports = {
+    MODE_NUMBER :       1 << 0,
+    MODE_ALPHA_NUM :    1 << 1,
+    MODE_8BIT_BYTE :    1 << 2,
+    MODE_KANJI :        1 << 3
+};
+
+M['./QRMode'] = module.exports; })({});
+(function (module) {
+module.exports = {
+	L : 1,
+	M : 0,
+	Q : 3,
+	H : 2
+};
+
+
+M['./QRErrorCorrectLevel'] = module.exports; })({});
+(function (module) {
+module.exports = {
+	PATTERN000 : 0,
+	PATTERN001 : 1,
+	PATTERN010 : 2,
+	PATTERN011 : 3,
+	PATTERN100 : 4,
+	PATTERN101 : 5,
+	PATTERN110 : 6,
+	PATTERN111 : 7
+};
+
+M['./QRMaskPattern'] = module.exports; })({});
+(function (module) {
+var QRMath = {
+
+	glog : function(n) {
+	
+		if (n < 1) {
+			throw new Error("glog(" + n + ")");
+		}
+		
+		return QRMath.LOG_TABLE[n];
+	},
+	
+	gexp : function(n) {
+	
+		while (n < 0) {
+			n += 255;
+		}
+	
+		while (n >= 256) {
+			n -= 255;
+		}
+	
+		return QRMath.EXP_TABLE[n];
+	},
+	
+	EXP_TABLE : new Array(256),
+	
+	LOG_TABLE : new Array(256)
+
+};
+	
+for (var i = 0; i < 8; i++) {
+	QRMath.EXP_TABLE[i] = 1 << i;
+}
+for (var i = 8; i < 256; i++) {
+	QRMath.EXP_TABLE[i] = QRMath.EXP_TABLE[i - 4]
+		^ QRMath.EXP_TABLE[i - 5]
+		^ QRMath.EXP_TABLE[i - 6]
+		^ QRMath.EXP_TABLE[i - 8];
+}
+for (var i = 0; i < 255; i++) {
+	QRMath.LOG_TABLE[QRMath.EXP_TABLE[i] ] = i;
+}
+
+module.exports = QRMath;
+
+M['./QRMath'] = module.exports; })({});
+(function (module) {
+var QRMath = require('./QRMath');
+
+function QRPolynomial(num, shift) {
+	if (num.length === undefined) {
+		throw new Error(num.length + "/" + shift);
+	}
+
+	var offset = 0;
+
+	while (offset < num.length && num[offset] === 0) {
+		offset++;
+	}
+
+	this.num = new Array(num.length - offset + shift);
+	for (var i = 0; i < num.length - offset; i++) {
+		this.num[i] = num[i + offset];
+	}
+}
+
+QRPolynomial.prototype = {
+
+	get : function(index) {
+		return this.num[index];
+	},
+	
+	getLength : function() {
+		return this.num.length;
+	},
+	
+	multiply : function(e) {
+	
+		var num = new Array(this.getLength() + e.getLength() - 1);
+	
+		for (var i = 0; i < this.getLength(); i++) {
+			for (var j = 0; j < e.getLength(); j++) {
+				num[i + j] ^= QRMath.gexp(QRMath.glog(this.get(i) ) + QRMath.glog(e.get(j) ) );
+			}
+		}
+	
+		return new QRPolynomial(num, 0);
+	},
+	
+	mod : function(e) {
+	
+		if (this.getLength() - e.getLength() < 0) {
+			return this;
+		}
+	
+		var ratio = QRMath.glog(this.get(0) ) - QRMath.glog(e.get(0) );
+	
+		var num = new Array(this.getLength() );
+		
+		for (var i = 0; i < this.getLength(); i++) {
+			num[i] = this.get(i);
+		}
+		
+		for (var x = 0; x < e.getLength(); x++) {
+			num[x] ^= QRMath.gexp(QRMath.glog(e.get(x) ) + ratio);
+		}
+	
+		// recursive call
+		return new QRPolynomial(num, 0).mod(e);
+	}
+};
+
+module.exports = QRPolynomial;
+
+M['./QRPolynomial'] = module.exports; })({});
+(function (module) {
+var QRMode = require('./QRMode');
+
+function QR8bitByte(data) {
+	this.mode = QRMode.MODE_8BIT_BYTE;
+	this.data = data;
+}
+
+QR8bitByte.prototype = {
+
+	getLength : function() {
+		return this.data.length;
+	},
+	
+	write : function(buffer) {
+		for (var i = 0; i < this.data.length; i++) {
+			// not JIS ...
+			buffer.put(this.data.charCodeAt(i), 8);
+		}
+	}
+};
+
+module.exports = QR8bitByte;
+
+M['./QR8bitByte'] = module.exports; })({});
+(function (module) {
+function QRBitBuffer() {
+	this.buffer = [];
+	this.length = 0;
+}
+
+QRBitBuffer.prototype = {
+
+	get : function(index) {
+		var bufIndex = Math.floor(index / 8);
+		return ( (this.buffer[bufIndex] >>> (7 - index % 8) ) & 1) == 1;
+	},
+	
+	put : function(num, length) {
+		for (var i = 0; i < length; i++) {
+			this.putBit( ( (num >>> (length - i - 1) ) & 1) == 1);
+		}
+	},
+	
+	getLengthInBits : function() {
+		return this.length;
+	},
+	
+	putBit : function(bit) {
+	
+		var bufIndex = Math.floor(this.length / 8);
+		if (this.buffer.length <= bufIndex) {
+			this.buffer.push(0);
+		}
+	
+		if (bit) {
+			this.buffer[bufIndex] |= (0x80 >>> (this.length % 8) );
+		}
+	
+		this.length++;
+	}
+};
+
+module.exports = QRBitBuffer;
+
+M['./QRBitBuffer'] = module.exports; })({});
+(function (module) {
+var QRErrorCorrectLevel = require('./QRErrorCorrectLevel');
+
+function QRRSBlock(totalCount, dataCount) {
+	this.totalCount = totalCount;
+	this.dataCount  = dataCount;
+}
+
+QRRSBlock.RS_BLOCK_TABLE = [
+
+	// L
+	// M
+	// Q
+	// H
+
+	// 1
+	[1, 26, 19],
+	[1, 26, 16],
+	[1, 26, 13],
+	[1, 26, 9],
+	
+	// 2
+	[1, 44, 34],
+	[1, 44, 28],
+	[1, 44, 22],
+	[1, 44, 16],
+
+	// 3
+	[1, 70, 55],
+	[1, 70, 44],
+	[2, 35, 17],
+	[2, 35, 13],
+
+	// 4		
+	[1, 100, 80],
+	[2, 50, 32],
+	[2, 50, 24],
+	[4, 25, 9],
+	
+	// 5
+	[1, 134, 108],
+	[2, 67, 43],
+	[2, 33, 15, 2, 34, 16],
+	[2, 33, 11, 2, 34, 12],
+	
+	// 6
+	[2, 86, 68],
+	[4, 43, 27],
+	[4, 43, 19],
+	[4, 43, 15],
+	
+	// 7		
+	[2, 98, 78],
+	[4, 49, 31],
+	[2, 32, 14, 4, 33, 15],
+	[4, 39, 13, 1, 40, 14],
+	
+	// 8
+	[2, 121, 97],
+	[2, 60, 38, 2, 61, 39],
+	[4, 40, 18, 2, 41, 19],
+	[4, 40, 14, 2, 41, 15],
+	
+	// 9
+	[2, 146, 116],
+	[3, 58, 36, 2, 59, 37],
+	[4, 36, 16, 4, 37, 17],
+	[4, 36, 12, 4, 37, 13],
+	
+	// 10		
+	[2, 86, 68, 2, 87, 69],
+	[4, 69, 43, 1, 70, 44],
+	[6, 43, 19, 2, 44, 20],
+	[6, 43, 15, 2, 44, 16],
+
+	// 11
+	[4, 101, 81],
+	[1, 80, 50, 4, 81, 51],
+	[4, 50, 22, 4, 51, 23],
+	[3, 36, 12, 8, 37, 13],
+
+	// 12
+	[2, 116, 92, 2, 117, 93],
+	[6, 58, 36, 2, 59, 37],
+	[4, 46, 20, 6, 47, 21],
+	[7, 42, 14, 4, 43, 15],
+
+	// 13
+	[4, 133, 107],
+	[8, 59, 37, 1, 60, 38],
+	[8, 44, 20, 4, 45, 21],
+	[12, 33, 11, 4, 34, 12],
+
+	// 14
+	[3, 145, 115, 1, 146, 116],
+	[4, 64, 40, 5, 65, 41],
+	[11, 36, 16, 5, 37, 17],
+	[11, 36, 12, 5, 37, 13],
+
+	// 15
+	[5, 109, 87, 1, 110, 88],
+	[5, 65, 41, 5, 66, 42],
+	[5, 54, 24, 7, 55, 25],
+	[11, 36, 12],
+
+	// 16
+	[5, 122, 98, 1, 123, 99],
+	[7, 73, 45, 3, 74, 46],
+	[15, 43, 19, 2, 44, 20],
+	[3, 45, 15, 13, 46, 16],
+
+	// 17
+	[1, 135, 107, 5, 136, 108],
+	[10, 74, 46, 1, 75, 47],
+	[1, 50, 22, 15, 51, 23],
+	[2, 42, 14, 17, 43, 15],
+
+	// 18
+	[5, 150, 120, 1, 151, 121],
+	[9, 69, 43, 4, 70, 44],
+	[17, 50, 22, 1, 51, 23],
+	[2, 42, 14, 19, 43, 15],
+
+	// 19
+	[3, 141, 113, 4, 142, 114],
+	[3, 70, 44, 11, 71, 45],
+	[17, 47, 21, 4, 48, 22],
+	[9, 39, 13, 16, 40, 14],
+
+	// 20
+	[3, 135, 107, 5, 136, 108],
+	[3, 67, 41, 13, 68, 42],
+	[15, 54, 24, 5, 55, 25],
+	[15, 43, 15, 10, 44, 16],
+
+	// 21
+	[4, 144, 116, 4, 145, 117],
+	[17, 68, 42],
+	[17, 50, 22, 6, 51, 23],
+	[19, 46, 16, 6, 47, 17],
+
+	// 22
+	[2, 139, 111, 7, 140, 112],
+	[17, 74, 46],
+	[7, 54, 24, 16, 55, 25],
+	[34, 37, 13],
+
+	// 23
+	[4, 151, 121, 5, 152, 122],
+	[4, 75, 47, 14, 76, 48],
+	[11, 54, 24, 14, 55, 25],
+	[16, 45, 15, 14, 46, 16],
+
+	// 24
+	[6, 147, 117, 4, 148, 118],
+	[6, 73, 45, 14, 74, 46],
+	[11, 54, 24, 16, 55, 25],
+	[30, 46, 16, 2, 47, 17],
+
+	// 25
+	[8, 132, 106, 4, 133, 107],
+	[8, 75, 47, 13, 76, 48],
+	[7, 54, 24, 22, 55, 25],
+	[22, 45, 15, 13, 46, 16],
+
+	// 26
+	[10, 142, 114, 2, 143, 115],
+	[19, 74, 46, 4, 75, 47],
+	[28, 50, 22, 6, 51, 23],
+	[33, 46, 16, 4, 47, 17],
+
+	// 27
+	[8, 152, 122, 4, 153, 123],
+	[22, 73, 45, 3, 74, 46],
+	[8, 53, 23, 26, 54, 24],
+	[12, 45, 15, 28, 46, 16],
+
+	// 28
+	[3, 147, 117, 10, 148, 118],
+	[3, 73, 45, 23, 74, 46],
+	[4, 54, 24, 31, 55, 25],
+	[11, 45, 15, 31, 46, 16],
+
+	// 29
+	[7, 146, 116, 7, 147, 117],
+	[21, 73, 45, 7, 74, 46],
+	[1, 53, 23, 37, 54, 24],
+	[19, 45, 15, 26, 46, 16],
+
+	// 30
+	[5, 145, 115, 10, 146, 116],
+	[19, 75, 47, 10, 76, 48],
+	[15, 54, 24, 25, 55, 25],
+	[23, 45, 15, 25, 46, 16],
+
+	// 31
+	[13, 145, 115, 3, 146, 116],
+	[2, 74, 46, 29, 75, 47],
+	[42, 54, 24, 1, 55, 25],
+	[23, 45, 15, 28, 46, 16],
+
+	// 32
+	[17, 145, 115],
+	[10, 74, 46, 23, 75, 47],
+	[10, 54, 24, 35, 55, 25],
+	[19, 45, 15, 35, 46, 16],
+
+	// 33
+	[17, 145, 115, 1, 146, 116],
+	[14, 74, 46, 21, 75, 47],
+	[29, 54, 24, 19, 55, 25],
+	[11, 45, 15, 46, 46, 16],
+
+	// 34
+	[13, 145, 115, 6, 146, 116],
+	[14, 74, 46, 23, 75, 47],
+	[44, 54, 24, 7, 55, 25],
+	[59, 46, 16, 1, 47, 17],
+
+	// 35
+	[12, 151, 121, 7, 152, 122],
+	[12, 75, 47, 26, 76, 48],
+	[39, 54, 24, 14, 55, 25],
+	[22, 45, 15, 41, 46, 16],
+
+	// 36
+	[6, 151, 121, 14, 152, 122],
+	[6, 75, 47, 34, 76, 48],
+	[46, 54, 24, 10, 55, 25],
+	[2, 45, 15, 64, 46, 16],
+
+	// 37
+	[17, 152, 122, 4, 153, 123],
+	[29, 74, 46, 14, 75, 47],
+	[49, 54, 24, 10, 55, 25],
+	[24, 45, 15, 46, 46, 16],
+
+	// 38
+	[4, 152, 122, 18, 153, 123],
+	[13, 74, 46, 32, 75, 47],
+	[48, 54, 24, 14, 55, 25],
+	[42, 45, 15, 32, 46, 16],
+
+	// 39
+	[20, 147, 117, 4, 148, 118],
+	[40, 75, 47, 7, 76, 48],
+	[43, 54, 24, 22, 55, 25],
+	[10, 45, 15, 67, 46, 16],
+
+	// 40
+	[19, 148, 118, 6, 149, 119],
+	[18, 75, 47, 31, 76, 48],
+	[34, 54, 24, 34, 55, 25],
+	[20, 45, 15, 61, 46, 16]
+];
+
+QRRSBlock.getRSBlocks = function(typeNumber, errorCorrectLevel) {
+	
+	var rsBlock = QRRSBlock.getRsBlockTable(typeNumber, errorCorrectLevel);
+	
+	if (rsBlock === undefined) {
+		throw new Error("bad rs block @ typeNumber:" + typeNumber + "/errorCorrectLevel:" + errorCorrectLevel);
+	}
+
+	var length = rsBlock.length / 3;
+	
+	var list = [];
+	
+	for (var i = 0; i < length; i++) {
+
+		var count = rsBlock[i * 3 + 0];
+		var totalCount = rsBlock[i * 3 + 1];
+		var dataCount  = rsBlock[i * 3 + 2];
+
+		for (var j = 0; j < count; j++) {
+			list.push(new QRRSBlock(totalCount, dataCount) );	
+		}
+	}
+	
+	return list;
+};
+
+QRRSBlock.getRsBlockTable = function(typeNumber, errorCorrectLevel) {
+
+	switch(errorCorrectLevel) {
+	case QRErrorCorrectLevel.L :
+		return QRRSBlock.RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 0];
+	case QRErrorCorrectLevel.M :
+		return QRRSBlock.RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 1];
+	case QRErrorCorrectLevel.Q :
+		return QRRSBlock.RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 2];
+	case QRErrorCorrectLevel.H :
+		return QRRSBlock.RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 3];
+	default :
+		return undefined;
+	}
+};
+
+module.exports = QRRSBlock;
+
+M['./QRRSBlock'] = module.exports; })({});
+(function (module) {
+var QRMode = require('./QRMode');
+var QRPolynomial = require('./QRPolynomial');
+var QRMath = require('./QRMath');
+var QRMaskPattern = require('./QRMaskPattern');
+
+var QRUtil = {
+
+    PATTERN_POSITION_TABLE : [
+        [],
+        [6, 18],
+        [6, 22],
+        [6, 26],
+        [6, 30],
+        [6, 34],
+        [6, 22, 38],
+        [6, 24, 42],
+        [6, 26, 46],
+        [6, 28, 50],
+        [6, 30, 54],        
+        [6, 32, 58],
+        [6, 34, 62],
+        [6, 26, 46, 66],
+        [6, 26, 48, 70],
+        [6, 26, 50, 74],
+        [6, 30, 54, 78],
+        [6, 30, 56, 82],
+        [6, 30, 58, 86],
+        [6, 34, 62, 90],
+        [6, 28, 50, 72, 94],
+        [6, 26, 50, 74, 98],
+        [6, 30, 54, 78, 102],
+        [6, 28, 54, 80, 106],
+        [6, 32, 58, 84, 110],
+        [6, 30, 58, 86, 114],
+        [6, 34, 62, 90, 118],
+        [6, 26, 50, 74, 98, 122],
+        [6, 30, 54, 78, 102, 126],
+        [6, 26, 52, 78, 104, 130],
+        [6, 30, 56, 82, 108, 134],
+        [6, 34, 60, 86, 112, 138],
+        [6, 30, 58, 86, 114, 142],
+        [6, 34, 62, 90, 118, 146],
+        [6, 30, 54, 78, 102, 126, 150],
+        [6, 24, 50, 76, 102, 128, 154],
+        [6, 28, 54, 80, 106, 132, 158],
+        [6, 32, 58, 84, 110, 136, 162],
+        [6, 26, 54, 82, 110, 138, 166],
+        [6, 30, 58, 86, 114, 142, 170]
+    ],
+
+    G15 : (1 << 10) | (1 << 8) | (1 << 5) | (1 << 4) | (1 << 2) | (1 << 1) | (1 << 0),
+    G18 : (1 << 12) | (1 << 11) | (1 << 10) | (1 << 9) | (1 << 8) | (1 << 5) | (1 << 2) | (1 << 0),
+    G15_MASK : (1 << 14) | (1 << 12) | (1 << 10)    | (1 << 4) | (1 << 1),
+
+    getBCHTypeInfo : function(data) {
+        var d = data << 10;
+        while (QRUtil.getBCHDigit(d) - QRUtil.getBCHDigit(QRUtil.G15) >= 0) {
+            d ^= (QRUtil.G15 << (QRUtil.getBCHDigit(d) - QRUtil.getBCHDigit(QRUtil.G15) ) );    
+        }
+        return ( (data << 10) | d) ^ QRUtil.G15_MASK;
+    },
+
+    getBCHTypeNumber : function(data) {
+        var d = data << 12;
+        while (QRUtil.getBCHDigit(d) - QRUtil.getBCHDigit(QRUtil.G18) >= 0) {
+            d ^= (QRUtil.G18 << (QRUtil.getBCHDigit(d) - QRUtil.getBCHDigit(QRUtil.G18) ) );    
+        }
+        return (data << 12) | d;
+    },
+
+    getBCHDigit : function(data) {
+
+        var digit = 0;
+
+        while (data !== 0) {
+            digit++;
+            data >>>= 1;
+        }
+
+        return digit;
+    },
+
+    getPatternPosition : function(typeNumber) {
+        return QRUtil.PATTERN_POSITION_TABLE[typeNumber - 1];
+    },
+
+    getMask : function(maskPattern, i, j) {
+        
+        switch (maskPattern) {
+            
+        case QRMaskPattern.PATTERN000 : return (i + j) % 2 === 0;
+        case QRMaskPattern.PATTERN001 : return i % 2 === 0;
+        case QRMaskPattern.PATTERN010 : return j % 3 === 0;
+        case QRMaskPattern.PATTERN011 : return (i + j) % 3 === 0;
+        case QRMaskPattern.PATTERN100 : return (Math.floor(i / 2) + Math.floor(j / 3) ) % 2 === 0;
+        case QRMaskPattern.PATTERN101 : return (i * j) % 2 + (i * j) % 3 === 0;
+        case QRMaskPattern.PATTERN110 : return ( (i * j) % 2 + (i * j) % 3) % 2 === 0;
+        case QRMaskPattern.PATTERN111 : return ( (i * j) % 3 + (i + j) % 2) % 2 === 0;
+
+        default :
+            throw new Error("bad maskPattern:" + maskPattern);
+        }
+    },
+
+    getErrorCorrectPolynomial : function(errorCorrectLength) {
+
+        var a = new QRPolynomial([1], 0);
+
+        for (var i = 0; i < errorCorrectLength; i++) {
+            a = a.multiply(new QRPolynomial([1, QRMath.gexp(i)], 0) );
+        }
+
+        return a;
+    },
+
+    getLengthInBits : function(mode, type) {
+
+        if (1 <= type && type < 10) {
+
+            // 1 - 9
+
+            switch(mode) {
+            case QRMode.MODE_NUMBER     : return 10;
+            case QRMode.MODE_ALPHA_NUM  : return 9;
+            case QRMode.MODE_8BIT_BYTE  : return 8;
+            case QRMode.MODE_KANJI      : return 8;
+            default :
+                throw new Error("mode:" + mode);
+            }
+
+        } else if (type < 27) {
+
+            // 10 - 26
+
+            switch(mode) {
+            case QRMode.MODE_NUMBER     : return 12;
+            case QRMode.MODE_ALPHA_NUM  : return 11;
+            case QRMode.MODE_8BIT_BYTE  : return 16;
+            case QRMode.MODE_KANJI      : return 10;
+            default :
+                throw new Error("mode:" + mode);
+            }
+
+        } else if (type < 41) {
+
+            // 27 - 40
+
+            switch(mode) {
+            case QRMode.MODE_NUMBER     : return 14;
+            case QRMode.MODE_ALPHA_NUM  : return 13;
+            case QRMode.MODE_8BIT_BYTE  : return 16;
+            case QRMode.MODE_KANJI      : return 12;
+            default :
+                throw new Error("mode:" + mode);
+            }
+
+        } else {
+            throw new Error("type:" + type);
+        }
+    },
+
+    getLostPoint : function(qrCode) {
+        
+        var moduleCount = qrCode.getModuleCount();
+        var lostPoint = 0;
+        var row = 0; 
+        var col = 0;
+
+        
+        // LEVEL1
+        
+        for (row = 0; row < moduleCount; row++) {
+
+            for (col = 0; col < moduleCount; col++) {
+
+                var sameCount = 0;
+                var dark = qrCode.isDark(row, col);
+
+                for (var r = -1; r <= 1; r++) {
+
+                    if (row + r < 0 || moduleCount <= row + r) {
+                        continue;
+                    }
+
+                    for (var c = -1; c <= 1; c++) {
+
+                        if (col + c < 0 || moduleCount <= col + c) {
+                            continue;
+                        }
+
+                        if (r === 0 && c === 0) {
+                            continue;
+                        }
+
+                        if (dark === qrCode.isDark(row + r, col + c) ) {
+                            sameCount++;
+                        }
+                    }
+                }
+
+                if (sameCount > 5) {
+                    lostPoint += (3 + sameCount - 5);
+                }
+            }
+        }
+
+        // LEVEL2
+
+        for (row = 0; row < moduleCount - 1; row++) {
+            for (col = 0; col < moduleCount - 1; col++) {
+                var count = 0;
+                if (qrCode.isDark(row,     col    ) ) count++;
+                if (qrCode.isDark(row + 1, col    ) ) count++;
+                if (qrCode.isDark(row,     col + 1) ) count++;
+                if (qrCode.isDark(row + 1, col + 1) ) count++;
+                if (count === 0 || count === 4) {
+                    lostPoint += 3;
+                }
+            }
+        }
+
+        // LEVEL3
+
+        for (row = 0; row < moduleCount; row++) {
+            for (col = 0; col < moduleCount - 6; col++) {
+                if (qrCode.isDark(row, col) && 
+                        !qrCode.isDark(row, col + 1) && 
+                         qrCode.isDark(row, col + 2) && 
+                         qrCode.isDark(row, col + 3) && 
+                         qrCode.isDark(row, col + 4) && 
+                        !qrCode.isDark(row, col + 5) && 
+                         qrCode.isDark(row, col + 6) ) {
+                    lostPoint += 40;
+                }
+            }
+        }
+
+        for (col = 0; col < moduleCount; col++) {
+            for (row = 0; row < moduleCount - 6; row++) {
+                if (qrCode.isDark(row, col) &&
+                        !qrCode.isDark(row + 1, col) &&
+                         qrCode.isDark(row + 2, col) &&
+                         qrCode.isDark(row + 3, col) &&
+                         qrCode.isDark(row + 4, col) &&
+                        !qrCode.isDark(row + 5, col) &&
+                         qrCode.isDark(row + 6, col) ) {
+                    lostPoint += 40;
+                }
+            }
+        }
+
+        // LEVEL4
+        
+        var darkCount = 0;
+
+        for (col = 0; col < moduleCount; col++) {
+            for (row = 0; row < moduleCount; row++) {
+                if (qrCode.isDark(row, col) ) {
+                    darkCount++;
+                }
+            }
+        }
+        
+        var ratio = Math.abs(100 * darkCount / moduleCount / moduleCount - 50) / 5;
+        lostPoint += ratio * 10;
+
+        return lostPoint;       
+    }
+
+};
+
+module.exports = QRUtil;
+
+M['./QRUtil'] = module.exports; })({});
+(function (module) {
+//---------------------------------------------------------------------
+// QRCode for JavaScript
+//
+// Copyright (c) 2009 Kazuhiko Arase
+//
+// URL: http://www.d-project.com/
+//
+// Licensed under the MIT license:
+//   http://www.opensource.org/licenses/mit-license.php
+//
+// The word "QR Code" is registered trademark of 
+// DENSO WAVE INCORPORATED
+//   http://www.denso-wave.com/qrcode/faqpatent-e.html
+//
+//---------------------------------------------------------------------
+// Modified to work in node for this project (and some refactoring)
+//---------------------------------------------------------------------
+
+var QR8bitByte = require('./QR8bitByte');
+var QRUtil = require('./QRUtil');
+var QRPolynomial = require('./QRPolynomial');
+var QRRSBlock = require('./QRRSBlock');
+var QRBitBuffer = require('./QRBitBuffer');
+
+function QRCode(typeNumber, errorCorrectLevel) {
+	this.typeNumber = typeNumber;
+	this.errorCorrectLevel = errorCorrectLevel;
+	this.modules = null;
+	this.moduleCount = 0;
+	this.dataCache = null;
+	this.dataList = [];
+}
+
+QRCode.prototype = {
+	
+	addData : function(data) {
+		var newData = new QR8bitByte(data);
+		this.dataList.push(newData);
+		this.dataCache = null;
+	},
+	
+	isDark : function(row, col) {
+		if (row < 0 || this.moduleCount <= row || col < 0 || this.moduleCount <= col) {
+			throw new Error(row + "," + col);
+		}
+		return this.modules[row][col];
+	},
+
+	getModuleCount : function() {
+		return this.moduleCount;
+	},
+	
+	make : function() {
+		// Calculate automatically typeNumber if provided is < 1
+		if (this.typeNumber < 1 ){
+			var typeNumber = 1;
+			for (typeNumber = 1; typeNumber < 40; typeNumber++) {
+				var rsBlocks = QRRSBlock.getRSBlocks(typeNumber, this.errorCorrectLevel);
+
+				var buffer = new QRBitBuffer();
+				var totalDataCount = 0;
+				for (var i = 0; i < rsBlocks.length; i++) {
+					totalDataCount += rsBlocks[i].dataCount;
+				}
+
+				for (var x = 0; x < this.dataList.length; x++) {
+					var data = this.dataList[x];
+					buffer.put(data.mode, 4);
+					buffer.put(data.getLength(), QRUtil.getLengthInBits(data.mode, typeNumber) );
+					data.write(buffer);
+				}
+				if (buffer.getLengthInBits() <= totalDataCount * 8)
+					break;
+			}
+			this.typeNumber = typeNumber;
+		}
+		this.makeImpl(false, this.getBestMaskPattern() );
+	},
+	
+	makeImpl : function(test, maskPattern) {
+		
+		this.moduleCount = this.typeNumber * 4 + 17;
+		this.modules = new Array(this.moduleCount);
+		
+		for (var row = 0; row < this.moduleCount; row++) {
+			
+			this.modules[row] = new Array(this.moduleCount);
+			
+			for (var col = 0; col < this.moduleCount; col++) {
+				this.modules[row][col] = null;//(col + row) % 3;
+			}
+		}
+	
+		this.setupPositionProbePattern(0, 0);
+		this.setupPositionProbePattern(this.moduleCount - 7, 0);
+		this.setupPositionProbePattern(0, this.moduleCount - 7);
+		this.setupPositionAdjustPattern();
+		this.setupTimingPattern();
+		this.setupTypeInfo(test, maskPattern);
+		
+		if (this.typeNumber >= 7) {
+			this.setupTypeNumber(test);
+		}
+	
+		if (this.dataCache === null) {
+			this.dataCache = QRCode.createData(this.typeNumber, this.errorCorrectLevel, this.dataList);
+		}
+	
+		this.mapData(this.dataCache, maskPattern);
+	},
+
+	setupPositionProbePattern : function(row, col)  {
+		
+		for (var r = -1; r <= 7; r++) {
+			
+			if (row + r <= -1 || this.moduleCount <= row + r) continue;
+			
+			for (var c = -1; c <= 7; c++) {
+				
+				if (col + c <= -1 || this.moduleCount <= col + c) continue;
+				
+				if ( (0 <= r && r <= 6 && (c === 0 || c === 6) ) || 
+                     (0 <= c && c <= 6 && (r === 0 || r === 6) ) || 
+                     (2 <= r && r <= 4 && 2 <= c && c <= 4) ) {
+					this.modules[row + r][col + c] = true;
+				} else {
+					this.modules[row + r][col + c] = false;
+				}
+			}		
+		}		
+	},
+	
+	getBestMaskPattern : function() {
+	
+		var minLostPoint = 0;
+		var pattern = 0;
+	
+		for (var i = 0; i < 8; i++) {
+			
+			this.makeImpl(true, i);
+	
+			var lostPoint = QRUtil.getLostPoint(this);
+	
+			if (i === 0 || minLostPoint >  lostPoint) {
+				minLostPoint = lostPoint;
+				pattern = i;
+			}
+		}
+	
+		return pattern;
+	},
+	
+	createMovieClip : function(target_mc, instance_name, depth) {
+	
+		var qr_mc = target_mc.createEmptyMovieClip(instance_name, depth);
+		var cs = 1;
+	
+		this.make();
+
+		for (var row = 0; row < this.modules.length; row++) {
+			
+			var y = row * cs;
+			
+			for (var col = 0; col < this.modules[row].length; col++) {
+	
+				var x = col * cs;
+				var dark = this.modules[row][col];
+			
+				if (dark) {
+					qr_mc.beginFill(0, 100);
+					qr_mc.moveTo(x, y);
+					qr_mc.lineTo(x + cs, y);
+					qr_mc.lineTo(x + cs, y + cs);
+					qr_mc.lineTo(x, y + cs);
+					qr_mc.endFill();
+				}
+			}
+		}
+		
+		return qr_mc;
+	},
+
+	setupTimingPattern : function() {
+		
+		for (var r = 8; r < this.moduleCount - 8; r++) {
+			if (this.modules[r][6] !== null) {
+				continue;
+			}
+			this.modules[r][6] = (r % 2 === 0);
+		}
+	
+		for (var c = 8; c < this.moduleCount - 8; c++) {
+			if (this.modules[6][c] !== null) {
+				continue;
+			}
+			this.modules[6][c] = (c % 2 === 0);
+		}
+	},
+	
+	setupPositionAdjustPattern : function() {
+	
+		var pos = QRUtil.getPatternPosition(this.typeNumber);
+		
+		for (var i = 0; i < pos.length; i++) {
+		
+			for (var j = 0; j < pos.length; j++) {
+			
+				var row = pos[i];
+				var col = pos[j];
+				
+				if (this.modules[row][col] !== null) {
+					continue;
+				}
+				
+				for (var r = -2; r <= 2; r++) {
+				
+					for (var c = -2; c <= 2; c++) {
+					
+						if (Math.abs(r) === 2 || 
+                            Math.abs(c) === 2 ||
+                            (r === 0 && c === 0) ) {
+							this.modules[row + r][col + c] = true;
+						} else {
+							this.modules[row + r][col + c] = false;
+						}
+					}
+				}
+			}
+		}
+	},
+	
+	setupTypeNumber : function(test) {
+	
+		var bits = QRUtil.getBCHTypeNumber(this.typeNumber);
+        var mod;
+	
+		for (var i = 0; i < 18; i++) {
+			mod = (!test && ( (bits >> i) & 1) === 1);
+			this.modules[Math.floor(i / 3)][i % 3 + this.moduleCount - 8 - 3] = mod;
+		}
+	
+		for (var x = 0; x < 18; x++) {
+			mod = (!test && ( (bits >> x) & 1) === 1);
+			this.modules[x % 3 + this.moduleCount - 8 - 3][Math.floor(x / 3)] = mod;
+		}
+	},
+	
+	setupTypeInfo : function(test, maskPattern) {
+	
+		var data = (this.errorCorrectLevel << 3) | maskPattern;
+		var bits = QRUtil.getBCHTypeInfo(data);
+        var mod;
+	
+		// vertical		
+		for (var v = 0; v < 15; v++) {
+	
+			mod = (!test && ( (bits >> v) & 1) === 1);
+	
+			if (v < 6) {
+				this.modules[v][8] = mod;
+			} else if (v < 8) {
+				this.modules[v + 1][8] = mod;
+			} else {
+				this.modules[this.moduleCount - 15 + v][8] = mod;
+			}
+		}
+	
+		// horizontal
+		for (var h = 0; h < 15; h++) {
+	
+			mod = (!test && ( (bits >> h) & 1) === 1);
+			
+			if (h < 8) {
+				this.modules[8][this.moduleCount - h - 1] = mod;
+			} else if (h < 9) {
+				this.modules[8][15 - h - 1 + 1] = mod;
+			} else {
+				this.modules[8][15 - h - 1] = mod;
+			}
+		}
+	
+		// fixed module
+		this.modules[this.moduleCount - 8][8] = (!test);
+	
+	},
+	
+	mapData : function(data, maskPattern) {
+		
+		var inc = -1;
+		var row = this.moduleCount - 1;
+		var bitIndex = 7;
+		var byteIndex = 0;
+		
+		for (var col = this.moduleCount - 1; col > 0; col -= 2) {
+	
+			if (col === 6) col--;
+	
+			while (true) {
+	
+				for (var c = 0; c < 2; c++) {
+					
+					if (this.modules[row][col - c] === null) {
+						
+						var dark = false;
+	
+						if (byteIndex < data.length) {
+							dark = ( ( (data[byteIndex] >>> bitIndex) & 1) === 1);
+						}
+	
+						var mask = QRUtil.getMask(maskPattern, row, col - c);
+	
+						if (mask) {
+							dark = !dark;
+						}
+						
+						this.modules[row][col - c] = dark;
+						bitIndex--;
+	
+						if (bitIndex === -1) {
+							byteIndex++;
+							bitIndex = 7;
+						}
+					}
+				}
+								
+				row += inc;
+	
+				if (row < 0 || this.moduleCount <= row) {
+					row -= inc;
+					inc = -inc;
+					break;
+				}
+			}
+		}
+		
+	}
+
+};
+
+QRCode.PAD0 = 0xEC;
+QRCode.PAD1 = 0x11;
+
+QRCode.createData = function(typeNumber, errorCorrectLevel, dataList) {
+	
+	var rsBlocks = QRRSBlock.getRSBlocks(typeNumber, errorCorrectLevel);
+	
+	var buffer = new QRBitBuffer();
+	
+	for (var i = 0; i < dataList.length; i++) {
+		var data = dataList[i];
+		buffer.put(data.mode, 4);
+		buffer.put(data.getLength(), QRUtil.getLengthInBits(data.mode, typeNumber) );
+		data.write(buffer);
+	}
+
+	// calc num max data.
+	var totalDataCount = 0;
+	for (var x = 0; x < rsBlocks.length; x++) {
+		totalDataCount += rsBlocks[x].dataCount;
+	}
+
+	if (buffer.getLengthInBits() > totalDataCount * 8) {
+		throw new Error("code length overflow. (" + 
+            buffer.getLengthInBits() + 
+            ">" +  
+            totalDataCount * 8 + 
+            ")");
+	}
+
+	// end code
+	if (buffer.getLengthInBits() + 4 <= totalDataCount * 8) {
+		buffer.put(0, 4);
+	}
+
+	// padding
+	while (buffer.getLengthInBits() % 8 !== 0) {
+		buffer.putBit(false);
+	}
+
+	// padding
+	while (true) {
+		
+		if (buffer.getLengthInBits() >= totalDataCount * 8) {
+			break;
+		}
+		buffer.put(QRCode.PAD0, 8);
+		
+		if (buffer.getLengthInBits() >= totalDataCount * 8) {
+			break;
+		}
+		buffer.put(QRCode.PAD1, 8);
+	}
+
+	return QRCode.createBytes(buffer, rsBlocks);
+};
+
+QRCode.createBytes = function(buffer, rsBlocks) {
+
+	var offset = 0;
+	
+	var maxDcCount = 0;
+	var maxEcCount = 0;
+	
+	var dcdata = new Array(rsBlocks.length);
+	var ecdata = new Array(rsBlocks.length);
+	
+	for (var r = 0; r < rsBlocks.length; r++) {
+
+		var dcCount = rsBlocks[r].dataCount;
+		var ecCount = rsBlocks[r].totalCount - dcCount;
+
+		maxDcCount = Math.max(maxDcCount, dcCount);
+		maxEcCount = Math.max(maxEcCount, ecCount);
+		
+		dcdata[r] = new Array(dcCount);
+		
+		for (var i = 0; i < dcdata[r].length; i++) {
+			dcdata[r][i] = 0xff & buffer.buffer[i + offset];
+		}
+		offset += dcCount;
+		
+		var rsPoly = QRUtil.getErrorCorrectPolynomial(ecCount);
+		var rawPoly = new QRPolynomial(dcdata[r], rsPoly.getLength() - 1);
+
+		var modPoly = rawPoly.mod(rsPoly);
+		ecdata[r] = new Array(rsPoly.getLength() - 1);
+		for (var x = 0; x < ecdata[r].length; x++) {
+            var modIndex = x + modPoly.getLength() - ecdata[r].length;
+			ecdata[r][x] = (modIndex >= 0)? modPoly.get(modIndex) : 0;
+		}
+
+	}
+	
+	var totalCodeCount = 0;
+	for (var y = 0; y < rsBlocks.length; y++) {
+		totalCodeCount += rsBlocks[y].totalCount;
+	}
+
+	var data = new Array(totalCodeCount);
+	var index = 0;
+
+	for (var z = 0; z < maxDcCount; z++) {
+		for (var s = 0; s < rsBlocks.length; s++) {
+			if (z < dcdata[s].length) {
+				data[index++] = dcdata[s][z];
+			}
+		}
+	}
+
+	for (var xx = 0; xx < maxEcCount; xx++) {
+		for (var t = 0; t < rsBlocks.length; t++) {
+			if (xx < ecdata[t].length) {
+				data[index++] = ecdata[t][xx];
+			}
+		}
+	}
+
+	return data;
+
+};
+
+module.exports = QRCode;
+
+M['./index'] = module.exports; })({});
+return { QRCode: M['./index'], ECL: M['./QRErrorCorrectLevel'] }; })();
+
+/* ============================== CONFIG ============================== */
+const CONFIG = {
+  forum: '',                      // ТРЕБУЕТ ЗАПОЛНЕНИЯ: официальное название форума. Пока пусто — на экране 1 показывается только дата
+  date: '15 октября 2026',
+  speaker: 'Иван Яровицин · основатель XWATUM Energy',
+  // Контакты для кнопки «Связаться с XWATUM». Пустые каналы не показываются.
+  // MAX: номер без ссылки — в меню действие «Скопировать номер». Когда появится ссылка на профиль, вставьте её сюда.
+  contacts: { phone: '+79508880001', whatsapp: 'https://wa.me/79508880001', telegram: 'https://t.me/i_yarovitsin', max: '+79508880001', email: 'xwatum@mail.ru', site: '' },
+  // Адрес размещённой в интернете версии этого файла. QR ведёт на него с якорем #q — в «Рассчитать мой объект».
+  qrUrl: 'https://xwatum-1.vercel.app/geo/',
+  // Оригинальный логотип рядом с index.html (как в папках lab и hybrid). Не найден — зона логотипа остаётся пустой.
+  logoSrc: '01_XWATUM_Logo_Master.png',
+  stockConfirmed: false,          // true — только если остатки на складе подтверждены
+  moduleKWh: '',                  // ёмкость одного модуля накопителя, кВт·ч (если известна)
+  inverterKW: '',                 // мощность одного инвертора, кВт (если известна)
+  targetMinutes: 12,
+  // Уставки EMS — это настройки управления, их задаёт инженер. Можно менять в калькуляторе.
+  ems: { socStart: 20, socStop: 90, chargeLoad: 80, minLoad: 30 },
+  // Демонстрационные допущения. НЕ данные реального объекта. Загружаются только кнопкой.
+  demo: {
+    scale: 3, people: 12, days: 30, pRated: 10, dgHours: 24, dgExists: 'Есть', grid: 'Нет', fuelType: 'Дизель',
+    f25: 1.4, f50: 2.0, f75: 2.7, f100: 3.3,   // типовая линейная модель расхода, заменить паспортом ДГУ
+    fuelPrice: 75, delivery: 60, toRate: 50,
+    avgLoad: 4, peakLoad: 8, nightLoad: 2.2,
+    bessKWh: 15, dod: 90, eff: 92, invKW: 10,
+    pvKW: 5, psh: 3.5, season: 'Лето', climate: 'Холодный', solar: 'Доступна'
+  }
+};
+
+/* ============================== DATA ============================== */
+// Иллюстративный профиль нагрузки лагеря, % от мощности ДГУ по часам 00–23
+const LOAD_SHAPE = [25,25,25,25,26,27,40,55,60,45,48,50,55,50,45,47,50,55,65,75,80,75,50,30];
+// Нормированная форма солнечной выработки 06:00–18:00
+const PV_SHAPE = (() => { const a = []; for (let h = 0; h < 24; h++) { const x = (h + 0.5 - 6) / 12; a.push(x > 0 && x < 1 ? Math.sin(Math.PI * x) : 0); } const s = a.reduce((p, c) => p + c, 0); return a.map(v => v / s); })();
+
+const SCALES = [
+  { id: 1, name: 'Геолог' }, { id: 2, name: 'Полевая группа' }, { id: 3, name: 'Лагерь' }, { id: 4, name: 'Буровая / объект' }
+];
+
+const CARDS6 = [
+  { no: '01', nm: 'Геолог', img: 'c1.jpg', feeds: 'Связь, ноутбук, дрон, приборы', sol: 'Портативная станция и складная солнечная панель',
+    d: { feeds: ['Спутниковая связь, рация', 'Ноутбук, GNSS-приёмник', 'Дрон и аккумуляторы', 'Измерительные приборы'],
+         pains: ['Заряжать приборы нужно вдали от лагеря', 'Каждый килограмм снаряжения на счету', 'Холод снижает доступную ёмкость'],
+         arch: ['Портативная станция', 'Складная солнечная панель', 'Дозарядка от энергосистемы лагеря'],
+         ask: ['Список приборов и их мощность заряда', 'Длительность маршрута без лагеря', 'Минимальная температура', 'Допустимая масса'] } },
+  { no: '02', nm: 'Полевая группа', img: 'c2.jpg', feeds: 'Связь, свет, компьютеры, холодильник', sol: 'Мобильная энергосистема и солнечные панели',
+    d: { feeds: ['Связь и компьютеры', 'Освещение', 'Холодильник', 'Зарядка приборов'],
+         pains: ['Малый генератор работает ради небольшой нагрузки', 'Шум ночью', 'Топливо приходится везти с собой'],
+         arch: ['Накопитель с гибридным инвертором', 'Солнечные панели', 'ДГУ как резерв и источник заряда'],
+         ask: ['Суточное потребление', 'Ночная нагрузка', 'Есть ли ДГУ и какой', 'Сезон и регион'] } },
+  { no: '03', nm: 'Лагерь', img: 'c3.jpg', feeds: 'Вагончики, кухня, лаборатория, отопление', sol: 'Накопитель, солнце, ДГУ и гибридный инвертор',
+    d: { feeds: ['Жилые вагончики', 'Кухня', 'Лаборатория', 'Автоматика отопления, связь'],
+         pains: ['ДГУ работает круглосуточно при низкой ночной загрузке', 'Моточасы и частое ТО', 'Высокая стоимость литра на точке', 'Шум и выхлоп рядом с жильём'],
+         arch: ['ДГУ + накопитель + гибридный инвертор', 'Солнечные панели', 'EMS и удалённый мониторинг', 'Портативные станции по вагончикам'],
+         ask: ['Паспорт ДГУ и кривая расхода', 'Профиль нагрузки по часам', 'Цена литра с доставкой', 'Критические потребители'] } },
+  { no: '04', nm: 'Объект', img: 'c4.jpg', feeds: 'Буровое и производственное оборудование', sol: 'Промышленный накопитель, ДГУ и EMS',
+    d: { feeds: ['Буровое оборудование', 'Насосы и компрессоры', 'Производственные нагрузки', 'Вахтовый посёлок'],
+         pains: ['Пусковые токи двигателей', 'Критичные нагрузки без права остановки', 'Сотни киловатт мощности', 'Требования к резервированию'],
+         arch: ['Промышленный накопитель', 'ДГУ в параллельной работе', 'EMS с приоритетами нагрузок', 'Проект только по замеру'],
+         ask: ['Замер нагрузки на объекте', 'Пусковые характеристики двигателей', 'Режим бурения', 'Требования к резервированию'] } }
+];
+
+const PAINS = [
+  { s: [2,3,4], p: 'Дорогое топливо и доставка', c: 'Каждый литр везут вертолётом, вездеходом или по зимнику', r: 'ДГУ работает меньше часов и в экономичном режиме; часть энергии дают накопитель и солнце', e: 'Меньше литров и рейсов доставки' },
+  { s: [2,3,4], p: 'Недогрузка и износ ДГУ', c: 'ДГУ выбран под пик, большую часть суток загружен слабо', r: 'Малые нагрузки берёт накопитель, ДГУ включается в зоне эффективной загрузки', e: 'Меньше моточасов, реже ТО' },
+  { s: [2,3], p: 'Шум и выхлоп в лагере', c: 'Генератор работает круглосуточно рядом с жильём', r: 'Ночью лагерь питается от накопителя и портативных станций', e: 'Часы тишины для отдыха смены' },
+  { s: [3,4], p: 'Риск остановки при отказе ДГУ', c: 'Единственный источник энергии', r: 'Накопитель как резерв, автоматический пуск ДГУ по EMS, приоритет критичных нагрузок', e: 'Связь и критичные нагрузки не отключаются' },
+  { s: [1,2,3,4], p: 'Холод', c: 'Ёмкость батарей падает, заряд ограничен температурой ячеек', r: 'Самоподогрев, терморегулирование, утеплённый корпус, BMS', e: 'Работа в паспортном диапазоне температур' },
+  { s: [1,2], p: 'Зарядка приборов и дронов', c: 'Приборы нужно заряжать вдали от лагеря', r: 'Портативные станции со складными солнечными панелями', e: 'Автономность маршрута' },
+  { s: [1,2,3,4], p: 'Связь и передача данных', c: 'Спутниковой связи нужно стабильное питание', r: 'Приоритет критичных нагрузок в EMS', e: 'Связь без перерывов' },
+  { s: [3,4], p: 'Нет контроля расхода топлива', c: 'Учёт вручную или его нет', r: 'EMS и удалённый мониторинг: моточасы, энергия, состояние батарей', e: 'Прозрачность затрат и планирование завоза' }
+];
+
+const NOTES = [
+  'Чем дальше объект от электросети, тем дороже становится каждый киловатт-час. Мы не продаём батареи — мы разбираем, как устроена энергия на удалённом объекте.',
+  'Этот вертолёт везёт не бочки. Он везёт киловатт-часы. Вопрос залу: сколько у вас стоит литр дизеля с доставкой на участок?',
+  'Генератор выбирают под пиковую нагрузку. Но пик — это несколько часов в сутки, остальное время генератор загружен частично. Как это влияет на расход и ресурс, видно по паспортной кривой и требованиям производителя конкретного ДГУ. Генератор мы оставляем. Вопрос: зачем ему работать, когда максимум не нужен?',
+  'Мы не воюем с дизельным генератором. В удалённой геологии он ещё долго будет нужен. Наша задача — чтобы он не работал тогда, когда в этом нет необходимости. Передвиньте ползунок — видно, кто работает в каждый час.',
+  'Энергия идёт через гибридный инвертор. EMS — это управление: она решает, какой источник включить и когда. То, что сейчас на экране, в уменьшенном масштабе работает у нас на стенде.',
+  'Одна логика — разный масштаб. Нажмите на карточку: видно, что именно нужно узнать для расчёта. Мощности без исходных данных мы не называем.',
+  'Холод — отдельная инженерная задача. Разделяем температуру среды, разряда и заряда. Совместимость подтверждается паспортом, а не обещанием.',
+  'Все цифры — предварительная расчётная модель на указанных данных. Пустое поле означает, что данных объекта ещё нет, и мы ничего не придумываем. Подставьте свои — калькулятор в GEO LAB.',
+  'Батарея, инвертор, генератор — компоненты. Продукт XWATUM — система, рассчитанная под объект, и её управление.',
+  'Пока работает ДГУ — он заряжает накопитель и станции. Ночью — тишина. Мощность растёт модулями вместе с задачей.',
+  'Батареи, инверторы и генераторы можно купить у многих. Экономию даёт система, рассчитанная под ваш лагерь, климат и логистику. Отсканируйте код — посчитаем ваш объект.'
+];
+
+const WHY = {
+  fuel: 'Эффект зависит от паспортной кривой расхода конкретного ДГУ и профиля нагрузки. Если по введённым точкам расход на 1 кВт·ч при низкой загрузке выше, перенос малых нагрузок на накопитель уменьшает литры.',
+  mh: 'Часть низкой нагрузки переносится на накопитель. ДГУ включается реже и работает более концентрированными интервалами.',
+  Edg: 'В гибриде ДГУ дополнительно заряжает накопитель, но работает меньше часов. Потери цикла заряд-разряд учтены через КПД.',
+  Ebat: 'Энергия, отданная накопителем в часы, когда ДГУ остановлен или не покрывает пик.',
+  Epv: 'Солнечная энергия, использованная нагрузкой напрямую или запасённая в накопителе. Излишки при полном накопителе не учитываются.',
+  cost: 'Стоимость = литры × цена. Доставка считается отдельно: на удалённой точке она может быть сопоставима с ценой топлива.',
+  to: 'ТО планируется по моточасам: меньше моточасов — реже замена масла, фильтров и сервис.',
+  silent: 'Когда нагрузку принимает накопитель, генератор может быть остановлен.',
+  load: 'Средняя загрузка ДГУ в часы работы. В гибриде ДГУ работает в зоне более эффективной загрузки, потому что одновременно заряжает накопитель.',
+  deficit: 'Энергия, которую не смогли покрыть ни ДГУ, ни накопитель: пиковая нагрузка выше мощности ДГУ и инвертора. Нужна проверка мощности.'
+};
+
+const ARCH = {
+  A: { l: 'A', n: 'ДГУ', qa: [
+    ['Как течёт энергия', 'ДГУ напрямую питает нагрузку.'],
+    ['Когда работает ДГУ', 'Всё время, пока есть нагрузка, как правило круглосуточно.'],
+    ['Что происходит ночью', 'ДГУ работает при низкой загрузке: копятся моточасы, шум рядом с жильём. Расход на кВт·ч в этом режиме определяется паспортной кривой.'],
+    ['Что происходит при пике', 'ДГУ покрывает пик, если его мощности хватает.'],
+    ['При низком SOC', 'Накопителя нет — сценарий не применим.'],
+    ['При отказе источника', 'Отказ ДГУ означает отключение всех нагрузок до запуска резервного генератора.'] ] },
+  B: { l: 'B', n: 'ДГУ + накопитель', qa: [
+    ['Как течёт энергия', 'ДГУ и накопитель подключены к гибридному инвертору, инвертор питает нагрузку. EMS выбирает источник.'],
+    ['Когда работает ДГУ', 'Когда заряд накопителя опускается до порога или нагрузка выше мощности инвертора. Одновременно ДГУ заряжает накопитель.'],
+    ['Что происходит ночью', 'Нагрузку питает накопитель, ДГУ остановлен.'],
+    ['Что происходит при пике', 'ДГУ и накопитель работают вместе, если это предусмотрено мощностью инвертора.'],
+    ['При низком SOC', 'EMS запускает ДГУ, он питает нагрузку и заряжает накопитель до порога остановки.'],
+    ['При отказе источника', 'Отказ ДГУ: накопитель питает критичные нагрузки, EMS отключает неприоритетные. Отказ накопителя: ДГУ питает нагрузку напрямую через байпас инвертора.'] ] },
+  C: { l: 'C', n: 'ДГУ + накопитель + солнце', qa: [
+    ['Как течёт энергия', 'Солнце, ДГУ и накопитель подключены к гибридному инвертору. Днём приоритет у солнца.'],
+    ['Когда работает ДГУ', 'Реже, чем в B: днём часть нагрузки и заряда даёт солнце. Зимой на высоких широтах вклад солнца минимален.'],
+    ['Что происходит ночью', 'Нагрузку питает накопитель, заряженный днём солнцем и ДГУ.'],
+    ['Что происходит при пике', 'Пик покрывают накопитель и ДГУ; солнце — только в световой период.'],
+    ['При низком SOC', 'EMS запускает ДГУ. Если прогноз солнца хороший, пуск может быть отложен по уставкам.'],
+    ['При отказе источника', 'Отказ ДГУ днём частично компенсирует солнце; ночью — накопитель для критичных нагрузок.'] ] }
+};
+
+const WHATIF = [
+  { t: 'Солнца нет несколько дней', r: ['EMS чаще запускает ДГУ по порогу заряда накопителя.', 'ДГУ работает блоками: питает нагрузку и заряжает накопитель.', 'Моточасы приближаются к сценарию B, питание не прерывается.'], c: 'Проверить запас топлива на период без солнца.' },
+  { t: 'Температура резко упала', r: ['BMS ограничивает ток заряда по температуре ячеек.', 'Включается подогрев батареи — от накопителя или от ДГУ.', 'EMS учитывает снижение доступной ёмкости и раньше запускает ДГУ.'], c: 'Проверить паспортную температуру заряда, мощность подогрева и утепление корпуса.' },
+  { t: 'Нагрузка выросла', r: ['Если нагрузка выше мощности инвертора, EMS запускает ДГУ.', 'При превышении суммарной мощности отключаются неприоритетные нагрузки по списку.'], c: 'Проверить запас мощности и возможность добавить модуль или инвертор в параллель.' },
+  { t: 'Накопитель разряжен', r: ['На пороге заряда EMS запускает ДГУ.', 'ДГУ питает нагрузку и заряжает накопитель в зоне эффективной загрузки.', 'На пороге остановки ДГУ отключается.'], c: 'Проверить уставки порогов и ёмкость под ночной профиль.' },
+  { t: 'Отказала связь', r: ['EMS работает автономно по локальным уставкам.', 'Данные пишутся в локальный журнал и передаются после восстановления связи.', 'Управление системой не зависит от облака.'], c: 'Проверить объём локального журнала и резервный канал связи.' },
+  { t: 'ДГУ не запустился', r: ['EMS повторяет пуск по алгоритму и формирует аварийный сигнал.', 'Нагрузку питает накопитель.', 'Неприоритетные нагрузки отключаются, чтобы продлить работу связи и отопительной автоматики.'], c: 'reserve' },
+  { t: 'Появился новый потребитель', r: ['Нужно проверить его пиковую мощность и пусковой ток.', 'При необходимости добавляется модуль накопителя или инвертор в параллель.'], c: 'Обновить профиль нагрузки и пересчитать в калькуляторе.' }
+];
+
+/* ============================== STATE ============================== */
+const STORE_KEY = 'xwatum-geo-v1';
+let S = {};                 // входные данные объекта и калькулятора
+let IMG = {};               // логотипы и QR (dataURL)
+let DEMO = false;   // вычисляется: есть ли в данных демонстрационные значения
+function demoUsed() { const src = S._src || {}; return Object.keys(src).some(k => src[k] === 'demo' && S[k] !== '' && S[k] !== undefined && S[k] !== null); }
+function load() {
+  try {
+    const d = JSON.parse(localStorage.getItem(STORE_KEY) || '{}');
+    S = d.S || {}; IMG = d.IMG || {}; DEMO = !!d.DEMO;
+    if (d.CFG) {
+      const saved = d.CFG.contacts || {}, merged = Object.assign({}, CONFIG.contacts);
+      Object.keys(saved).forEach(k => { if (saved[k]) merged[k] = saved[k]; });
+      const rest = Object.assign({}, d.CFG); delete rest.contacts;
+      Object.keys(rest).forEach(k => { if (rest[k] === '' || rest[k] === undefined) delete rest[k]; });
+      Object.assign(CONFIG, rest, { contacts: merged });
+    }
+  } catch (e) { S = {}; IMG = {}; }
+  ['socStart','socStop','chargeLoad','minLoad'].forEach(k => { if (S[k] === undefined || S[k] === '') S[k] = CONFIG.ems[k]; });
+  S._src = S._src || {};
+  if (DEMO && !Object.keys(S._src).length) Object.keys(CONFIG.demo).forEach(k => S._src[k] = 'demo');
+  DEMO = demoUsed();
+}
+function save() {
+  try {
+    const CFG = { forum: CONFIG.forum, date: CONFIG.date, speaker: CONFIG.speaker, contacts: CONFIG.contacts, qrUrl: CONFIG.qrUrl, stockConfirmed: CONFIG.stockConfirmed, moduleKWh: CONFIG.moduleKWh, inverterKW: CONFIG.inverterKW };
+    localStorage.setItem(STORE_KEY, JSON.stringify({ S, IMG, DEMO, CFG }));
+  } catch (e) { /* хранилище недоступно — работаем без сохранения */ }
+}
+
+/* ============================== UTIL ============================== */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+const NS = 'http://www.w3.org/2000/svg';
+function el(tag, attrs = {}, parent, html) {
+  const n = /^(svg|g|path|rect|circle|line|text|polyline|polygon|use|tspan|defs)$/.test(tag) ? document.createElementNS(NS, tag) : document.createElement(tag);
+  for (const k in attrs) { if (attrs[k] !== undefined && attrs[k] !== null) n.setAttribute(k, attrs[k]); }
+  if (html !== undefined) n.innerHTML = html;
+  if (parent) parent.appendChild(n);
+  return n;
+}
+function num(v) { if (v === '' || v === null || v === undefined) return null; const n = parseFloat(String(v).replace(',', '.').replace(/\s/g, '')); return isFinite(n) ? n : null; }
+function fmt(v, d = 0) { if (v === null || v === undefined || !isFinite(v)) return '—'; return Number(v).toLocaleString('ru-RU', { maximumFractionDigits: d, minimumFractionDigits: 0 }); }
+function hh(h) { const H = Math.floor(h), M = Math.round((h - H) * 60); return String(H % 25).padStart(2, '0') + ':' + String(M).padStart(2, '0'); }
+function smooth(pts) { // Catmull-Rom → Bézier
+  let d = `M${pts[0][0]},${pts[0][1]}`;
+  for (let i = 0; i < pts.length - 1; i++) {
+    const p0 = pts[i - 1] || pts[i], p1 = pts[i], p2 = pts[i + 1], p3 = pts[i + 2] || p2;
+    const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6];
+    const c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
+    d += ` C${c1[0].toFixed(1)},${c1[1].toFixed(1)} ${c2[0].toFixed(1)},${c2[1].toFixed(1)} ${p2[0].toFixed(1)},${p2[1].toFixed(1)}`;
+  }
+  return d;
+}
+const reduced = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+function hint(msg, ms = 3500) { const h = $('#hint'); h.textContent = msg; h.style.display = 'block'; clearTimeout(hint._t); hint._t = setTimeout(() => h.style.display = 'none', ms); }
+
+/* ============================== PRESENTATION ============================== */
+const slides = $$('.slide');
+let cur = 0;
+const stage = $('#stage');
+function fit() {
+  const s = Math.min(innerWidth / 1920, innerHeight / 1080);
+  stage.style.left = '0'; stage.style.top = '0';
+  stage.style.transform = `translate(${(innerWidth - 1920 * s) / 2}px,${(innerHeight - 1080 * s) / 2}px) scale(${s})`;
+}
+function buildDots() {
+  const d = $('#dots'); d.innerHTML = '';
+  slides.forEach((s, i) => { const b = el('button', { 'aria-label': 'Экран ' + (i + 1) }, d); b.onclick = () => go(i); });
+}
+function go(i) {
+  i = Math.max(0, Math.min(slides.length - 1, i));
+  slides[cur].classList.remove('active');
+  cur = i; slides[cur].classList.add('active');
+  $$('#dots button').forEach((b, k) => b.setAttribute('aria-current', k === cur ? 'true' : 'false'));
+  $('#counter').textContent = (cur + 1) + ' / ' + slides.length;
+  $('#nNo').textContent = 'Экран ' + (cur + 1) + ' из ' + slides.length;
+  $('#nTx').textContent = NOTES[cur] || '';
+  if (location.hash !== '#s' + (cur + 1) && document.body.classList.contains('mode-deck')) history.replaceState(null, '', '#s' + (cur + 1));
+  onEnter(cur + 1);
+}
+function setMode(m, anchor) {
+  document.body.classList.toggle('mode-deck', m === 'deck');
+  document.body.classList.toggle('mode-lab', m === 'lab');
+  $('#mDeck').setAttribute('aria-pressed', m === 'deck');
+  $('#mLab').setAttribute('aria-pressed', m === 'lab');
+  if (m === 'lab') {
+    if (document.body.classList.contains('clean')) exitClean();
+    history.replaceState(null, '', '#' + (anchor || 'lab'));
+    if (anchor) unlock(anchor);
+    requestAnimationFrame(() => { const t = anchor && document.getElementById(anchor); if (t) t.scrollIntoView(); else $('#lab').scrollTop = 0; });
+  } else { history.replaceState(null, '', '#s' + (cur + 1)); fit(); }
+}
+// Полный экран и «чистый» режим
+function enterClean() {
+  document.body.classList.add('clean');
+  const e = document.documentElement, rq = e.requestFullscreen || e.webkitRequestFullscreen;
+  if (rq) { try { const p = rq.call(e); if (p && p.catch) p.catch(() => {}); } catch (x) {} }
+  armCursor();
+}
+function exitClean() {
+  document.body.classList.remove('clean', 'hide-cursor');
+  const ex = document.exitFullscreen || document.webkitExitFullscreen;
+  if ((document.fullscreenElement || document.webkitFullscreenElement) && ex) { try { ex.call(document); } catch (x) {} }
+}
+let curT;
+function armCursor() { document.body.classList.remove('hide-cursor'); clearTimeout(curT); if (document.body.classList.contains('clean')) curT = setTimeout(() => document.body.classList.add('hide-cursor'), 2500); }
+document.addEventListener('mousemove', armCursor);
+['fullscreenchange', 'webkitfullscreenchange'].forEach(ev => document.addEventListener(ev, () => { if (!(document.fullscreenElement || document.webkitFullscreenElement)) document.body.classList.remove('clean', 'hide-cursor'); }));
+// Заметки и таймер
+let tRun = false, tStart = 0, tAcc = 0, tInt;
+function timerTick() {
+  const s = Math.floor((tAcc + (tRun ? Date.now() - tStart : 0)) / 1000);
+  const t = $('#timer'); t.textContent = String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0') + ' из ' + CONFIG.targetMinutes + ':00 · T — старт/пауза';
+  t.classList.toggle('warn', s >= (CONFIG.targetMinutes - 1) * 60);
+}
+function toggleTimer() { if (tRun) { tAcc += Date.now() - tStart; tRun = false; clearInterval(tInt); } else { tStart = Date.now(); tRun = true; tInt = setInterval(timerTick, 500); } timerTick(); }
+// Клавиатура
+document.addEventListener('keydown', e => {
+  const typing = /INPUT|SELECT|TEXTAREA/.test((e.target || {}).tagName || '');
+  if (e.key === 'Escape') {
+    if ($('#sheet').classList.contains('open')) { closeContacts(); return; }
+    if ($('#setModal').classList.contains('open')) { closeSettings(); return; }
+    if ($('#det6').classList.contains('open')) { $('#det6').classList.remove('open'); return; }
+    if ($('#notes').classList.contains('open')) { $('#notes').classList.remove('open'); return; }
+    exitClean(); return;
+  }
+  if (typing || $('#setModal').classList.contains('open') || $('#sheet').classList.contains('open')) return;
+  const deck = document.body.classList.contains('mode-deck');
+  const k = e.key;
+  if (deck) {
+    if (['ArrowRight', 'PageDown', ' ', 'Spacebar'].includes(k)) { e.preventDefault(); go(cur + 1); }
+    else if (['ArrowLeft', 'PageUp'].includes(k)) { e.preventDefault(); go(cur - 1); }
+    else if (k === 'Home') go(0); else if (k === 'End') go(slides.length - 1);
+    else if (k === 'f' || k === 'F' || k === 'а' || k === 'А') { document.body.classList.contains('clean') ? exitClean() : enterClean(); }
+    else if (k === 'n' || k === 'N' || k === 'т' || k === 'Т') $('#notes').classList.toggle('open');
+    else if (k === 't' || k === 'T' || k === 'е' || k === 'Е') toggleTimer();
+    else if (k === 'l' || k === 'L' || k === 'д' || k === 'Д') setMode('lab');
+  } else if (k === 'l' || k === 'L' || k === 'д' || k === 'Д') setMode('deck');
+});
+// Свайп
+(function () {
+  let x0 = null, y0 = null;
+  $('#deckWrap').addEventListener('touchstart', e => { const t = e.touches[0]; x0 = t.clientX; y0 = t.clientY; }, { passive: true });
+  $('#deckWrap').addEventListener('touchend', e => {
+    if (x0 === null) return; const t = e.changedTouches[0], dx = t.clientX - x0, dy = t.clientY - y0;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.3) go(cur + (dx < 0 ? 1 : -1));
+    x0 = null;
+  });
+})();
+
+/* ============================== SLIDES ============================== */
+function onEnter(n) {
+  if (n === 2) playFormula();
+  if (n === 4) play4();
+  if (n === 5) startModes5();
+  if (n === 8) render8(true);
+  if (n !== 5) stopModes5();
+}
+// S2 — формула
+let fT = [];
+function playFormula() {
+  fT.forEach(clearTimeout); fT = [];
+  const items = $$('#formula > span'); items.forEach(i => i.classList.remove('on'));
+  items.forEach((it, i) => fT.push(setTimeout(() => it.classList.add('on'), reduced ? 0 : 300 + i * 160)));
+}
+// S3 — график пика
+function build3() {
+  const box = $('#s3chart'), W = 1640, H = 470, top = 40, base = 400;
+  const svg = el('svg', { viewBox: `0 0 ${W} ${H}`, width: W, height: H }, box);
+  const y = v => base - v / 100 * (base - top), x = h => h / 24 * W;
+  const vals = LOAD_SHAPE.concat([LOAD_SHAPE[0]]);
+  const pts = vals.map((v, i) => [x(i), y(v)]);
+  const curve = smooth(pts);
+  // зона недогрузки: между линией ДГУ и кривой
+  el('path', { d: `${curve} L${W},${top} L0,${top} Z`, fill: 'rgba(224,154,26,.09)' }, svg);
+  el('path', { d: `${curve} L${W},${base} L0,${base} Z`, fill: 'rgba(10,132,255,.12)' }, svg);
+  el('path', { d: curve, fill: 'none', stroke: '#0A84FF', 'stroke-width': 4 }, svg);
+  el('line', { x1: 0, y1: top, x2: W, y2: top, stroke: '#E09A1A', 'stroke-width': 3 }, svg);
+  el('text', { x: W, y: top - 12, 'text-anchor': 'end', 'font-size': 22, fill: '#E09A1A', 'font-weight': 500 }, svg, 'Мощность ДГУ');
+  el('text', { x: x(2.2), y: y(62), 'font-size': 22, fill: '#E09A1A' }, svg, 'Недогрузка');
+  el('line', { x1: 0, y1: base, x2: W, y2: base, stroke: '#D2D2D7' }, svg);
+  [0, 6, 12, 18, 24].forEach(h => el('text', { x: Math.min(W - 30, Math.max(30, x(h))), y: base + 34, 'text-anchor': 'middle', 'font-size': 20, fill: '#86868B' }, svg, hh(h)));
+  el('text', { x: W, y: base + 64, 'text-anchor': 'end', 'font-size': 16, fill: '#86868B' }, svg, 'Иллюстрация типового профиля');
+  const vl = el('line', { x1: 0, y1: top, x2: 0, y2: base, stroke: '#1D1D1F', 'stroke-width': 1.5, opacity: 0 }, svg);
+  const dot = el('circle', { r: 7, fill: '#fff', stroke: '#0A84FF', 'stroke-width': 3, opacity: 0 }, svg);
+  const hit = el('rect', { x: 0, y: 0, width: W, height: base, fill: 'transparent' }, svg);
+  const tip = $('#s3tip');
+  function show(evX) {
+    const r = svg.getBoundingClientRect(); const px = (evX - r.left) / r.width * W;
+    const h = Math.max(0, Math.min(23, Math.round(px / W * 24)));
+    const v = LOAD_SHAPE[h], cx = x(h), cy = y(v);
+    vl.setAttribute('x1', cx); vl.setAttribute('x2', cx); vl.setAttribute('opacity', 1);
+    dot.setAttribute('cx', cx); dot.setAttribute('cy', cy); dot.setAttribute('opacity', 1);
+    tip.textContent = hh(h) + ' · загрузка ДГУ ' + v + ' %';
+    tip.style.left = Math.min(W - 260, cx + 14) + 'px'; tip.style.top = (cy - 50) + 'px'; tip.style.opacity = 1;
+  }
+  hit.addEventListener('mousemove', e => show(e.clientX));
+  hit.addEventListener('touchmove', e => show(e.touches[0].clientX), { passive: true });
+  hit.addEventListener('mouseleave', () => { vl.setAttribute('opacity', 0); dot.setAttribute('opacity', 0); tip.style.opacity = 0; });
+  const avg = LOAD_SHAPE.reduce((a, b) => a + b, 0) / 24, low = LOAD_SHAPE.filter(v => v < 30).length;
+  $('#s3stats').innerHTML = `<span><b>${fmt(avg)} %</b>средняя загрузка ДГУ за сутки</span><span><b>${low} ч</b>с загрузкой ниже 30 %</span><span>по иллюстративному профилю</span>`;
+}
+// S4 — шкалы суток
+const HYB = [[0, 6, 'b'], [6, 9, 'd'], [9, 17, 'b'], [17, 22, 'd'], [22, 24, 'b']];
+function build4() {
+  const now = $('#trNow'), hyb = $('#trHyb');
+  el('div', { class: 'seg-b', style: 'width:100%;background:var(--amber)' }, now);
+  HYB.forEach(([a, b, t]) => el('div', { class: 'seg-b', style: `width:${(b - a) / 24 * 100}%;background:${t === 'd' ? 'var(--amber)' : 'var(--blue)'}` }, hyb));
+  const ax = $('#axis4');
+  [0, 6, 12, 18, 24].forEach(h => el('span', { style: `left:${h / 24 * 100}%` }, ax, hh(h)));
+  $('#t4').addEventListener('input', e => { stop4(); upd4(+e.target.value); });
+  upd4(0);
+}
+function upd4(t) {
+  const c = $('#cur4'); c.style.left = (Math.min(t, 23.99) / 24 * 1400) + 'px'; c.style.top = '-250px'; c.style.height = '262px';
+  const seg = HYB.find(([a, b]) => t >= a && t < b) || HYB[HYB.length - 1];
+  const hyb = seg[2] === 'd' ? '<span style="color:var(--amber)">работает ДГУ, заряжает накопитель</span>' : '<span style="color:var(--blue)">работает накопитель, ДГУ остановлен</span>';
+  $('#ro4').innerHTML = `<span><span class="k">Время</span>${hh(Math.min(t, 23.99))}</span><span><span class="k">Сейчас:</span><span style="color:var(--amber)">работает ДГУ</span></span><span><span class="k">Гибрид:</span>${hyb}</span>`;
+  $('#t4').value = t;
+}
+let p4;
+function play4() {
+  stop4(); $$('#trHyb .seg-b,#trNow .seg-b').forEach(s => { s.style.transform = 'scaleX(0)'; });
+  requestAnimationFrame(() => $$('#trHyb .seg-b,#trNow .seg-b').forEach((s, i) => setTimeout(() => s.style.transform = 'scaleX(1)', reduced ? 0 : 100 + i * 120)));
+  if (reduced) { upd4(12); return; }
+  let t = 0; p4 = setInterval(() => { t += 0.25; if (t > 23.75) { stop4(); return; } upd4(t); }, 45);
+}
+function stop4() { clearInterval(p4); }
+// S5 — архитектура и режимы
+const M5 = [
+  { k: 'day', n: 'День', c: 'Солнце питает нагрузку и заряжает накопитель', act: ['pv', 'inv-load', 'inv-bat'], dg: false },
+  { k: 'night', n: 'Ночь', c: 'Нагрузку питает накопитель, ДГУ выключен', act: ['bat-inv', 'inv-load'], dg: false },
+  { k: 'low', n: 'Заряд низкий', c: 'EMS запускает ДГУ: он питает нагрузку и заряжает накопитель', act: ['dg', 'inv-load', 'inv-bat'], dg: true },
+  { k: 'full', n: 'Накопитель заряжен', c: 'EMS останавливает ДГУ', act: ['bat-inv', 'inv-load'], dg: false }
+];
+let m5i = 0, m5t;
+function build5() {
+  const svg = $('#diag5');
+  const N = {
+    pv: [40, 40, 'Солнце', 'i-sun'], wind: [40, 150, 'Ветер', 'i-wind'], dg: [40, 260, 'ДГУ', 'i-gen'], grid: [40, 370, 'Сеть (при наличии)', 'i-grid'],
+    inv: [640, 200, 'Гибридный инвертор', 'i-inv'], bat: [1210, 90, 'Накопитель', 'i-bat'], load: [1210, 320, 'Нагрузка', 'i-house'],
+    ems: [660, 20, 'EMS', 'i-ems'], cloud: [1000, 0, 'Удалённый мониторинг', 'i-cloud']
+  };
+  const P = {
+    pv: 'M340,80 C480,80 520,230 640,235', wind: 'M340,190 C480,190 520,238 640,240', dg: 'M340,300 C480,300 520,250 640,248',
+    grid: 'M340,410 C480,410 540,262 640,256', 'inv-bat': 'M940,225 C1060,225 1090,130 1210,130', 'bat-inv': 'M1210,140 C1090,140 1060,235 940,235',
+    'inv-load': 'M940,250 C1060,250 1090,360 1210,360'
+  };
+  // энергия
+  Object.keys(P).forEach(k => {
+    const amb = k === 'dg';
+    el('path', { d: P[k], class: 'eline' + (amb ? ' amb' : ''), id: 'e5-' + k, 'stroke-dasharray': k === 'grid' ? '8 8' : null }, svg);
+    el('path', { d: P[k], class: 'pulse' + (amb ? ' amb' : ''), id: 'p5-' + k }, svg);
+  });
+  // управление
+  [['M790,96 V200'], ['M760,96 C700,140 420,120 340,290'], ['M820,96 C920,120 1100,60 1210,110'], ['M770,96 C680,110 400,70 340,70'], ['M830,96 C960,160 1120,300 1210,340'], ['M860,50 C920,40 960,30 1000,30']].forEach(([d]) => el('path', { d, class: 'cline' }, svg));
+  Object.keys(N).forEach(k => {
+    const [x, y, t, ic] = N[k], w = k === 'inv' ? 300 : (k === 'ems' ? 260 : (k === 'cloud' ? 300 : 300)), h = k === 'cloud' ? 60 : 76;
+    const g = el('g', { class: 'node', id: 'n5-' + k, transform: `translate(${x},${y})` }, svg);
+    if (k === 'cloud') { const u = el('use', { href: '#' + ic, x: 0, y: 8, width: 44, height: 44 }, g); u.style.color = '#0A84FF'; el('text', { x: 54, y: 38, 'font-size': 20, fill: '#86868B' }, g, t); return; }
+    el('rect', { width: w, height: h, rx: 18, 'stroke-dasharray': k === 'grid' ? '6 6' : null }, g);
+    if (k === 'ems') { g.querySelector('rect').setAttribute('style', 'fill:#0A84FF;stroke:#0A84FF'); }
+    const u = el('use', { href: '#' + ic, x: 20, y: (h - 40) / 2, width: 40, height: 40 }, g);
+    u.style.color = k === 'dg' ? '#E09A1A' : (k === 'ems' ? '#fff' : (k === 'grid' ? '#86868B' : (k === 'load' ? '#1D1D1F' : '#0A84FF')));
+    const tx = el('text', { x: 74, y: h / 2 + 8, 'font-size': 22 }, g, t);
+    if (k === 'ems') { tx.setAttribute('fill', '#fff'); tx.setAttribute('font-weight', 600); }
+    if (k === 'grid') tx.setAttribute('fill', '#86868B');
+  });
+  const lg = el('g', { transform: 'translate(1210,470)' }, svg);
+  el('line', { x1: 0, y1: 0, x2: 40, y2: 0, stroke: '#0A84FF', 'stroke-width': 3 }, lg); el('text', { x: 50, y: 7, 'font-size': 18, fill: '#86868B' }, lg, 'Энергия');
+  el('line', { x1: 160, y1: 0, x2: 200, y2: 0, class: 'cline' }, lg); el('text', { x: 210, y: 7, 'font-size': 18, fill: '#86868B' }, lg, 'Управление');
+  const seg = $('#modes5');
+  M5.forEach((m, i) => { const b = el('button', { 'aria-pressed': 'false' }, seg, m.n); b.onclick = () => { stopModes5(); setMode5(i); }; });
+  setMode5(0);
+}
+function setMode5(i) {
+  m5i = i; const m = M5[i];
+  $$('#modes5 button').forEach((b, k) => b.setAttribute('aria-pressed', k === i));
+  ['pv', 'wind', 'dg', 'grid', 'inv-bat', 'bat-inv', 'inv-load'].forEach(k => {
+    const on = m.act.includes(k);
+    $('#e5-' + k).classList.toggle('act', on); $('#p5-' + k).classList.toggle('act', on);
+  });
+  $('#n5-dg').classList.toggle('dg-on', m.dg); $('#n5-dg').classList.toggle('off', !m.dg);
+  $('#n5-pv').classList.toggle('off', m.k !== 'day'); $('#n5-wind').classList.add('off'); $('#n5-grid').classList.add('off');
+  $('#cap5').innerHTML = `<span class="m">${m.n}.</span>${m.c}`;
+}
+function startModes5() { stopModes5(); if (reduced) return; m5t = setInterval(() => setMode5((m5i + 1) % M5.length), 4000); }
+function stopModes5() { clearInterval(m5t); }
+// S6 — масштабы
+function build6() {
+  const wrap = $('#cards6');
+  CARDS6.forEach((c, i) => {
+    const b = el('button', { class: 'c4', 'aria-label': 'Подробнее: ' + c.nm }, wrap);
+    el('div', { class: 'ph', style: `background-image:url(${c.img})` }, b);
+    el('div', { class: 'bd' }, b, `<div class="no">${c.no}</div><div class="nm">${c.nm}</div><div class="k">Питает</div><div class="v">${c.feeds}</div><div class="k">Решение</div><div class="v">${c.sol}</div><div class="more">Подробнее</div>`);
+    b.onclick = () => open6(i);
+  });
+}
+function open6(i) {
+  const c = CARDS6[i], d = $('#det6'), L = a => '<ul>' + a.map(x => `<li>${x}</li>`).join('') + '</ul>';
+  d.innerHTML = `<h3>${c.no} · ${c.nm}</h3><div class="grid">
+    <div class="col"><h4>Питает</h4>${L(c.d.feeds)}</div><div class="col"><h4>Типичные проблемы</h4>${L(c.d.pains)}</div>
+    <div class="col"><h4>Возможная архитектура</h4>${L(c.d.arch)}</div><div class="col"><h4>Что нужно узнать для расчёта</h4>${L(c.d.ask)}</div></div>
+    <div class="acts"><button class="btn blue" id="d6lab">Разобрать в GEO LAB</button><button class="btn ghost" id="d6x">Закрыть</button></div>`;
+  d.classList.add('open');
+  $('#d6x').onclick = () => d.classList.remove('open');
+  $('#d6lab').onclick = () => { d.classList.remove('open'); S.scale = i + 1; save(); syncInputs(); recalc(); setMode('lab', 'obj'); };
+}
+// S8 — экономика (связана с калькулятором)
+function rowHTML(icon, a, b, val, color) {
+  const empty = val === null;
+  return `<div class="row8"><svg style="color:${color}"><use href="#${icon}"/></svg><div><div class="a">${a}</div><div class="b">${b}</div></div><div class="val" data-v="${empty ? '' : val}">${empty ? '' : fmt(val)}</div></div>`;
+}
+function render8(animate) {
+  const R = RES || {}, A = R.A && R.A.ok ? R.A : null;
+  const H = R.C && R.C.ok ? R.C : (R.B && R.B.ok ? R.B : null);
+  const days = num(S.days), P = num(S.pRated), ppl = num(S.people);
+  const parts = [];
+  const sc = SCALES.find(s => s.id === +S.scale);
+  parts.push(sc ? (sc.id === 3 ? 'Полевой лагерь' : sc.name) : 'Полевой лагерь');
+  parts.push((ppl !== null ? fmt(ppl) : '12') + ' человек');
+  parts.push((days !== null ? fmt(days) : '30') + ' суток');
+  parts.push(S.grid === 'Есть' ? 'сеть есть' : 'сети нет');
+  parts.push('ДГУ ' + (P !== null ? fmt(P, 1) : '10') + ' кВт');
+  $('#scen8').textContent = parts.join(' · ');
+  const d = days !== null ? days : 30, hrs = num(S.dgHours);
+  const mhA = A ? A.mh : ((hrs === null || hrs >= 24) ? 24 * d : null);
+  $('#colA').innerHTML =
+    rowHTML('i-can', 'Топливо, л', 'Работа при любой, даже низкой, загрузке', A ? A.fuel : null, 'var(--amber)') +
+    rowHTML('i-clock', 'Моточасы ДГУ', (hrs === null || hrs >= 24) ? `Круглосуточно, ${fmt(d)} суток` : `${fmt(hrs)} ч в сутки, ${fmt(d)} суток`, mhA, 'var(--amber)') +
+    rowHTML('i-rub', 'Топливо с доставкой, ₽', 'Цена литра на участке, а не на АЗС', A && A.fuelDel !== null ? A.fuelDel : null, 'var(--amber)') +
+    rowHTML('i-wrench', 'Обслуживание ДГУ, ₽', 'Масло, фильтры, ТО по моточасам', A && A.toCost !== null ? A.toCost : null, 'var(--amber)');
+  $('#subB').textContent = H && H.arch === 'B' ? 'ДГУ + накопитель + EMS' : 'ДГУ + накопитель + солнце + EMS';
+  $('#colB').innerHTML =
+    rowHTML('i-can', 'Топливо, л', 'ДГУ работает в экономичном режиме', H ? H.fuel : null, 'var(--blue)') +
+    rowHTML('i-clock', 'Моточасы ДГУ', 'Только на заряд и пики', H ? H.mh : null, 'var(--blue)') +
+    rowHTML('i-rub', 'Топливо с доставкой, ₽', 'Меньше литров — меньше рейсов', H && H.fuelDel !== null ? H.fuelDel : null, 'var(--blue)') +
+    rowHTML('i-wrench', 'Обслуживание ДГУ, ₽', 'ТО реже: меньше моточасов', H && H.toCost !== null ? H.toCost : null, 'var(--blue)');
+  const T = [
+    ['Экономия топлива, л', A && H ? A.fuel - H.fuel : null],
+    ['Сокращение моточасов', A && H ? A.mh - H.mh : null],
+    [`Экономия за ${fmt(d)} суток, ₽`, A && H && A.opex !== null && H.opex !== null ? A.opex - H.opex : null],
+    ['Часы тишины в сутки', H ? H.silent : null, 1]
+  ];
+  $('#tot8').innerHTML = T.map(([l, v, dd]) => `<div><b class="${v === null ? 'empty' : ''}" data-v="${v === null ? '' : v}" data-d="${dd || 0}">${v === null ? '' : fmt(v, dd || 0)}</b><span>${l}</span></div>`).join('');
+  $('#flag8').textContent = DEMO ? 'Иллюстрация: демонстрационные значения, не данные объекта.' : (A || H ? 'Расчёт на данных объекта.' : '');
+  if (animate && !reduced) $$('.s8 [data-v]').forEach(n => { const v = parseFloat(n.dataset.v); if (!isFinite(v)) return; const dd = +(n.dataset.d || 0); const t0 = performance.now(); const step = t => { const k = Math.min(1, (t - t0) / 900); n.textContent = fmt(v * (1 - Math.pow(1 - k, 3)), dd); if (k < 1) requestAnimationFrame(step); }; requestAnimationFrame(step); });
+}
+// S9 — схема продукта
+function build9() {
+  const svg = $('#diag9');
+  const N = { pv: [0, 10, 'Солнечные панели', 'i-sun'], dg: [0, 120, 'ДГУ', 'i-gen'], bat: [0, 230, 'Накопитель', 'i-bat'], inv: [320, 120, 'Гибридный инвертор', 'i-inv'], load: [610, 120, 'Нагрузка', 'i-house'], ems: [350, 0, 'EMS', 'i-ems'] };
+  [['M210,40 C270,40 280,145 320,150', 'ah', ''], ['M210,150 H320', 'ah', ''], ['M210,260 C270,260 280,160 320,158', 'ah', 'ah'], ['M552,150 H610', 'ah', '']].forEach(([d, me, ms]) => el('path', { d, class: 'eline act', 'marker-end': `url(#${me})`, 'marker-start': ms ? `url(#${ms})` : null }, svg));
+  ['M430,56 V120', 'M380,40 C300,20 250,20 210,30', 'M380,50 C300,90 250,120 210,140', 'M390,56 C330,200 260,250 210,250', 'M490,40 C560,40 640,80 690,120'].forEach(d => el('path', { d, class: 'cline' }, svg));
+  Object.keys(N).forEach(k => {
+    const [x, y, t, ic] = N[k]; const w = k === 'inv' ? 232 : (k === 'ems' ? 160 : (k === 'load' ? 200 : 210)), h = k === 'ems' ? 56 : 60;
+    const g = el('g', { class: 'node', transform: `translate(${x},${y})` }, svg);
+    el('rect', { width: w, height: h, rx: 14 }, g);
+    const u = el('use', { href: '#' + ic, x: 12, y: (h - 32) / 2, width: 32, height: 32 }, g); u.style.color = '#0A84FF';
+    el('text', { x: 52, y: h / 2 + 6, 'font-size': 17 }, g, t);
+  });
+  const c = el('g', { transform: 'translate(520,0)' }, svg); const u = el('use', { href: '#i-cloud', x: 0, y: 0, width: 34, height: 34 }, c); u.style.color = '#0A84FF';
+  el('text', { x: 40, y: 22, 'font-size': 15, fill: '#86868B' }, c, 'Удалённый доступ');
+  el('path', { d: 'M510,28 H520', class: 'cline' }, svg);
+  const lg = el('g', { transform: 'translate(560,290)' }, svg);
+  el('line', { x1: 0, y1: 0, x2: 30, y2: 0, stroke: '#0A84FF', 'stroke-width': 3 }, lg); el('text', { x: 38, y: 5, 'font-size': 14, fill: '#86868B' }, lg, 'Энергия');
+  el('line', { x1: 120, y1: 0, x2: 150, y2: 0, class: 'cline' }, lg); el('text', { x: 158, y: 5, 'font-size': 14, fill: '#86868B' }, lg, 'Управление');
+}
+// S10 — модульность
+let mods = 1, invs = 1;
+function build10() {
+  const icon = (svg, id, x, y, s, col) => { const u = el('use', { href: '#' + id, x, y, width: s, height: s }, svg); u.style.color = col; };
+  const lbl = (svg, x, y, t, anchor) => el('text', { x, y, 'font-size': 19, fill: '#1D1D1F', 'text-anchor': anchor || 'middle' }, svg, t);
+  const a = $('#d10a');
+  icon(a, 'i-gen', 20, 90, 64, '#E09A1A'); lbl(a, 52, 180, 'ДГУ');
+  el('path', { d: 'M100,122 H180', class: 'eline act', 'marker-end': 'url(#ah)' }, a);
+  icon(a, 'i-inv', 196, 90, 64, '#0A84FF'); lbl(a, 228, 180, 'Гибридный'); lbl(a, 228, 202, 'инвертор');
+  [[40, 'i-bat', 'Накопитель заряжается'], [122, 'i-stat', 'Станции заряжаются'], [204, 'i-house', 'Лагерь работает']].forEach(([y, ic, t]) => {
+    el('path', { d: `M276,122 C340,122 350,${y} 420,${y}`, class: 'eline act', 'marker-end': 'url(#ah)' }, a);
+    icon(a, ic, 432, y - 22, 44, ic === 'i-house' ? '#1D1D1F' : '#0A84FF'); lbl(a, 492, y + 7, t, 'start');
+  });
+  const b = $('#d10b');
+  icon(b, 'i-gen', 530, 0, 40, '#C7C7CC'); el('text', { x: 578, y: 27, 'font-size': 17, fill: '#86868B' }, b, 'ДГУ выключен');
+  icon(b, 'i-bat', 30, 60, 56, '#0A84FF'); lbl(b, 20, 140, 'Накопитель', 'start');
+  el('path', { d: 'M110,88 H430', class: 'eline act', 'marker-end': 'url(#ah)' }, b);
+  icon(b, 'i-house', 450, 60, 56, '#1D1D1F'); lbl(b, 478, 140, 'Лагерь');
+  icon(b, 'i-stat', 30, 160, 56, '#0A84FF'); lbl(b, 20, 240, 'Станция в каждом вагончике', 'start');
+  el('path', { d: 'M110,188 H430', class: 'eline act', 'marker-end': 'url(#ah)' }, b);
+  icon(b, 'i-bulb', 440, 160, 48, '#1D1D1F'); icon(b, 'i-lap', 500, 160, 52, '#1D1D1F'); lbl(b, 560, 240, 'Свет, связь, техника', 'middle');
+  $('#mPlus').onclick = () => { mods = Math.min(8, mods + 1); render10(); };
+  $('#mMinus').onclick = () => { mods = Math.max(1, mods - 1); render10(); };
+  $('#iPlus').onclick = () => { invs = Math.min(4, invs + 1); render10(); };
+  $('#iMinus').onclick = () => { invs = Math.max(1, invs - 1); render10(); };
+  render10();
+}
+function render10() {
+  $('#mCnt').textContent = mods; $('#iCnt').textContent = invs;
+  const st = $('#stack10'); st.innerHTML = '';
+  const m = el('div', { class: 'mods' }, st); for (let i = 0; i < mods; i++) el('div', { class: 'mod' }, m);
+  for (let i = 0; i < invs; i++) el('div', { class: 'inv' }, st, '<svg width="28" height="28"><use href="#i-inv"/></svg>');
+  const name = mods === 1 ? 'Полевая группа' : mods === 2 ? 'Малый лагерь' : mods <= 4 ? 'Большой лагерь' : 'Объект — по расчёту';
+  const mk = num(CONFIG.moduleKWh), ik = num(CONFIG.inverterKW);
+  const tech = mk && ik ? `${fmt(mk * mods, 1)} кВт·ч · ${fmt(ik * invs, 1)} кВт` : '+ модуль = больше ёмкости · + инвертор в параллель = больше мощности';
+  $('#modinfo').innerHTML = `${name}<small>${tech}</small>`;
+  $('#h10').innerHTML = CONFIG.stockConfirmed ? 'В наличии. Работает в связке.<span class="l2">Модульная система: мощность растёт вместе с задачей.</span>' : 'Модули. Работают в связке.<span class="l2">Мощность растёт вместе с задачей.</span>';
+  $('#b10').textContent = CONFIG.stockConfirmed ? 'Образцы — на стенде. Поставка — со склада.' : 'Конфигурация подбирается под объект.';
+}
+// S11 и общие элементы: логотипы, QR, контакты, конфиг
+function applyConfig() {
+  $$('[data-cfg]').forEach(n => { n.textContent = CONFIG[n.dataset.cfg] || ''; });
+  const fs = $('[data-cfg="forum"]'); if (fs && fs.nextSibling) fs.nextSibling.textContent = CONFIG.forum ? ' · ' : '';
+  $$('.logo-slot').forEach(n => {
+    const light = n.dataset.logo === 'light', src = light ? IMG.logoLight : (IMG.logoDark || CONFIG.logoSrc);
+    n.innerHTML = src ? `<img src="${src}" alt="XWATUM"${!light && !IMG.logoDark ? ' style="mix-blend-mode:multiply"' : ''} onerror="this.remove()">` : '';
+  });
+  const hasQR = !!(IMG.qr || CONFIG.qrUrl);
+  $('#qrslot').innerHTML = IMG.qr ? `<img src="${IMG.qr}" alt="QR-код: рассчитать свой объект">` : (CONFIG.qrUrl ? qrSVG(qrTarget(CONFIG.qrUrl)) : '<div class="qrmiss">QR появится после указания адреса GEO LAB в ⚙ Настройках</div>');
+  $('#qrcap2').textContent = hasQR ? 'Наведите камеру — откроется предварительный расчёт' : 'Раздел GEO LAB — кнопка вверху экрана';
+  render10(); renderReady();
+}
+function renderReady() {
+  const r = $('#ready'); if (!r) return;
+  const miss = [];
+  if (!CONFIG.forum) miss.push('название форума (экран 1)');
+  if (!IMG.qr && !CONFIG.qrUrl) miss.push('адрес GEO LAB для QR (экран 11)');
+  if (!IMG.logoLight) miss.push('светлый логотип XWATUM для тёмных фото-слайдов 1, 2, 7, 11');
+  r.innerHTML = miss.length ? `<div class="flag" style="margin-top:0"><b>Перед показом заполнить:</b> ${miss.join('; ')}.</div>` : '<div class="flag info" style="margin-top:0">Всё для показа заполнено.</div>';
+}
+function esc(s) { return String(s).replace(/[&<>"]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[m])); }
+
+/* ============================== CONTACTS & QR ============================== */
+function qrTarget(u) { u = String(u).trim(); if (!/^https?:\/\//i.test(u)) u = 'https://' + u; return u.includes('#') ? u : u + '#q'; }
+function qrSVG(text) {
+  try {
+    const q = new QRLIB.QRCode(-1, QRLIB.ECL.M); q.addData(encodeURI(decodeURI(text))); q.make();
+    const n = q.getModuleCount(), z = 2; let d = '';
+    for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (q.isDark(r, c)) d += `M${c + z},${r + z}h1v1h-1z`;
+    return `<svg viewBox="0 0 ${n + 2 * z} ${n + 2 * z}" shape-rendering="crispEdges" role="img" aria-label="QR-код: рассчитать свой объект"><rect width="100%" height="100%" fill="#fff"/><path d="${d}" fill="#1D1D1F"/></svg>`;
+  } catch (e) { return ''; }
+}
+const digits = s => { let d = String(s || '').replace(/\D/g, ''); if (d.length === 11 && d[0] === '8') d = '7' + d.slice(1); return d; };
+const withProto = (v, base) => /^https?:\/\//i.test(v) ? v : base + String(v).replace(/^@/, '');
+function fmtPhone(s) { const d = digits(s); return d.length === 11 && d[0] === '7' ? `+7 (${d.slice(1, 4)}) ${d.slice(4, 7)}-${d.slice(7, 9)}-${d.slice(9)}` : s; }
+const tgName = v => '@' + String(v).replace(/^https?:\/\/(t\.me|telegram\.me)\//i, '').replace(/^@/, '');
+function channels(text) {
+  const c = CONFIG.contacts, enc = encodeURIComponent, out = [];
+  if (c.phone) out.push({ ic: 'i-phone', n: 'Позвонить', v: fmtPhone(c.phone), href: 'tel:+' + digits(c.phone) });
+  const wa = c.whatsapp || c.phone;
+  if (wa) out.push({ ic: 'i-chat', n: 'WhatsApp', v: fmtPhone(digits(wa)), href: 'https://wa.me/' + digits(wa) + (text ? '?text=' + enc(text) : ''), ext: true });
+  if (c.telegram) out.push({ ic: 'i-plane', n: 'Telegram', v: tgName(c.telegram), href: withProto(c.telegram, 'https://t.me/'), ext: true, copy: !!text });
+  if (c.max) {
+    if (/^https?:\/\//i.test(c.max)) out.push({ ic: 'i-msg', n: 'MAX', v: c.max.replace(/^https?:\/\//i, ''), href: c.max, ext: true, copy: !!text });
+    else out.push({ ic: 'i-msg', n: 'MAX', v: fmtPhone(c.max) + ' · скопировать номер', href: '#', copyNum: fmtPhone(c.max) });
+  }
+  if (c.email) out.push({ ic: 'i-mail', n: 'E-mail', v: c.email, href: 'mailto:' + c.email + '?subject=' + enc(text ? 'XWATUM — данные объекта для расчёта' : 'XWATUM') + (text ? '&body=' + enc(text) : '') });
+  return out;
+}
+function openContacts(mode) {
+  const send = mode === 'send';
+  let text = '';
+  if (send) { genReport(); text = $('#report').textContent; copyText(text, true); }
+  $('#shH').textContent = send ? 'Отправить данные специалисту XWATUM' : 'Связаться с XWATUM';
+  const ch = channels(send ? text : '');
+  $('#shSub').textContent = send ? 'Текст с исходными данными и предварительной моделью скопирован. В WhatsApp и почте он подставится сам, в Telegram и MAX — вставьте его в чат.' : 'Иван Яровицин · XWATUM Energy';
+  const L = $('#shList'); L.innerHTML = '';
+  if (!ch.length) { el('p', { class: 'empty-msg', style: 'padding:10px 4px' }, L, 'Контакты ещё не заполнены. Откройте ⚙ Настройки и добавьте телефон, мессенджеры или e-mail.'); }
+  ch.forEach(x => {
+    const a = el('a', { class: 'ch', href: x.href, target: x.ext ? '_blank' : null, rel: x.ext ? 'noopener' : null }, L, `<svg><use href="#${x.ic}"/></svg><div><b>${x.n}</b><span>${esc(x.v)}</span></div><i>›</i>`);
+    if (x.copy) a.addEventListener('click', () => copyText(text, true));
+    if (x.copyNum) a.addEventListener('click', e => { e.preventDefault(); copyText(x.copyNum, true); hint(text ? 'Номер скопирован. Найдите его в MAX и вставьте текст расчёта в чат.' : 'Номер скопирован. Найдите его в MAX.'); });
+  });
+  $('#sheet').classList.add('open'); setTimeout(() => { const f = $('#shList a'); (f || $('#shClose')).focus(); }, 30);
+}
+function closeContacts() { $('#sheet').classList.remove('open'); }
+function copyText(t, silent) {
+  const ok = () => { if (!silent) hint('Скопировано'); };
+  const fb = () => { const ta = el('textarea', { style: 'position:fixed;left:-9999px' }, document.body); ta.value = t; ta.select(); try { document.execCommand('copy'); ok(); } catch (e) { if (!silent) hint('Выделите текст и скопируйте вручную'); } ta.remove(); };
+  if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(t).then(ok, fb); else fb();
+}
+
+/* ============================== UI (LAB) ============================== */
+const OBJ_FIELDS = [
+  ['climate', 'Регион / климат', 'sel', ['', 'Умеренный', 'Холодный', 'Арктический']],
+  ['season', 'Сезон работ', 'sel', ['', 'Лето', 'Межсезонье', 'Зима', 'Круглый год']],
+  ['people', 'Количество людей', 'num', 'чел.'],
+  ['grid', 'Есть ли сеть', 'sel', ['', 'Нет', 'Есть']],
+  ['dgExists', 'Есть ли ДГУ', 'sel', ['', 'Есть', 'Нет']],
+  ['pRated', 'Мощность ДГУ', 'num', 'кВт'],
+  ['fuelType', 'Тип топлива', 'sel', ['', 'Дизель', 'Бензин', 'Газ']],
+  ['dgHours', 'Работа ДГУ сейчас', 'num', 'ч/сутки'],
+  ['fuelPrice', 'Стоимость топлива', 'num', '₽/л'],
+  ['delivery', 'Доставка топлива', 'num', '₽/л'],
+  ['avgLoad', 'Средняя нагрузка', 'num', 'кВт'],
+  ['peakLoad', 'Пиковая нагрузка', 'num', 'кВт'],
+  ['critLoad', 'Критическая нагрузка', 'num', 'кВт'],
+  ['nightLoad', 'Ночная нагрузка', 'num', 'кВт'],
+  ['solar', 'Солнечная генерация', 'sel', ['', 'Доступна', 'Недоступна', 'Неизвестно']],
+  ['autonomy', 'Дней автономности', 'num', 'суток'],
+  ['minTemp', 'Минимальная температура', 'num', '°C'],
+  ['comms', 'Связь / интернет', 'sel', ['', 'Стабильная', 'Нестабильная', 'Нет']],
+  ['monitoring', 'Удалённый мониторинг', 'sel', ['', 'Нужен', 'Не нужен']]
+];
+const CALC_GROUPS = [
+  ['Период', [['days', 'Дней работы', 'сут.']]],
+  ['ДГУ — паспортная кривая расхода', [['pRated', 'Мощность', 'кВт'], ['dgHours', 'Работа в сценарии A', 'ч/сут'], ['f25', 'Расход при 25 %', 'л/ч'], ['f50', 'Расход при 50 %', 'л/ч'], ['f75', 'Расход при 75 %', 'л/ч'], ['f100', 'Расход при 100 %', 'л/ч']]],
+  ['Нагрузка', [['avgLoad', 'Средняя', 'кВт'], ['peakLoad', 'Пиковая', 'кВт'], ['nightLoad', 'Ночная', 'кВт']]],
+  ['Топливо и ТО', [['fuelPrice', 'Цена топлива', '₽/л'], ['delivery', 'Доставка', '₽/л'], ['toRate', 'ТО на моточас', '₽']]],
+  ['Накопитель (B, C)', [['bessKWh', 'Ёмкость', 'кВт·ч'], ['dod', 'Глубина разряда', '%'], ['eff', 'КПД цикла', '%'], ['invKW', 'Мощность инвертора', 'кВт']]],
+  ['Солнце (C)', [['pvKW', 'Мощность панелей', 'кВт'], ['psh', 'Выработка', 'кВт·ч/кВт в сутки']]],
+  ['CAPEX — для окупаемости', [['capexB', 'Оборудование B', '₽'], ['capexC', 'Оборудование C', '₽']]]
+];
+const EMS_FIELDS = [['socStart', 'Пуск ДГУ при заряде', '%'], ['socStop', 'Остановка ДГУ при заряде', '%'], ['chargeLoad', 'Загрузка ДГУ при заряде', '%'], ['minLoad', 'Минимальная загрузка ДГУ', '%']];
+const COLD_FIELDS = [['minTemp', 'Минимальная температура среды', 'num', '°C'], ['tChargeMin', 'Мин. температура заряда батареи (паспорт)', 'num', '°C'], ['tDischargeMin', 'Мин. температура разряда (паспорт)', 'num', '°C'], ['selfHeat', 'Самоподогрев', 'sel', ['', 'Есть', 'Нет']], ['heatW', 'Мощность подогрева', 'num', 'Вт'], ['ip', 'Степень защиты IP', 'txt', '']];
+const COLD_DOCS = [['cdIns', 'Утепление / терморегулируемый корпус'], ['cdBms', 'BMS с температурной защитой'], ['cdMon', 'Удалённый мониторинг температуры'], ['cdVib', 'Вибро- и ударостойкость'], ['cdTr', 'Условия транспортировки'], ['cdUN', 'UN38.3'], ['cdMSDS', 'MSDS']];
+const Q_FIELDS = [['qCompany', 'Компания', 'txt'], ['qType', 'Тип объекта', 'txt'], ['qRegion', 'Регион', 'txt'], ['season', 'Сезон работы', 'sel', ['', 'Лето', 'Межсезонье', 'Зима', 'Круглый год']], ['people', 'Количество людей', 'num', 'чел.'], ['qDG', 'ДГУ (модель)', 'txt'], ['pRated', 'Мощность ДГУ', 'num', 'кВт'], ['qFuelUse', 'Расход топлива', 'txt', 'л/ч или л/сут'], ['qFuelSite', 'Стоимость топлива на объекте', 'num', '₽/л'], ['qMode', 'Режим работы', 'txt'], ['avgLoad', 'Средняя нагрузка', 'num', 'кВт'], ['peakLoad', 'Пиковая нагрузка', 'num', 'кВт'], ['nightLoad', 'Ночная нагрузка', 'num', 'кВт'], ['qCrit', 'Критические потребители', 'txt'], ['minTemp', 'Минимальная температура', 'num', '°C'], ['qPV', 'Солнечные панели', 'txt'], ['comms', 'Связь', 'sel', ['', 'Стабильная', 'Нестабильная', 'Нет']], ['qComment', 'Комментарий', 'txt', '', true]];
+
+function field(parent, [k, label, type, extra, wide]) {
+  const f = el('div', { class: 'f' + (wide ? ' wide' : '') }, parent);
+  const id = 'f_' + k + '_' + Math.random().toString(36).slice(2, 7);
+  el('label', { for: id }, f, label);
+  const box = el('div', { class: 'inp' }, f);
+  let inp;
+  if (type === 'sel') { inp = el('select', { id, 'data-k': k }, box); extra.forEach(o => el('option', { value: o }, inp, o || '—')); }
+  else { inp = el('input', { id, 'data-k': k, type: 'text', inputmode: type === 'num' ? 'decimal' : 'text', autocomplete: 'off' }, box); if (type === 'num' && extra) el('span', { class: 'u' }, box, extra); }
+  inp.addEventListener('input', onInput); inp.addEventListener('change', onInput);
+  return inp;
+}
+function numField(parent, [k, label, unit]) { return field(parent, [k, label, 'num', unit]); }
+function onInput(e) {
+  const k = e.target.dataset.k; S[k] = e.target.value;
+  S._src = S._src || {}; if (e.target.value === '') delete S._src[k]; else S._src[k] = 'user';
+  DEMO = demoUsed(); renderBadges();
+  $$(`[data-k="${k}"]`).forEach(n => { if (n !== e.target) n.value = S[k]; });
+  save(); recalcSoon();
+}
+function syncInputs() { $$('[data-k]').forEach(n => { const v = S[n.dataset.k]; n.value = v === undefined || v === null ? '' : v; }); renderScale(); renderBadges(); }
+const SETPOINTS = ['socStart', 'socStop', 'chargeLoad', 'minLoad'];
+function renderBadges() {
+  $$('[data-k]').forEach(n => {
+    const k = n.dataset.k, box = n.closest('.inp'); if (!box) return;
+    const v = S[k], has = v !== '' && v !== undefined && v !== null;
+    box.classList.remove('is-fact', 'is-ill'); box.removeAttribute('title');
+    if (SETPOINTS.includes(k) || !has) return;
+    if ((S._src || {})[k] === 'demo') { box.classList.add('is-ill'); box.title = 'Иллюстрация — демонстрационное значение'; }
+    else { box.classList.add('is-fact'); box.title = 'Факт — введено пользователем'; }
+  });
+}
+function statusBadge(id, kind) { const b = document.getElementById(id); if (!b) return; if (!kind) { b.style.display = 'none'; return; } b.style.display = ''; b.className = 'badge ' + (kind === 'ill' ? 'b-ill' : 'b-calc'); b.textContent = kind === 'ill' ? 'Иллюстрация' : 'Расчёт'; }
+function renderScale() {
+  const w = $('#scaleChips'); w.innerHTML = '';
+  SCALES.forEach(s => { const b = el('button', { class: 'chip', 'aria-pressed': +S.scale === s.id }, w, s.name); b.onclick = () => { S.scale = +S.scale === s.id ? '' : s.id; S._src = S._src || {}; if (S.scale) S._src.scale = 'user'; else delete S._src.scale; DEMO = demoUsed(); save(); renderScale(); recalc(); }; });
+}
+let rt; function recalcSoon() { clearTimeout(rt); rt = setTimeout(recalc, 120); }
+
+function buildLab() {
+  renderScale();
+  const of = $('#objFields'); OBJ_FIELDS.forEach(f => field(of, f));
+  const ci = $('#calcIn');
+  el('div', { class: 'srcleg' }, ci, '<span><i style="background:#0A84FF"></i>Факт — ваши данные или паспорт</span><span><i style="background:#A1A1A6"></i>Иллюстрация — демонстрационное значение</span>');
+  CALC_GROUPS.forEach(([t, fs]) => { const g = el('div', { class: 'grp' }, ci); el('h4', {}, g, t); const fg = el('div', { class: 'fgrid' }, g); fs.forEach(f => numField(fg, f)); });
+  const det = el('details', { class: 'grp' }, ci); el('summary', { style: 'cursor:pointer;font-size:13px;font-weight:600' }, det, 'Уставки EMS');
+  const eg = el('div', { class: 'fgrid', style: 'margin-top:8px' }, det); EMS_FIELDS.forEach(f => numField(eg, f));
+  el('div', { class: 'flag info', style: 'margin-top:8px' }, det, 'Уставки — настройки управления, их выбирает инженер под объект.');
+  const acts = el('div', { class: 'acts-row' }, ci);
+  const bd = el('button', { class: 'pbtn' }, acts, 'Демонстрационный сценарий'); bd.onclick = loadDemo;
+  const bc = el('button', { class: 'pbtn' }, acts, 'Очистить'); bc.onclick = clearCalc;
+  const b8 = el('button', { class: 'pbtn blue' }, acts, 'Показать на слайде 8'); b8.onclick = () => { setMode('deck'); go(7); };
+  el('div', { class: 'flag', id: 'demoFlag', style: 'display:none' }, ci, 'Иллюстрация: в расчёте есть демонстрационные значения, включая типовую кривую расхода. Это не данные вашего объекта — замените их паспортными данными и фактическими ценами.');
+  const cf = $('#coldFields'); COLD_FIELDS.forEach(f => field(cf, f));
+  const dg = el('div', { class: 'f wide' }, cf); el('label', {}, dg, 'Подтверждено документами');
+  const dc = el('div', { class: 'chips' }, dg);
+  COLD_DOCS.forEach(([k, t]) => { const b = el('button', { class: 'chip', 'aria-pressed': S[k] ? 'true' : 'false', 'data-doc': k }, dc, t); b.onclick = () => { S[k] = !S[k]; b.setAttribute('aria-pressed', S[k]); save(); renderCold(); }; });
+  setupSteps();
+  const qf = $('#qFields'); Q_FIELDS.forEach(f => field(qf, f));
+  $('#qGen').onclick = genReport; $('#qCopy').onclick = copyReport; $('#qPrint').onclick = () => { genReport(); printAs('print-report'); };
+  // Энергосхема: переключатели
+  const tg = $('#srcToggles');
+  [['dg', 'ДГУ'], ['bess', 'Накопитель'], ['pv', 'Солнце'], ['wind', 'Ветер'], ['grid', 'Сеть']].forEach(([k, t]) => {
+    if (SRC[k] === undefined) SRC[k] = ['dg', 'bess', 'pv'].includes(k);
+    const b = el('button', { class: 'chip', 'aria-pressed': SRC[k] }, tg, t); b.onclick = () => { SRC[k] = !SRC[k]; b.setAttribute('aria-pressed', SRC[k]); renderSim(); };
+  });
+  $('#tLab').addEventListener('input', renderSim);
+  buildLabDiagram();
+  // Архитектуры
+  const a3 = $('#arch3');
+  ['A', 'B', 'C'].forEach(k => { const b = el('button', { class: 'arch', 'aria-pressed': k === 'B' }, a3, `<div class="l">Сценарий ${k}</div><div class="n">${ARCH[k].n}</div>`); b.onclick = () => { $$('#arch3 .arch').forEach(x => x.setAttribute('aria-pressed', 'false')); b.setAttribute('aria-pressed', 'true'); renderArch(k); }; });
+  renderArch('B');
+  // Что если
+  const wb = $('#wiBtns');
+  WHATIF.forEach((w, i) => { const b = el('button', { class: 'chip', 'aria-pressed': 'false' }, wb, w.t); b.onclick = () => { $$('#wiBtns .chip').forEach(x => x.setAttribute('aria-pressed', 'false')); b.setAttribute('aria-pressed', 'true'); renderWI(i); }; });
+  el('p', { class: 'empty-msg' }, $('#wiOut'), 'Выберите ситуацию.');
+  // Сегменты графика
+  const cs = $('#chSeg');
+  [['A', 'Только ДГУ'], ['B', 'Гибрид'], ['C', 'Гибрид + солнце']].forEach(([k, t]) => { const b = el('button', { 'aria-pressed': k === chArch }, cs, t); b.onclick = () => { chArch = k; $$('#chSeg button').forEach(x => x.setAttribute('aria-pressed', x === b)); renderChart(); statusBadge('chBadge', RES[chArch] && RES[chArch].ok ? (DEMO ? 'ill' : 'calc') : null); }; });
+  $('#method').innerHTML = METHOD;
+  syncInputs();
+}
+const STEPS = { dx: 'Показать диагностику', sch: 'Показать схему и сутки', arch: 'Сравнить архитектуры', calc: 'Открыть калькулятор', cold: 'Проверить работу при холоде', wi: 'Разобрать нештатные ситуации', q: 'Заполнить опросный лист' };
+function setupSteps() {
+  Object.keys(STEPS).forEach(id => {
+    const s = document.getElementById(id); s.classList.add('collapsed');
+    const b = el('button', { class: 'pbtn opener' }, s, STEPS[id]); b.onclick = () => unlock(id, true);
+  });
+  $$('.tabs a').forEach(a => a.addEventListener('click', e => {
+    if (a.id === 'expandAll') { e.preventDefault(); Object.keys(STEPS).forEach(id => unlock(id)); hint('Все разделы открыты'); return; }
+    const id = a.getAttribute('href').slice(1); unlock(id);
+  }));
+}
+function unlock(id, focus) { const s = document.getElementById(id); if (!s || !s.classList.contains('collapsed')) return; s.classList.remove('collapsed'); if (id === 'sch') renderSim(); if (id === 'calc') renderChart(); if (focus) { const f = s.querySelector('input,select,button:not(.opener),a'); if (f) f.focus({ preventScroll: true }); } }
+function autoUnlock() {
+  const src = S._src || {};
+  if (Object.keys(src).length || +S.scale) ['dx', 'sch', 'arch'].forEach(id => unlock(id));
+  if (num(S.pRated) !== null || num(S.avgLoad) !== null || num(S.peakLoad) !== null) unlock('calc');
+  if (RES && RES.A && RES.A.ok) unlock('q');
+}
+function loadDemo() { ['dx', 'sch', 'arch', 'calc', 'q'].forEach(id => unlock(id)); Object.assign(S, CONFIG.demo); S._src = S._src || {}; Object.keys(CONFIG.demo).forEach(k => S._src[k] = 'demo'); DEMO = true; save(); syncInputs(); recalc(); hint('Загружен демонстрационный сценарий. Значения помечены как «Иллюстрация».'); }
+function clearCalc() {
+  S._src = S._src || {};
+  CALC_GROUPS.forEach(([, fs]) => fs.forEach(([k]) => { S[k] = ''; delete S._src[k]; }));
+  Object.keys(CONFIG.demo).forEach(k => { if (S._src[k] === 'demo') { S[k] = ''; delete S._src[k]; } });
+  DEMO = demoUsed(); save(); syncInputs(); recalc();
+}
+function renderArch(k) { $('#archQA').innerHTML = ARCH[k].qa.map(([q, a]) => `<div><b>${q}</b><span>${a}</span></div>`).join(''); }
+function renderWI(i) {
+  const w = WHATIF[i]; let c = w.c;
+  if (c === 'reserve') {
+    const E = num(S.bessKWh), dod = num(S.dod), cl = num(S.critLoad);
+    c = E && dod && cl ? `Оценка: полный накопитель при критической нагрузке ${fmt(cl, 1)} кВт даёт около ${fmt(E * dod / 100 / cl, 1)} ч работы (без подогрева и потерь инвертора). Предварительная расчётная модель.` : 'Время работы на накопителе зависит от заряда и критической нагрузки. Введите ёмкость, глубину разряда и критическую нагрузку — появится оценка.';
+  }
+  $('#wiOut').innerHTML = `<b>Реакция системы</b><ol>${w.r.map(x => `<li>${x}</li>`).join('')}</ol><p style="margin-top:8px;color:var(--mute)">${c}</p>`;
+}
+
+/* ---------- Диагностика ---------- */
+function renderDx() {
+  const P = num(S.pRated), avg = num(S.avgLoad), pk = num(S.peakLoad), nt = num(S.nightLoad), hrs = num(S.dgHours),
+    price = num(S.fuelPrice), del = num(S.delivery), t = num(S.minTemp), crit = num(S.critLoad);
+  const now = [], chk = [];
+  if (P && avg !== null) { const r = avg / P * 100; if (r < 40) { now.push(['am', `ДГУ работает при низкой средней загрузке: около ${fmt(r)} % от номинала.`]); chk.push('Имеет смысл проверить экономику переноса части низкой нагрузки на накопитель.'); } else now.push(['', `Средняя загрузка ДГУ — около ${fmt(r)} % от номинала.`]); }
+  if (P && nt !== null) { const r = nt / P * 100; if (r < 30) { now.push(['am', `Ночью загрузка ДГУ около ${fmt(r)} % — генератор работает ради малой нагрузки.`]); chk.push('Имеет смысл проверить работу ДГУ блоками в зоне более эффективной загрузки с остановкой на ночь.'); } }
+  if (hrs !== null) { now.push([hrs >= 20 ? 'am' : '', `ДГУ работает ${fmt(hrs)} ч в сутки — это ${fmt(hrs * 30)} моточасов за 30 суток.`]); if (hrs >= 20) chk.push('Имеет смысл оценить, сколько часов работы ДГУ можно заменить накопителем.'); }
+  if (price !== null && del !== null && price + del > 0) { const r = del / (price + del) * 100; now.push([r >= 30 ? 'am' : '', `Доставка — около ${fmt(r)} % стоимости литра на объекте (${fmt(price + del)} ₽/л).`]); if (r >= 30) chk.push('Имеет смысл считать экономику по цене литра на точке, а не по цене на АЗС.'); }
+  if (P && pk !== null && pk > P) { now.push(['am', `Пиковая нагрузка ${fmt(pk, 1)} кВт выше мощности ДГУ ${fmt(P, 1)} кВт.`]); chk.push('Необходимо проверить покрытие пиков: параллельная работа ДГУ и накопителя или пересмотр мощности.'); }
+  if (crit !== null && crit > 0) { now.push(['', `Есть критическая нагрузка ${fmt(crit, 1)} кВт, которую нельзя отключать.`]); chk.push('Имеет смысл предусмотреть резервирование: накопитель для критичных нагрузок и автоматический пуск ДГУ.'); }
+  if (t !== null && t <= -20) { now.push(['am', `Минимальная температура ${fmt(t)} °C.`]); chk.push('Для низких температур необходимо проверить температурный диапазон заряда, систему подогрева и холодный запуск ДГУ.'); }
+  if (S.solar === 'Недоступна' || (S.season === 'Зима' && S.climate === 'Арктический')) { now.push(['', 'Солнечная генерация ограничена.']); chk.push('Основа системы — накопитель и ДГУ; солнце оценивать только как дополнение в световой период.'); }
+  else if (S.solar === 'Доступна') chk.push('Имеет смысл оценить солнечные панели как дополнительный источник в световой период.');
+  if (S.comms === 'Нестабильная' || S.comms === 'Нет') { now.push(['', S.comms === 'Нет' ? 'Связи нет.' : 'Связь нестабильна.']); chk.push('Имеет смысл предусмотреть локальный журнал данных EMS с передачей при появлении связи.'); }
+  if (S.monitoring === 'Нужен') chk.push('Подобрать EMS с удалённым мониторингом моточасов, энергии и состояния батарей.');
+  if (S.grid === 'Есть') now.push(['', 'Есть сеть — её можно включить в архитектуру как дополнительный источник.']);
+  $('#dxNow').innerHTML = now.length ? '<ul>' + now.map(([c, t]) => `<li><i class="${c}"></i><span>${t}</span></li>`).join('') + '</ul>' : '<p class="empty-msg">Введите параметры объекта: мощность ДГУ, нагрузки, часы работы, стоимость топлива, температуру.</p>';
+  $('#dxCheck').innerHTML = chk.length ? '<ul>' + chk.map(t => `<li><i></i><span>${t}</span></li>`).join('') + '</ul>' : '<p class="empty-msg">Рекомендации появятся после ввода параметров.</p>';
+  const sc = +S.scale, rows = PAINS.filter(p => !sc || p.s.includes(sc));
+  $('#painTitle').textContent = sc ? `Типичные трудности: ${SCALES.find(s => s.id === sc).name.toLowerCase()}` : 'Типичные трудности и как они решаются сегодня';
+  $('#painTbl').innerHTML = '<div class="hh">Трудность</div><div class="hh">Причина</div><div class="hh">Как решается сегодня</div><div class="hh">Эффект</div>' + rows.map(p => `<div>${p.p}</div><div>${p.c}</div><div>${p.r}</div><div>${p.e}</div>`).join('');
+}
+
+/* ---------- Холод ---------- */
+function renderCold() {
+  const t = num(S.minTemp), tc = num(S.tChargeMin), td = num(S.tDischargeMin), hw = num(S.heatW);
+  const need = '<span class="st-need">Требуются паспортные данные</span>';
+  const rows = [];
+  rows.push(['Температура среды', t === null ? '<span class="st-need">Введите минимальную температуру объекта</span>' : `${fmt(t)} °C — это температура воздуха, а не батареи. Температура ячеек зависит от корпуса, подогрева и размещения.`]);
+  rows.push(['Температура заряда', tc === null ? need : (t !== null && t < tc ? `<span class="st-warn">Паспорт допускает заряд от ${fmt(tc)} °C. При среде ${fmt(t)} °C заряд возможен только при подогреве батареи или размещении в отапливаемом объёме.</span>` : `<span class="st-ok">Паспорт допускает заряд от ${fmt(tc)} °C${t !== null ? ' — в пределах минимальной температуры объекта' : ''}.</span>`)]);
+  rows.push(['Температура разряда', td === null ? need : (t !== null && t < td ? `<span class="st-warn">Паспорт допускает разряд от ${fmt(td)} °C — ниже этой температуры батарею нужно держать в тепле.</span>` : `<span class="st-ok">Паспорт допускает разряд от ${fmt(td)} °C.</span>`)]);
+  rows.push(['Самоподогрев', !S.selfHeat ? need : (S.selfHeat === 'Есть' ? '<span class="st-ok">Есть. Проверить алгоритм: подогрев до заряда, источник энергии подогрева.</span>' : (tc !== null && t !== null && t < tc ? '<span class="st-warn">Нет. Нужен внешний подогрев или утеплённый контейнер.</span>' : 'Нет.'))]);
+  rows.push(['Мощность подогрева', hw === null ? need : `${fmt(hw)} Вт — до ${fmt(hw * 24 / 1000, 1)} кВт·ч в сутки при непрерывной работе. Учесть в балансе нагрузки.`]);
+  rows.push(['Степень защиты', S.ip ? esc(S.ip) : need]);
+  COLD_DOCS.forEach(([k, n]) => rows.push([n, S[k] ? '<span class="st-ok">Подтверждено документом</span>' : '<span class="st-need">Не подтверждено</span>']));
+  $('#coldChk').innerHTML = rows.map(([a, b]) => `<li><b>${a}</b><span>${b}</span></li>`).join('');
+}
+
+/* ---------- Опросный лист ---------- */
+function genReport() {
+  const L = ['XWATUM · Исходные данные для расчёта энергосистемы', 'Дата: ' + new Date().toLocaleDateString('ru-RU'), ''];
+  Q_FIELDS.forEach(([k, label, type, unit]) => { const v = S[k]; if (v !== undefined && v !== '') L.push(`${label}: ${v}${type === 'num' && unit ? ' ' + unit : ''}`); });
+  OBJ_FIELDS.forEach(([k, label, type, unit]) => { if (Q_FIELDS.some(q => q[0] === k)) return; const v = S[k]; if (v !== undefined && v !== '') L.push(`${label}: ${v}${type === 'num' && unit ? ' ' + unit : ''}`); });
+  const sc = SCALES.find(s => s.id === +S.scale); if (sc) L.splice(3, 0, 'Масштаб: ' + sc.name);
+  const R = RES || {};
+  if (R.A && R.A.ok) {
+    L.push('', 'Предварительная расчётная модель' + (DEMO ? ' (ИЛЛЮСТРАЦИЯ: есть демонстрационные значения)' : ' (РАСЧЁТ на данных объекта)') + ':');
+    ['A', 'B', 'C'].forEach(k => { const r = R[k]; if (r && r.ok) L.push(`  ${k} (${ARCH[k].n}): топливо ${fmt(r.fuel)} л, моточасы ${fmt(r.mh)}, эксплуатация ${r.opex !== null ? fmt(r.opex) + ' ₽' : '—'}, тишина ${fmt(r.silent, 1)} ч/сут`); });
+  }
+  L.push('', 'Для инженерного проекта нужны: паспорт ДГУ и кривая расхода, профиль нагрузки по часам, стоимость литра на объекте, перечень критических потребителей, минимальная температура.');
+  const r = $('#report'); r.textContent = L.join('\n'); r.style.display = 'block';
+}
+function copyReport() { genReport(); copyText($('#report').textContent); }
+function printAs(cls) { document.body.classList.add(cls); setTimeout(() => { window.print(); setTimeout(() => document.body.classList.remove(cls), 300); }, 50); }
+let printCollapsed = [];
+window.addEventListener('beforeprint', () => {
+  printCollapsed = $$('section.blk.collapsed'); if (!document.body.classList.contains('print-report')) printCollapsed.forEach(s => s.classList.remove('collapsed')); if (!/print-(report|lab|deck)/.test(document.body.className)) document.body.classList.add(document.body.classList.contains('mode-lab') ? 'print-lab' : 'print-deck'); if (document.body.classList.contains('print-deck')) $$('.slide').forEach(s => s.classList.add('active')); });
+window.addEventListener('afterprint', () => {
+  printCollapsed.forEach(s => s.classList.add('collapsed')); printCollapsed = []; const wasDeck = document.body.classList.contains('print-deck'); document.body.classList.remove('print-lab', 'print-deck', 'print-report'); if (wasDeck) $$('.slide').forEach((s, i) => s.classList.toggle('active', i === cur)); });
+
+/* ============================== CALCULATOR ============================== */
+const METHOD = `
+<p><b>Профиль нагрузки.</b> Строится из средней, пиковой и ночной нагрузки по форме типового суточного профиля лагеря: минимум ночью, утренний подъём, вечерний пик. Средняя нагрузка профиля совпадает с введённой.</p>
+<p style="margin-top:8px"><b>Расход ДГУ.</b> Линейная интерполяция по паспортным точкам 25–50–75–100 % номинала. Ниже 25 % — продолжение участка 25–50 %. Нужно минимум две точки. Без паспортной кривой расчёт не выполняется.</p>
+<p style="margin-top:8px"><b>Сценарий A.</b> ДГУ питает нагрузку в указанные часы. Если ДГУ работает меньше 24 ч, остальная нагрузка считается непокрытой.</p>
+<p style="margin-top:8px"><b>Сценарии B и C — алгоритм EMS по часам.</b> Если накопитель может покрыть нагрузку без снижения заряда ниже порога пуска и мощности инвертора хватает — ДГУ остановлен. Иначе EMS запускает ДГУ: он питает нагрузку и заряжает накопитель, работая с загрузкой не ниже минимальной и стремясь к загрузке «при заряде». ДГУ останавливается при достижении порога остановки. В C днём приоритет у солнца, излишки заряжают накопитель. Потери заряда-разряда учтены через КПД цикла.</p>
+<p style="margin-top:8px"><b>Солнце.</b> Выработка = мощность панелей × удельная выработка в сутки, распределённая по часам 06:00–18:00. Удельную выработку для региона и сезона вводит пользователь.</p>
+<p style="margin-top:8px"><b>Деньги.</b> Топливо = литры × цена. Доставка = литры × стоимость доставки. ТО = моточасы × ставка. Окупаемость — только при введённом CAPEX: простая, без учёта стоимости капитала и изменения цен.</p>
+<p style="margin-top:8px"><b>Ограничения модели.</b> Суточный профиль повторяется каждый день; не учитываются пусковые токи, подогрев батарей, деградация, погода по дням. Для проекта значения заменяются замером нагрузки и паспортными данными оборудования.</p>`;
+
+let RES = null, chArch = 'C';
+function buildProfile() {
+  const P = num(S.peakLoad), A = num(S.avgLoad), N = num(S.nightLoad);
+  if (P === null || A === null) return { err: 'Введите среднюю и пиковую нагрузку.' };
+  if (A <= 0 || P <= 0) return { err: 'Нагрузки должны быть больше нуля.' };
+  if (A > P) return { err: 'Средняя нагрузка не может быть больше пиковой.' };
+  const mn = Math.min(...LOAD_SHAPE), mx = Math.max(...LOAD_SHAPE), sn = LOAD_SHAPE.map(v => (v - mn) / (mx - mn));
+  const mean = a => a.reduce((x, y) => x + y, 0) / a.length;
+  if (N !== null) {
+    if (N > A) return { err: 'Ночная нагрузка не может быть больше средней.' };
+    const f = g => mean(sn.map(s => N + (P - N) * Math.pow(s, g)));
+    let lo = 0.05, hi = 30;
+    if (A >= f(lo)) return { prof: sn.map(s => N + (P - N) * Math.pow(s, lo)), note: 'Средняя нагрузка близка к пиковой — профиль почти ровный.' };
+    if (A <= f(hi)) return { prof: sn.map(s => N + (P - N) * Math.pow(s, hi)), note: 'Средняя нагрузка близка к ночной — профиль с коротким пиком.' };
+    for (let i = 0; i < 60; i++) { const m = (lo + hi) / 2; if (f(m) > A) lo = m; else hi = m; }
+    const g = (lo + hi) / 2; return { prof: sn.map(s => N + (P - N) * Math.pow(s, g)) };
+  }
+  const ms = mean(sn), b = (P - A) / (1 - ms), a = P - b;
+  return { prof: sn.map(s => Math.max(0, a + b * s)), note: 'Ночная нагрузка не задана — профиль построен по форме типового лагеря.' };
+}
+function fuelCurve() {
+  const P = num(S.pRated); if (!P || P <= 0) return null;
+  const pts = [[0.25, S.f25], [0.5, S.f50], [0.75, S.f75], [1, S.f100]].map(([k, v]) => [k * P, num(v)]).filter(p => p[1] !== null && p[1] >= 0);
+  if (pts.length < 2) return null;
+  return p => {
+    if (p <= 0) p = 0;
+    const i = pts.findIndex(q => p <= q[0]);
+    let a, b;
+    if (i === -1) { a = pts[pts.length - 2]; b = pts[pts.length - 1]; }
+    else if (i === 0) { a = pts[0]; b = pts[1]; }
+    else { a = pts[i - 1]; b = pts[i]; }
+    const v = a[1] + (p - a[0]) * (b[1] - a[1]) / (b[0] - a[0]);
+    return Math.max(pts[0][1] * 0.3, v);
+  };
+}
+function params() {
+  return {
+    P: num(S.pRated), days: num(S.days), hrs: num(S.dgHours), price: num(S.fuelPrice), del: num(S.delivery), to: num(S.toRate),
+    bess: num(S.bessKWh), dod: num(S.dod), eff: num(S.eff), inv: num(S.invKW), pv: num(S.pvKW), psh: num(S.psh),
+    socStart: num(S.socStart) ?? CONFIG.ems.socStart, socStop: num(S.socStop) ?? CONFIG.ems.socStop,
+    chargeLoad: num(S.chargeLoad) ?? CONFIG.ems.chargeLoad, minLoad: num(S.minLoad) ?? CONFIG.ems.minLoad,
+    capexB: num(S.capexB), capexC: num(S.capexC)
+  };
+}
+function missing(arch, p, prof, F) {
+  const m = [];
+  if (!p.P) m.push('мощность ДГУ');
+  if (!F) m.push('паспортная кривая расхода ДГУ (минимум 2 точки)');
+  if (!p.days) m.push('дней работы');
+  if (prof.err) m.push(prof.err.replace(/\.$/, '').toLowerCase());
+  if (arch !== 'A') { if (!p.bess) m.push('ёмкость накопителя'); if (!p.dod) m.push('глубина разряда'); if (!p.eff) m.push('КПД цикла'); if (!p.inv) m.push('мощность инвертора'); }
+  if (arch === 'C') { if (!p.pv) m.push('мощность панелей'); if (!p.psh) m.push('солнечная выработка'); }
+  return m;
+}
+
+/* ============================== SIMULATION ============================== */
+function simulate(arch, p, L, F) {
+  const days = Math.max(1, Math.round(p.days)), P = p.P;
+  const r = { arch, fuel: 0, mh: 0, Edg: 0, Ebat: 0, Epv: 0, deficit: 0, unserved: 0, series: [], ok: true };
+  const tday = Math.min(1, days - 1);
+  if (arch === 'A') {
+    const hrs = p.hrs === null ? 24 : Math.max(0, Math.min(24, p.hrs));
+    const order = L.map((v, i) => [v, i]).sort((a, b) => b[0] - a[0]).slice(0, Math.round(hrs)).map(x => x[1]);
+    for (let d = 0; d < days; d++) for (let h = 0; h < 24; h++) {
+      const on = order.includes(h); let out = 0;
+      if (on) { out = Math.min(L[h], P); r.deficit += Math.max(0, L[h] - P); r.fuel += F(out); r.mh++; r.Edg += out; } else r.unserved += L[h];
+      if (d === tday) r.series.push({ h, load: L[h], dg: out, pv: 0, bat: 0, soc: null, on });
+    }
+  } else {
+    const Eu = p.bess * p.dod / 100, eta = Math.min(1, p.eff / 100), inv = p.inv;
+    const reserve = Eu * p.socStart / 100, stopAt = Eu * p.socStop / 100;
+    let soc = stopAt, on = false;
+    // Сутки -1 — прогрев модели: выходим на установившийся режим, в итоги не входят
+    const acc = { fuel: 0, mh: 0, Edg: 0, Ebat: 0, Epv: 0, deficit: 0 };
+    for (let d = -1; d < days; d++) for (let h = 0; h < 24; h++) {
+      if (d === 0 && h === 0) Object.keys(acc).forEach(k => { acc[k] = r[k]; });
+      const pv = arch === 'C' ? p.pv * p.psh * PV_SHAPE[h] : 0;
+      const net = L[h] - pv; let out = 0, bat = 0, pvUsed = Math.min(pv, L[h]);
+      if (!on && net > 0 && !(net <= inv && soc - net >= reserve)) on = true;
+      if (!on) {
+        if (net <= 0) { const ch = Math.min(-net, (Eu - soc) / eta); soc += ch * eta; bat = -ch; r.Epv += pvUsed + ch; }
+        else { soc -= net; bat = net; r.Ebat += net; r.Epv += pvUsed; }
+      } else {
+        const need = Math.max(net, 0), room = Math.max(0, (Eu - soc) / eta);
+        if (need > P) {
+          out = P; const rest = need - P, b = Math.min(rest, inv, Math.max(0, soc - 0)); soc -= b; bat = b; r.Ebat += b; r.deficit += rest - b;
+        } else {
+          let target = Math.max(need, P * p.chargeLoad / 100);
+          out = Math.min(P, target, need + Math.min(inv, room));
+          out = Math.max(out, need, P * p.minLoad / 100);
+          out = Math.min(out, P);
+          const ch = Math.min(out - need, room, inv); soc += ch * eta; bat = -ch;
+        }
+        if (net < 0) { const extra = Math.min(-net, Math.max(0, (Eu - soc) / eta)); soc += extra * eta; bat -= extra; r.Epv += pvUsed + extra; } else r.Epv += pvUsed;
+        r.fuel += F(out); r.mh++; r.Edg += out;
+        if (soc >= stopAt - 1e-9) on = false;
+      }
+      soc = Math.max(0, Math.min(Eu, soc));
+      if (d === tday) r.series.push({ h, load: L[h], dg: out, pv: pvUsed, pvAll: pv, bat, soc: soc / Eu * 100, on: out > 0 });
+    }
+    Object.keys(acc).forEach(k => { r[k] -= acc[k]; });
+    r.cycles = Eu > 0 ? r.Ebat / Eu : 0;
+  }
+  r.silent = (24 * days - r.mh) / days;
+  r.hoursDay = r.mh / days;
+  r.loadPct = r.mh ? r.Edg / (r.mh * P) * 100 : null;
+  r.fuelCost = p.price !== null ? r.fuel * p.price : null;
+  r.delCost = p.del !== null ? r.fuel * p.del : null;
+  r.fuelDel = p.price !== null && p.del !== null ? r.fuel * (p.price + p.del) : null;
+  r.toCost = p.to !== null ? r.mh * p.to : null;
+  const parts = [r.fuelCost, r.delCost, r.toCost].filter(v => v !== null);
+  r.opex = parts.length ? parts.reduce((a, b) => a + b, 0) : null;
+  return r;
+}
+function recalc() {
+  const p = params(), prof = buildProfile(), F = fuelCurve();
+  RES = {};
+  ['A', 'B', 'C'].forEach(k => {
+    const m = missing(k, p, prof, F);
+    RES[k] = m.length ? { ok: false, missing: m } : simulate(k, p, prof.prof, F);
+  });
+  RES.profNote = prof.note || null;
+  ['B', 'C'].forEach(k => { const r = RES[k], cap = k === 'B' ? p.capexB : p.capexC; if (r.ok && RES.A.ok && cap && r.opex !== null && RES.A.opex !== null) { const perDay = (RES.A.opex - r.opex) / p.days; r.payDays = perDay > 0 ? cap / perDay : null; } });
+  DEMO = demoUsed(); $('#demoFlag').style.display = DEMO ? 'block' : 'none';
+  statusBadge('chBadge', RES[chArch] && RES[chArch].ok ? (DEMO ? 'ill' : 'calc') : null);
+  statusBadge('dxBadge', Object.keys(S._src || {}).length ? (DEMO ? 'ill' : 'calc') : null);
+  renderOut(p); renderChart(); renderDx(); renderCold(); renderSim(); render8(false); autoUnlock();
+}
+function renderOut(p) {
+  const R = RES, box = $('#calcOut');
+  if (!R.A.ok) { box.innerHTML = `<div class="kpis">${['Δ топлива', 'Δ моточасов', 'Δ эксплуатации', 'Часы тишины'].map(t => `<div><b style="color:var(--mute)">—</b><span>${t}</span></div>`).join('')}</div><p class="empty-msg"><b>Требуются исходные данные:</b> ${R.A.missing.join(', ')}.</p>${!fuelCurve() ? '<div class="flag">Для точного расчёта требуется паспортная кривая расхода ДГУ.</div>' : ''}`; return; }
+  const H = R.C.ok ? R.C : (R.B.ok ? R.B : null);
+  const d = (a, b) => a !== null && b !== null ? a - b : null;
+  const k = H ? [[d(R.A.fuel, H.fuel), 'л топлива'], [d(R.A.mh, H.mh), 'моточасов'], [d(R.A.opex, H.opex), '₽ эксплуатации'], [H.silent, 'ч тишины в сутки', 1]] : null;
+  let html = `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px"><b style="font-size:16px">${H ? 'Разница A и ' + H.arch : 'Сценарий A'} <span class="badge ${DEMO ? 'b-ill' : 'b-calc'}">${DEMO ? 'Иллюстрация' : 'Расчёт'}</span></b><span class="model-tag">Предварительная расчётная модель</span></div>`;
+  if (k) html += `<div class="kpis">${k.map(([v, t, dd]) => `<div><b>${v === null ? '—' : (dd ? '' : (v >= 0 ? '−' : '+')) + fmt(Math.abs(v), dd || 0)}</b><span>${t}</span></div>`).join('')}</div>`;
+  const rows = [
+    ['fuel', 'Топливо, л', 'fuel'], ['mh', 'Моточасы ДГУ', 'mh'], ['Edg', 'Энергия от ДГУ, кВт·ч', 'Edg'], ['Ebat', 'Энергия от накопителя, кВт·ч', 'Ebat'], ['Epv', 'Энергия от солнца, кВт·ч', 'Epv'],
+    ['fuelCost', 'Стоимость топлива, ₽', 'cost'], ['delCost', 'Стоимость доставки, ₽', 'cost'], ['toCost', 'Стоимость ТО, ₽', 'to'], ['opex', 'Итого эксплуатация, ₽', 'cost'],
+    ['hoursDay', 'Работа ДГУ, ч/сутки', 'mh', 1], ['silent', 'Часы тишины, ч/сутки', 'silent', 1], ['loadPct', 'Средняя загрузка ДГУ при работе, %', 'load']
+  ];
+  if (['A', 'B', 'C'].some(x => R[x].ok && R[x].deficit > 0.01)) rows.push(['deficit', 'Непокрытая нагрузка, кВт·ч', 'deficit', 1]);
+  html += '<table class="res"><thead><tr><th>Показатель</th><th>A · ДГУ</th><th>B · + накопитель</th><th>C · + солнце</th></tr></thead><tbody>';
+  rows.forEach(([key, label, why, dd], i) => {
+    html += `<tr><td>${label}<button class="why" data-why="${why}" data-i="${i}">Почему?</button><div class="whybox" id="why${i}">${WHY[why]}</div></td>`;
+    ['A', 'B', 'C'].forEach(x => { const r = R[x]; html += r.ok ? `<td>${r[key] === null || r[key] === undefined ? '—' : fmt(r[key], dd || 0)}</td>` : '<td class="na">нет данных</td>'; });
+    html += '</tr>';
+  });
+  html += '</tbody></table>';
+  const miss = ['B', 'C'].filter(x => !R[x].ok).map(x => `<div class="flag info">Сценарий ${x}: требуются исходные данные — ${R[x].missing.join(', ')}.</div>`).join('');
+  html += miss;
+  ['B', 'C'].forEach(x => { const r = R[x]; if (r.ok && r.payDays) html += `<div class="flag info">Сценарий ${x}: простая окупаемость ≈ ${fmt(r.payDays)} суток работы объекта${p.days ? ` (≈ ${fmt(r.payDays / p.days, 1)} периода по ${fmt(p.days)} суток)` : ''}. Простая окупаемость без учёта стоимости капитала и изменения цен.</div>`; else if (r.ok && r.payDays === null && (x === 'B' ? p.capexB : p.capexC)) html += `<div class="flag">Сценарий ${x}: при введённых данных эксплуатация не снижается — окупаемость не рассчитывается.</div>`; });
+  if (R.A.ok && R.A.loadPct !== null && R.A.loadPct < 30) html += '<div class="flag">В сценарии A средняя загрузка ДГУ ниже 30 %. Проверьте в паспорте ДГУ допустимость длительной работы на малой нагрузке.</div>';
+  if (['A', 'B', 'C'].some(x => R[x].ok && R[x].deficit > 0.01)) html += '<div class="flag">Есть непокрытая нагрузка: пиковая мощность выше возможностей ДГУ и инвертора. Нужна проверка мощности.</div>';
+  if (R.A.ok && R.A.unserved > 0.01) html += `<div class="flag info">В сценарии A ДГУ работает ${fmt(p.hrs)} ч в сутки: нагрузка остальных часов (${fmt(R.A.unserved)} кВт·ч за период) не покрыта. Сравнение с B и C корректно только при одинаковом покрытии.</div>`;
+  if (RES.profNote) html += `<div class="flag info">${RES.profNote}</div>`;
+  if (DEMO) html += '<div class="flag">Иллюстрация: результат построен на демонстрационных значениях, а не на данных объекта.</div>';
+  html += '<div class="acts-row" style="margin-top:14px"><button class="pbtn blue" id="calcSend">Отправить данные специалисту XWATUM</button></div>';
+  box.innerHTML = html;
+  $('#calcSend').onclick = () => openContacts('send');
+  $$('#calcOut .why').forEach(b => b.onclick = () => $('#why' + b.dataset.i).classList.toggle('open'));
+}
+
+/* ============================== CHARTS ============================== */
+function renderChart() {
+  const box = $('#chart24'); $$('svg', box).forEach(s => s.remove());
+  const r = RES && RES[chArch];
+  const W = 820, H = 280, l = 44, rgt = 44, t = 14, b = 34, iw = W - l - rgt, ih = H - t - b;
+  const svg = el('svg', { viewBox: `0 0 ${W} ${H}`, style: 'width:100%;height:auto;display:block' });
+  box.insertBefore(svg, box.firstChild);
+  if (!r || !r.ok) { el('text', { x: W / 2, y: H / 2, 'text-anchor': 'middle', 'font-size': 14, fill: '#86868B' }, svg, 'Недостаточно данных для сценария ' + chArch); return; }
+  const s = r.series, mx = Math.max(num(S.pRated) || 1, ...s.map(x => Math.max(x.load, x.dg, x.pvAll || 0))) * 1.1;
+  const X = h => l + h / 24 * iw, Y = v => t + ih - v / mx * ih, Ys = v => t + ih - v / 100 * ih;
+  for (let i = 0; i <= 4; i++) { const v = mx / 1.1 * i / 4; el('line', { x1: l, x2: W - rgt, y1: Y(v), y2: Y(v), stroke: '#E5E5EA' }, svg); el('text', { x: l - 8, y: Y(v) + 4, 'text-anchor': 'end', 'font-size': 11, fill: '#86868B' }, svg, fmt(v, 1)); }
+  el('text', { x: l - 8, y: t - 2, 'text-anchor': 'end', 'font-size': 10, fill: '#86868B' }, svg, 'кВт');
+  if (chArch !== 'A') for (let i = 0; i <= 4; i++) el('text', { x: W - rgt + 8, y: Ys(i * 25) + 4, 'font-size': 11, fill: '#0A84FF' }, svg, i * 25 + '%');
+  s.forEach(x => { if (x.pvAll > 0) el('rect', { x: X(x.h) + 2, y: Y(x.pvAll), width: iw / 24 - 4, height: t + ih - Y(x.pvAll), fill: 'rgba(10,132,255,.22)', rx: 2 }, svg); });
+  s.forEach(x => { if (x.dg > 0) el('rect', { x: X(x.h) + iw / 96, y: Y(x.dg), width: iw / 48, height: t + ih - Y(x.dg), fill: '#E09A1A', rx: 2 }, svg); });
+  el('polyline', { points: s.map(x => `${X(x.h + 0.5)},${Y(x.load)}`).join(' '), fill: 'none', stroke: '#1D1D1F', 'stroke-width': 2 }, svg);
+  if (chArch !== 'A') el('polyline', { points: s.map(x => `${X(x.h + 1)},${Ys(x.soc)}`).join(' '), fill: 'none', stroke: '#0A84FF', 'stroke-width': 2.5 }, svg);
+  [0, 6, 12, 18, 24].forEach(h => el('text', { x: X(h), y: H - 10, 'text-anchor': 'middle', 'font-size': 11, fill: '#86868B' }, svg, hh(h)));
+  el('line', { x1: l, x2: W - rgt, y1: t + ih, y2: t + ih, stroke: '#D2D2D7' }, svg);
+  const tip = $('#tip24'), hit = el('rect', { x: l, y: t, width: iw, height: ih, fill: 'transparent' }, svg);
+  const show = cx => { const rc = svg.getBoundingClientRect(); const h = Math.max(0, Math.min(23, Math.floor(((cx - rc.left) / rc.width * W - l) / iw * 24))); const x = s[h];
+    tip.innerHTML = `${hh(h)}–${hh(h + 1)} · нагрузка ${fmt(x.load, 1)} кВт · ДГУ ${x.dg > 0 ? fmt(x.dg, 1) + ' кВт' : 'выкл.'}${x.pvAll ? ' · солнце ' + fmt(x.pvAll, 1) + ' кВт' : ''}${x.soc !== null ? ' · SOC ' + fmt(x.soc) + ' %' : ''}`;
+    tip.style.opacity = 1; tip.style.left = Math.min(rc.width - 330, Math.max(0, (X(h) / W) * rc.width)) + 'px'; tip.style.top = '-8px'; };
+  hit.addEventListener('mousemove', e => show(e.clientX)); hit.addEventListener('touchmove', e => show(e.touches[0].clientX), { passive: true }); hit.addEventListener('mouseleave', () => tip.style.opacity = 0);
+}
+
+/* ---------- Энергосхема и симулятор 24 ч ---------- */
+const SRC = {};
+const ILLUS = { P: 10, days: 2, hrs: 24, price: null, del: null, to: null, bess: 15, dod: 90, eff: 92, inv: 10, pv: 5, psh: 3.5, socStart: 20, socStop: 90, chargeLoad: 80, minLoad: 30 };
+function buildLabDiagram() {
+  const svg = $('#labDiag');
+  const N = { pv: [10, 20, 'Солнце', 'i-sun'], wind: [10, 120, 'Ветер', 'i-wind'], grid: [10, 220, 'Сеть', 'i-grid'], dg: [10, 320, 'ДГУ', 'i-gen'],
+    inv: [340, 200, 'Инвертор / PCS', 'i-inv'], ems: [360, 40, 'EMS', 'i-ems'], bat: [680, 110, 'Накопитель', 'i-bat'], load: [680, 300, 'Нагрузка', 'i-house'] };
+  const P = { pv: 'M190,52 C270,52 280,225 340,228', wind: 'M190,152 C270,152 280,232 340,234', grid: 'M190,252 C270,252 280,238 340,240', dg: 'M190,352 C270,352 280,250 340,246',
+    'inv-bat': 'M540,226 C610,226 620,138 680,138', 'bat-inv': 'M680,148 C620,148 610,236 540,236', 'inv-load': 'M540,248 C610,248 620,330 680,330' };
+  Object.keys(P).forEach(k => { el('path', { d: P[k], class: 'eline' + (k === 'dg' ? ' amb' : ''), id: 'le-' + k }, svg); el('path', { d: P[k], class: 'pulse' + (k === 'dg' ? ' amb' : ''), id: 'lp-' + k }, svg); });
+  ['M440,96 V200', 'M400,70 C300,60 250,50 190,48', 'M400,80 C300,120 250,140 190,146', 'M400,86 C320,160 260,230 190,246', 'M410,96 C330,250 260,330 190,346', 'M500,70 C600,70 650,110 680,120', 'M490,96 C600,200 650,300 680,310'].forEach(d => el('path', { d, class: 'cline', 'data-c': 1 }, svg));
+  Object.keys(N).forEach(k => {
+    const [x, y, t, ic] = N[k], w = k === 'inv' ? 200 : (k === 'ems' ? 140 : 180), h = k === 'ems' ? 56 : 64;
+    const g = el('g', { class: 'node', id: 'ln-' + k, transform: `translate(${x},${y})` }, svg);
+    el('rect', { width: w, height: h, rx: 16 }, g);
+    const u = el('use', { href: '#' + ic, x: 14, y: (h - 32) / 2, width: 32, height: 32 }, g); u.style.color = k === 'dg' ? '#E09A1A' : (k === 'load' ? '#1D1D1F' : '#0A84FF');
+    el('text', { x: 56, y: h / 2 + 6, 'font-size': 17 }, g, t);
+  });
+  const c = el('g', { transform: 'translate(560,20)' }, svg); const u = el('use', { href: '#i-cloud', width: 30, height: 30 }, c); u.style.color = '#0A84FF'; el('text', { x: 36, y: 20, 'font-size': 13, fill: '#86868B' }, c, 'Удалённый мониторинг');
+  el('path', { d: 'M500,56 C530,40 545,38 560,36', class: 'cline' }, svg);
+  const lg = el('g', { transform: 'translate(680,430)' }, svg);
+  el('line', { x1: 0, y1: 0, x2: 26, y2: 0, stroke: '#0A84FF', 'stroke-width': 3 }, lg); el('text', { x: 32, y: 4, 'font-size': 12, fill: '#86868B' }, lg, 'Энергия');
+  el('line', { x1: 96, y1: 0, x2: 122, y2: 0, class: 'cline' }, lg); el('text', { x: 128, y: 4, 'font-size': 12, fill: '#86868B' }, lg, 'Управление');
+}
+function renderSim() {
+  const h = +$('#tLab').value;
+  ['pv', 'wind', 'grid', 'dg', 'bat'].forEach(k => { const on = k === 'bat' ? SRC.bess : SRC[k]; $('#ln-' + k).classList.toggle('off', !on); });
+  let arch = SRC.dg && SRC.bess && SRC.pv ? 'C' : (SRC.dg && SRC.bess ? 'B' : (SRC.dg ? 'A' : null));
+  const act = new Set(['inv-load']);
+  let st = null, real = false, note = '';
+  if (arch) {
+    const r = RES && RES[arch];
+    if (r && r.ok) { st = r.series[h]; real = true; }
+    else {
+      const prof = LOAD_SHAPE.map(v => v / 100 * ILLUS.P);
+      const F = pp => 0.08 * ILLUS.P + 0.25 * pp;
+      st = simulate(arch, ILLUS, prof, F).series[h];
+    }
+    if (st.dg > 0) act.add('dg');
+    if (st.pvAll > 0 && SRC.pv) act.add('pv');
+    if (st.bat > 0.01) act.add('bat-inv'); else if (st.bat < -0.01) act.add('inv-bat');
+    note = real ? (DEMO ? 'Данные калькулятора на демонстрационных значениях.' : 'Данные калькулятора. Предварительная расчётная модель.') : 'Иллюстрация принципа управления. Для расчёта по вашему объекту заполните калькулятор.';
+  } else note = 'Без ДГУ нужен отдельный расчёт автономности по дням без солнца. Схема показывает только состав системы.';
+  if (SRC.wind || SRC.grid) note += ' Ветер и сеть показаны на схеме, в расчёт не включены.';
+  ['pv', 'wind', 'grid', 'dg', 'inv-bat', 'bat-inv', 'inv-load'].forEach(k => { const on = act.has(k); $('#le-' + k).classList.toggle('act', on); $('#lp-' + k).classList.toggle('act', on); });
+  $('#ln-dg').classList.toggle('dg-on', !!(st && st.dg > 0));
+  const unit = real ? v => fmt(v, 1) + ' кВт' : v => fmt(v / ILLUS.P * 100) + ' % от ДГУ';
+  const src = !st ? '—' : (st.dg > 0 ? 'ДГУ' + (st.bat < -0.01 ? ' + заряд накопителя' : '') : (st.bat > 0.01 ? 'Накопитель' + (st.pvAll > 0 ? ' + солнце' : '') : (st.pvAll > 0 ? 'Солнце' + (st.bat < -0.01 ? ' + заряд' : '') : '—')));
+  $('#simState').innerHTML = `<div><span>Время</span><b>${hh(h)}</b></div><div><span>Нагрузка сейчас</span><b>${st ? unit(st.load) : '—'}</b></div><div><span>Источник сейчас</span><b style="font-size:16px">${src}</b></div><div><span>SOC</span><b>${st && st.soc !== null && st.soc !== undefined ? fmt(st.soc) + ' %' : '—'}</b></div><div><span>ДГУ</span><b style="color:${st && st.dg > 0 ? 'var(--amber)' : 'var(--ink)'}">${st ? (st.dg > 0 ? 'Работает' : 'Остановлен') : '—'}</b></div><div><span>Солнце</span><b>${st && st.pvAll > 0 ? unit(st.pvAll) : '—'}</b></div>`;
+  $('#simNote').textContent = note;
+  statusBadge('simBadge', arch ? (real && !DEMO ? 'calc' : 'ill') : null);
+}
+
+/* ============================== SETTINGS ============================== */
+const SET_FIELDS = [['forum', 'Название форума'], ['date', 'Дата'], ['speaker', 'Спикер'], ['phone', 'Телефон', 'c', '+7 …'], ['whatsapp', 'WhatsApp (если другой номер)', 'c', '+7 …'], ['telegram', 'Telegram', 'c', '@username'], ['max', 'MAX — номер или ссылка на профиль', 'c', '+7 … или ссылка'], ['email', 'E-mail', 'c', 'name@company.ru'], ['site', 'Сайт', 'c'], ['qrUrl', 'Адрес GEO LAB в интернете (для QR)', '', 'https://…/geo.html'], ['moduleKWh', 'Ёмкость модуля, кВт·ч'], ['inverterKW', 'Мощность инвертора, кВт']];
+function buildSettings() {
+  const f = $('#setFields');
+  SET_FIELDS.forEach(([k, l, c, ph]) => {
+    const w = el('div', { class: 'f' + (k === 'qrUrl' ? ' wide' : '') }, f); el('label', {}, w, l); const b = el('div', { class: 'inp' }, w);
+    const i = el('input', { type: 'text', value: (c ? CONFIG.contacts[k] : CONFIG[k]) || '', placeholder: ph || null }, b);
+    i.addEventListener('input', () => { if (c) CONFIG.contacts[k] = i.value; else CONFIG[k] = i.value; save(); applyConfig(); });
+  });
+  const w = el('div', { class: 'f wide' }, f); const lab = el('label', { style: 'display:flex;gap:10px;align-items:center;font-size:14px;color:var(--ink)' }, w);
+  const cb = el('input', { type: 'checkbox' }, lab); cb.checked = CONFIG.stockConfirmed; lab.appendChild(document.createTextNode('Остатки на складе подтверждены (экран 10: «Поставка — со склада»)'));
+  cb.addEventListener('change', () => { CONFIG.stockConfirmed = cb.checked; save(); applyConfig(); });
+  $$('#setModal input[type=file]').forEach(inp => inp.addEventListener('change', () => {
+    const file = inp.files[0]; if (!file) return; const r = new FileReader();
+    r.onload = () => { IMG[inp.dataset.img] = r.result; save(); applyConfig(); hint('Изображение добавлено'); };
+    r.readAsDataURL(file);
+  }));
+  $('#setClose').onclick = closeSettings;
+  $('#setClearImg').onclick = () => { IMG = {}; save(); applyConfig(); hint('Логотипы и QR удалены'); };
+  $('#setModal').addEventListener('click', e => { if (e.target.id === 'setModal') closeSettings(); });
+}
+function openSettings() { $('#setModal').classList.add('open'); }
+function closeSettings() { $('#setModal').classList.remove('open'); }
+
+/* ============================== INIT ============================== */
+function init() {
+  load();
+  buildDots(); build3(); build4(); build5(); build6(); build9(); build10();
+  buildLab(); buildSettings(); applyConfig();
+  $('#mDeck').onclick = () => setMode('deck');
+  $('#mLab').onclick = () => setMode('lab');
+  $('#mSet').onclick = openSettings;
+  $('#mCon').onclick = () => openContacts();
+  $$('[data-contact]').forEach(b => b.onclick = () => openContacts());
+  $('#qSend').onclick = () => openContacts('send');
+  $('#shClose').onclick = closeContacts;
+  $('#sheet').addEventListener('click', e => { if (e.target.id === 'sheet') closeContacts(); });
+  $$('[data-go]').forEach(b => b.onclick = () => setMode('lab', b.dataset.go === 'calc' ? 'calc' : 'obj'));
+  addEventListener('resize', fit); fit();
+  recalc();
+  const hsh = location.hash.replace('#', '');
+  const m = /^s(\d+)$/.exec(hsh);
+  slides[0].classList.add('active');
+  if (m) go(+m[1] - 1); else go(0);
+  if (hsh && !m && document.getElementById(hsh) && ['lab', 'meth', 'obj', 'dx', 'sch', 'calc', 'arch', 'cold', 'wi', 'q'].includes(hsh)) setMode('lab', hsh === 'lab' ? null : hsh);
+  if (matchMedia('(max-width:700px) and (orientation:portrait)').matches) hint('Для режима презентации поверните устройство горизонтально. GEO LAB работает в любой ориентации.', 6000);
+}
+init();
+
+</script>
+</body>
+</html>
